@@ -25,6 +25,12 @@ public class CategoryController {
         return categoriesRepo.findAll();
     }
 
+    @GetMapping("viewCategory/{categoryId}")
+    @ResponseBody
+    public Category viewCategory(@PathVariable("categoryId") int categoryId) {
+        return categoriesRepo.findById(categoryId).get();
+    }
+
     @GetMapping("/newCategory")
     public String addCategory(Model model) {
         model.addAttribute("category", new Category());
@@ -47,7 +53,5 @@ public class CategoryController {
             return "redirect:/listCategories";
         }
     }
-
-
-
+    
 }
