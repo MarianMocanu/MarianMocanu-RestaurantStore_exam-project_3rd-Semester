@@ -5,8 +5,7 @@
     <title>Categories</title>
 </head>
 <body>
-<!--/*@thymesVar id="product" type="dk.kea.stud.fourplayers.restaurantstore.controllers.ProductController"*/-->
-<form th:object="${category}" class="form-horizontal" method="post">
+<form th:object="${category}" class="form-horizontal" method="post" th:action="@{/saveCategory}">
     <div class="form-group has-feedback">
         <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>
     </div>

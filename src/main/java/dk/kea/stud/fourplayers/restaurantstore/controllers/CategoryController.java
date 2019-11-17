@@ -5,10 +5,7 @@ import dk.kea.stud.fourplayers.restaurantstore.model.CategoryRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,17 +21,23 @@ public class CategoryController {
 
     @GetMapping("/listCategories")
     @ResponseBody
-    public List<Category> listCategories () {
+    public List<Category> listCategories() {
         return categoriesRepo.findAll();
     }
 
-    @GetMapping("/addCategory")
+    @GetMapping("/newCategory")
     public String addCategory(Model model) {
         model.addAttribute("category", new Category());
         return ADD_OR_UPDATE_CATEGORY;
     }
 
-    @PostMapping("/addCategory")
+    @GetMapping("/editCategory/{categoryId}")
+    public String updateCategory(Model model, @PathVariable("categoryId") int categoryId) {
+        model.addAttribute(categoriesRepo.findById(categoryId).get());
+        return ADD_OR_UPDATE_CATEGORY;
+    }
+
+    @PostMapping("/saveCategory")
     public String saveCategory(@ModelAttribute Category category, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("category", category);
@@ -44,4 +47,7 @@ public class CategoryController {
             return "redirect:/listCategories";
         }
     }
+
+
+
 }
