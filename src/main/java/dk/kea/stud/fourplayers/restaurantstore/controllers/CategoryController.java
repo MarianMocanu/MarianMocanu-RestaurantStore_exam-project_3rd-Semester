@@ -53,5 +53,12 @@ public class CategoryController {
             return "redirect:/listCategories";
         }
     }
-    
+
+    @PostMapping("/deleteCategory")
+    public String deleteCategory(@RequestParam("categoryId") String categoryId) {
+        Category category = categoriesRepo.findById(Integer.parseInt(categoryId)).get();
+        categoriesRepo.delete(category);
+        return "/listCategories";
+    }
+
 }
