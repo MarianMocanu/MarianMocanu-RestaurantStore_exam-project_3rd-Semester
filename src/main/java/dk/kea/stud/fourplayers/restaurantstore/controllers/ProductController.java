@@ -16,18 +16,13 @@ public class ProductController {
   private final CategoryRepository categories;
   private final ProductRepository products;
   private final String ADD_OR_UPDATE_PRODUCT = "products/addOrUpdateProduct";
-  private final PriceRepository prices ;
+  private final PriceRepository prices;
 
   public ProductController(CategoryRepository categoryRepo, ProductRepository productRepo,
                            PriceRepository priceRepo) {
     this.categories = categoryRepo;
     this.products = productRepo;
     this.prices = priceRepo;
-  }
-
-  @InitBinder
-  public void setAllowedFields(WebDataBinder webDataBinder) {
-    webDataBinder.setDisallowedFields("id");
   }
 
   @ModelAttribute("allCategories")
@@ -59,6 +54,22 @@ public class ProductController {
     return ADD_OR_UPDATE_PRODUCT;
   }
 
+  @PostMapping("/addProduct")
+  public String saveNewProduct(@ModelAttribute Product product, @ModelAttribute Price newPrice,
+                               BindingResult result, Model model) {
+    if (result.hasErrors()) {
+      model.addAttribute("product", product);
+      model.addAttribute("price", newPrice);
+      return ADD_OR_UPDATE_PRODUCT;
+    } else {
+      if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
+        product.addPrice(newPrice);
+      }
+      products.save(product);
+      return "redirect:/list";
+    }
+  }
+
   @GetMapping("/editProduct/{productId}")
   public String editProduct(@PathVariable("productId") int productId, Model model) {
     Product product = products.findById(productId).get();
@@ -69,25 +80,24 @@ public class ProductController {
     return ADD_OR_UPDATE_PRODUCT;
   }
 
-  @PostMapping("/saveProduct")
-  public String saveProduct(@ModelAttribute Product product, @ModelAttribute Price price,
-                            BindingResult result, Model model) {
-    if (result.hasErrors()) {
-      model.addAttribute("product", product);
-      model.addAttribute("price", price);
-      return ADD_OR_UPDATE_PRODUCT;
-    } else {
-//      for (Price prc : product.getPrices()) {
-//        System.out.println(prc);
-//      }
-//      System.out.println(price);
-      if (price.getQuantity() > 0 && price.getPrice() > 0) {
-       // price.setId(null);
-        product.addPrice(price);
+  @PostMapping("/editProduct/{productId}")
+  public String saveEditedProduct(@PathVariable("productId") int productId,
+                                   Product product, Price newPrice, Model model,
+                                  BindingResult result) {
+      if (result.hasErrors()) {
+          model.addAttribute("product", product);
+          model.addAttribute("price", newPrice);
+
+          return ADD_OR_UPDATE_PRODUCT;
+      } else {
+          if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
+              product.addPrice(newPrice);
+          }
+          product.setId(productId);
+          products.save(product);
+
+          return "redirect:/list";
       }
-      products.save(product);
-      return "redirect:/list";
-    }
   }
 
   @GetMapping("/delete/{product_id}")

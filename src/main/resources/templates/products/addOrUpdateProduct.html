@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form th:object="${product}" class="form-horizontal" method="post" action="/saveProduct">
+<form th:object="${product}" class="form-horizontal" method="post">
     <div class="form-group has-feedback">
         <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>
 
@@ -26,7 +26,6 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <input type="hidden" name="id" th:value="*{id}"/>
             <button th:with="text=${product.isNew()} ? 'Add product' : 'Update product'"
                     class="btn btn-default" type="submit" th:text="${text}"></button>
         </div>
