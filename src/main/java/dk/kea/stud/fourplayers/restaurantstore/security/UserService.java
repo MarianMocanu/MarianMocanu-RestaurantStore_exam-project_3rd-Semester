@@ -1,9 +1,5 @@
-package dk.kea.stud.fourplayers.restaurantstore.service;
+package dk.kea.stud.fourplayers.restaurantstore.security;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.Role;
-import dk.kea.stud.fourplayers.restaurantstore.model.User;
-import dk.kea.stud.fourplayers.restaurantstore.repository.RoleRepository;
-import dk.kea.stud.fourplayers.restaurantstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

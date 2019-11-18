@@ -1,4 +1,4 @@
-package dk.kea.stud.fourplayers.restaurantstore.configuration;
+package dk.kea.stud.fourplayers.restaurantstore.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,14 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-    //TODO
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/registration").permitAll()
+                .antMatchers("/", "/index", "/login", "/registration").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")

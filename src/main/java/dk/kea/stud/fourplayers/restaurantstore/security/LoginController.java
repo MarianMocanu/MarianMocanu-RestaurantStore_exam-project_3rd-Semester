@@ -1,9 +1,7 @@
-package dk.kea.stud.fourplayers.restaurantstore.controller;
+package dk.kea.stud.fourplayers.restaurantstore.security;
 
 import javax.validation.Valid;
 
-import dk.kea.stud.fourplayers.restaurantstore.service.UserService;
-import dk.kea.stud.fourplayers.restaurantstore.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +24,6 @@ public class LoginController {
         return "login";
     }
 
-
     @GetMapping("/registration")
     public String registration(Model model){
         User user = new User();
@@ -43,7 +40,7 @@ public class LoginController {
                             "There is already a user registered with this email.");
         }
         if (bindingResult.hasErrors()) {
-           return "registration";
+            return "registration";
         } else {
             userService.saveUser(user);
             model.addAttribute("successMessage", "User has been registered successfully");
@@ -52,13 +49,13 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/admin/home")
-    public String home(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
-        model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        model.addAttribute("adminMessage","Content available only for admins.");
-        return "admin/home";
-    }
+//    @GetMapping("/admin/home")
+//    public String home(Model model){
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        User user = userService.findUserByEmail(auth.getName());
+//        model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+//        model.addAttribute("adminMessage","Content available only for admins.");
+//        return "misc/admin";
+//    }
 
 }

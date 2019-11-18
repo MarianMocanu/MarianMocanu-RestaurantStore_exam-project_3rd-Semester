@@ -1,4 +1,4 @@
-package com.raduonescu.loginsystem.configuration;
+package dk.kea.stud.fourplayers.restaurantstore.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
