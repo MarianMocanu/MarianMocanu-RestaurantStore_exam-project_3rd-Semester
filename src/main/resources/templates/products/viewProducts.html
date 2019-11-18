@@ -5,6 +5,12 @@
     <title>View products</title>
 </head>
 <body>
+<form action="#" th:action="@{search}" method="get" class="input-group">
+    <input class="form-control form-control-dark" type="text" placeholder="Search" name="search" aria-label="Search">
+    <div class="input-group-append">
+        <button class="btn btn-outline-light" value="Search">Search</button>
+    </div>
+</form>
     <ul>
         <li><a href="/list">All categories</a></li>
         <li th:each="category : ${allCategories}">
