@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View products</title>
+</head>
+<body>
+    <ul>
+        <li><a href="/list">All categories</a></li>
+        <li th:each="category : ${allCategories}">
+            <a th:href="'/list?cat=' + ${category.getId()}"
+               th:text="${category}"></a>
+        </li>
+    </ul>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Unit price</th>
+            <th>Category</th>
+            <th></th>
+        </tr>
+        <tr th:each="product: ${products}">
+            <td>
+                <a th:href="'/product/' + ${product.getId()}"
+                   th:text="${product.getName()}"></a>
+            </td>
+            <td th:text="${product.getDescription()}"></td>
+            <td th:text="${product.getPrices().isEmpty()} ? 'Nada' : 'Something'"></td>
+            <td th:text="${product.getCategory()}"></td>
+            <td><a th:href="'/delete/' + ${product.getId()}">Delete</a></td>
+        </tr>
+    </table>
+    <a href="/add">Add new product</a>
+</body>
+</html>
