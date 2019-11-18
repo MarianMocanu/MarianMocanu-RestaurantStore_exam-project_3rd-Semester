@@ -11,9 +11,4 @@ public class WebController {
         return "misc/index";
     }
 
-    @GetMapping("/radu")
-    public String radu(){
-        return "misc/radu";
-    }
-
 }
