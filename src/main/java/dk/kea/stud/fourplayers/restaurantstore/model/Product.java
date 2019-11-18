@@ -13,7 +13,7 @@ public class Product extends BaseEntity {
   private String description;
 
   @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Price.class,
-      cascade = CascadeType.ALL, mappedBy = "products")
+      cascade = CascadeType.ALL)
   private List<Price> prices;
 
   @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Category.class)
