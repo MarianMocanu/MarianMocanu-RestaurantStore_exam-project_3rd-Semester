@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<form th:object="${category}" class="form-horizontal" method="post" th:action="@{/saveCategory}">
+    <div class="form-group has-feedback">
+        <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="hidden" name="id" th:value="*{id}"/>
+            <button th:with="text=${category.isNew()} ? 'Add category' : 'Update category'"
+                    class="btn btn-default" type="submit" th:text="${text}"></button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>
