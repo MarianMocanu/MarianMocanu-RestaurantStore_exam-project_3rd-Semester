@@ -30,7 +30,7 @@ public class ProductController {
     return products.findAll();
   }
 
-  @GetMapping("/list")
+  @GetMapping("/")
   public String viewProducts(Model model, @RequestParam(name = "cat", required = false) Integer categoryId) {
     if (categoryId == null) {
       model.addAttribute("products", products.findAll());
@@ -55,13 +55,13 @@ public class ProductController {
       return ADD_OR_UPDATE_PRODUCT;
     } else {
       products.save(product);
-      return "redirect:/list";
+      return "redirect:/";
     }
   }
 
   @GetMapping("/delete/{product_id}")
   public String deleteProduct(@PathVariable(name = "product_id", required = true) int id) {
     products.deleteById(id);
-    return "redirect:/list";
+    return "redirect:/";
   }
 }

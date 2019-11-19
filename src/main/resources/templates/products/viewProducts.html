@@ -1,36 +1,25 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>View products</title>
-</head>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
 <body>
-    <ul>
-        <li><a href="/list">All categories</a></li>
-        <li th:each="category : ${allCategories}">
-            <a th:href="'/list?cat=' + ${category.getId()}"
-               th:text="${category}"></a>
-        </li>
-    </ul>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Unit price</th>
-            <th>Category</th>
-            <th></th>
-        </tr>
-        <tr th:each="product: ${products}">
-            <td>
-                <a th:href="'/product/' + ${product.getId()}"
-                   th:text="${product.getName()}"></a>
-            </td>
-            <td th:text="${product.getDescription()}"></td>
-            <td th:text="${product.getPrices().isEmpty()} ? 'Nada' : 'Something'"></td>
-            <td th:text="${product.getCategory()}"></td>
-            <td><a th:href="'/delete/' + ${product.getId()}">Delete</a></td>
-        </tr>
-    </table>
-    <a href="/add">Add new product</a>
+<div>
+    <th:block th:each="category : ${allCategories}">
+        <a class="dropdown-item" th:href="'?cat=' + ${category.getId()}" th:text="${category}"></a>
+    </th:block>
+</div>
+
+
+<div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle" href="/" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        All Categories
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <th:block th:each="category : ${allCategories}">
+            <a class="dropdown-item" th:href="'?cat=' + ${category.getId()}" th:text="${category}"></a>
+        </th:block>
+    </div>
+</div>
 </body>
 </html>
+
