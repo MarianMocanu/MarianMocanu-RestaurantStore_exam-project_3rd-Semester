@@ -126,7 +126,7 @@ public class ProductController {
       product.setId(productId);
       products.save(product);
 
-      return "redirect:/list";
+      return "redirect:/";
     }
   }
 
@@ -140,13 +140,13 @@ public class ProductController {
   public String deletePrice(@PathVariable("priceId") int priceId,
                             @PathVariable("productId") int productId) {
     prices.deleteById(priceId);
-    return "redirect:/editProduct/" + productId;
+    return "redirect:/admin/product/edit/" + productId;
   }
 
   @GetMapping("/admin/product/delete/{productId}/image/{imageId}")
   public String deleteImage(@PathVariable("productId") int productId,
                             @PathVariable("imageId") int imageId) {
     images.deleteById(imageId);
-    return "redirect:/editProduct/" + productId;
+    return "redirect:/admin/product/edit/" + productId;
   }
 }

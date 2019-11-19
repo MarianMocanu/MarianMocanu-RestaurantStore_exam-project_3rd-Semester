@@ -21,14 +21,14 @@ public class CategoryController {
 
   @GetMapping("/admin/category/view")
   public String showCategoryView(Model model) {
-    model.addAttribute("categories", categoriesRepo.findAll());
+    model.addAttribute("categoriesList", categoriesRepo.findAll());
 
     return CATEGORY;
   }
 
   @PostMapping("/admin/categories/save")
-  public String saveEditedCategories(@ModelAttribute List<Category> categories, Model model,
-                                     BindingResult result) {
+  public String saveEditedCategories(@ModelAttribute("categories") List<Category> categories,
+                                     Model model, BindingResult result) {
     if (result.hasErrors()) {
       model.addAttribute("categories", categories);
       return CATEGORY;

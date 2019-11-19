@@ -5,10 +5,10 @@
     <title>Categories</title>
 </head>
 <body>
-<form th:object="${categories}" class="form-horizontal" method="post" action="/admin/categories/save">
-    <div class="form-group">
-        <input th:each="category, iterator : ${categories}"
-               th:field="${categories[__${iterator.index}__].name}" th:id="${iterator.index}"/>
+<form th:object="${categoriesList}" class="form-horizontal" method="post" action="/admin/categories/save/">
+    <div class="form-group has-feedback">
+        <input th:each="category, iterator : ${categoriesList}"
+               th:field="${categoriesList[__${iterator.index}__].name}" th:id="${iterator.index}"/>
         <button text="Update categories" class="btn btn-default" type="submit"></button>
         <button text="Reset" class="btn btn-default" type="reset"></button>
     </div>
