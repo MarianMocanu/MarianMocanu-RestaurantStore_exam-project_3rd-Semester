@@ -39,7 +39,7 @@ public class ProductController {
     return products.findAll();
   }
 
-  @GetMapping("/list")
+  @GetMapping("/")
   public String viewProducts(Model model, @RequestParam(name = "cat", required = false) Integer categoryId,
                              @RequestParam(value = "input", required = false) String input) {
     if(input!=null){
@@ -91,7 +91,7 @@ public class ProductController {
         product.addImage(newImage);
       }
       products.save(product);
-      return "redirect:/list";
+      return "redirect:/";
     }
   }
 
@@ -133,7 +133,7 @@ public class ProductController {
   @GetMapping("/delete/{product_id}")
   public String deleteProduct(@PathVariable(name = "product_id", required = true) int id) {
     products.deleteById(id);
-    return "redirect:/list";
+    return "redirect:/";
   }
 
   @GetMapping("/deletePrice/{productId}/{priceId}")

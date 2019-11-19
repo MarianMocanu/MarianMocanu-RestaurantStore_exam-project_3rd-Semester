@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>View products</title>
-</head>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
 <body>
 <form action="#" th:action="@{search}" method="get" class="input-group">
     <input class="form-control form-control-dark" type="text" placeholder="Search" name="search" aria-label="Search">
@@ -40,3 +37,4 @@
     <a href="/addProduct">Add new product</a>
 </body>
 </html>
+
