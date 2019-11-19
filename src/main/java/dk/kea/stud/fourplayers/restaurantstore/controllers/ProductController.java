@@ -50,20 +50,26 @@ public class ProductController {
   public String addProduct(Model model) {
     model.addAttribute("product", new Product());
     model.addAttribute("newPrice", new Price());
+    model.addAttribute("newImage", new ProductImage());
 
     return ADD_OR_UPDATE_PRODUCT;
   }
 
   @PostMapping("/addProduct")
   public String saveNewProduct(@ModelAttribute Product product, @ModelAttribute Price newPrice,
-                               BindingResult result, Model model) {
+                               @ModelAttribute ProductImage newImage, BindingResult result, Model model) {
     if (result.hasErrors()) {
       model.addAttribute("product", product);
       model.addAttribute("price", newPrice);
+      model.addAttribute("image", newImage);
+
       return ADD_OR_UPDATE_PRODUCT;
     } else {
       if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
         product.addPrice(newPrice);
+      }
+      if (newImage.getUrl() != null && !newImage.getUrl().equals("")) {
+        product.addImage(newImage);
       }
       products.save(product);
       return "redirect:/list";
@@ -76,28 +82,33 @@ public class ProductController {
     product.getPrices().sort(Price::compareTo);
     model.addAttribute("product", product);
     model.addAttribute("newPrice", new Price());
+    model.addAttribute("newImage", new ProductImage());
 
     return ADD_OR_UPDATE_PRODUCT;
   }
 
   @PostMapping("/editProduct/{productId}")
   public String saveEditedProduct(@PathVariable("productId") int productId,
-                                   Product product, Price newPrice, Model model,
-                                  BindingResult result) {
-      if (result.hasErrors()) {
-          model.addAttribute("product", product);
-          model.addAttribute("price", newPrice);
+                                  @ModelAttribute Product product, @ModelAttribute Price newPrice,
+                                  @ModelAttribute ProductImage newImage, Model model, BindingResult result) {
+    if (result.hasErrors()) {
+      model.addAttribute("product", product);
+      model.addAttribute("price", newPrice);
+      model.addAttribute("image", newImage);
 
-          return ADD_OR_UPDATE_PRODUCT;
-      } else {
-          if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
-              product.addPrice(newPrice);
-          }
-          product.setId(productId);
-          products.save(product);
-
-          return "redirect:/list";
+      return ADD_OR_UPDATE_PRODUCT;
+    } else {
+      if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
+        product.addPrice(newPrice);
       }
+      if (newImage.getUrl() != null && !newImage.getUrl().equals("")) {
+        product.addImage(newImage);
+      }
+      product.setId(productId);
+      products.save(product);
+
+      return "redirect:/list";
+    }
   }
 
   @GetMapping("/delete/{product_id}")
