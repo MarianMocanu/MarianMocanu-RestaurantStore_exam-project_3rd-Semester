@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -31,15 +34,31 @@ public class ProductController {
   }
 
   @GetMapping("/list")
-  public String viewProducts(Model model, @RequestParam(name = "cat", required = false) Integer categoryId) {
-    if (categoryId == null) {
-      model.addAttribute("products", products.findAll());
-    } else {
-      model.addAttribute("products", products.findProductsByCategoryId(categoryId));
+  public String viewProducts(Model model, @RequestParam(name = "cat", required = false) Integer categoryId,
+                             @RequestParam(value = "input", required = false) String input) {
+    if(input!=null){
+      Collection<Product> productsCollection = new HashSet<>();
+//      The \\W+ will match all non-alphabetic characters occurring one or more times
+      String[] words = input.split("\\W+");
+      for (String word: words) {
+        productsCollection.addAll(products.findProductBySearchInput(word));
+      }
+      model.addAttribute("products", productsCollection);
+    }
+    else {
+      if (categoryId == null) {
+        model.addAttribute("products", products.findAll());
+      } else {
+        model.addAttribute("products", products.findProductsByCategoryId(categoryId));
+      }
     }
     return "products/viewProducts";
   }
 
+  @GetMapping("/search")
+  public String search(@RequestParam(name = "search") String search){
+    return "redirect:/list?input=" + search;
+  }
   @GetMapping("/add")
   public String addProduct(Model model) {
     model.addAttribute("unitPrice", new Price());
