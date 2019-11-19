@@ -1,6 +1,7 @@
 package dk.kea.stud.fourplayers.restaurantstore.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ public class Product extends BaseEntity {
 
   @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Price.class,
       cascade = CascadeType.ALL)
+  @ElementCollection
   private List<Price> prices;
 
   @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Category.class)
@@ -64,5 +66,12 @@ public class Product extends BaseEntity {
 
   public void setImages(List<ProductImage> images) {
     this.images = images;
+  }
+
+  public void addPrice(Price price) {
+    if (this.prices == null) {
+      this.prices = new ArrayList<>();
+    }
+    this.prices.add(price);
   }
 }

@@ -5,7 +5,7 @@
     <title>Categories</title>
 </head>
 <body>
-<form th:object="${category}" class="form-horizontal" method="post" th:action="@{/saveCategory}">
+<form th:object="${category}" class="form-horizontal" method="post" action="/saveCategory">
     <div class="form-group has-feedback">
         <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>
     </div>

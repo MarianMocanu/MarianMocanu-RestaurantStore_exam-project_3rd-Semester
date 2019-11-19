@@ -32,11 +32,14 @@
                    th:text="${product.getName()}"></a>
             </td>
             <td th:text="${product.getDescription()}"></td>
+<!--            TODO detailed view of product prices-->
             <td th:text="${product.getPrices().isEmpty()} ? 'Nada' : 'Something'"></td>
+
             <td th:text="${product.getCategory()}"></td>
             <td><a th:href="'/delete/' + ${product.getId()}">Delete</a></td>
+            <td><a th:href="'/editProduct/' + ${product.getId()}">Edit</a></td>
         </tr>
     </table>
-    <a href="/add">Add new product</a>
+    <a href="/addProduct">Add new product</a>
 </body>
 </html>
