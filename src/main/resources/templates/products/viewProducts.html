@@ -21,13 +21,13 @@
             <th>Pictures</th>
         </tr>
         <tr th:each="product: ${products}">
-            <td><a th:href="'/product/' + ${product.getId()}"
-                   th:text="${product.getName()}"></a></td>
-            <td th:text="${product.getDescription()}"></td>
-            <td th:text="${product.getPrices().isEmpty()} ? 'Nada' : 'Something'"></td>
-            <td th:text="${product.getCategory()}"></td>
-            <td><a th:href="'/editProduct/' + ${product.getId()}">Edit</a></td>
-            <td><a th:href="'/delete/' + ${product.getId()}">Delete</a></td>
+            <td><a th:href="'/product/' + ${product.id}"
+                   th:text="${product.name}"></a></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.prices.isEmpty()} ? 'Nada' : 'Something'"></td>
+            <td th:text="${product.category}"></td>
+            <td><a th:href="'/editProduct/' + ${product.id}">Edit</a></td>
+            <td><a th:href="'/delete/' + ${product.id}">Delete</a></td>
             <td th:each="picture : *{product.images}" th:text="${picture.url}"></td>
         </tr>
     </table>

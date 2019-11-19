@@ -15,14 +15,16 @@ import java.util.List;
 public class ProductController {
   private final CategoryRepository categories;
   private final ProductRepository products;
-  private final String ADD_OR_UPDATE_PRODUCT = "products/addOrUpdateProduct";
   private final PriceRepository prices;
+  private final ProductImageRepository images;
+  private final String ADD_OR_UPDATE_PRODUCT = "products/addOrUpdateProduct";
 
   public ProductController(CategoryRepository categoryRepo, ProductRepository productRepo,
-                           PriceRepository priceRepo) {
+                           PriceRepository priceRepo, ProductImageRepository imageRepo) {
     this.categories = categoryRepo;
     this.products = productRepo;
     this.prices = priceRepo;
+    this.images = imageRepo;
   }
 
   @ModelAttribute("allCategories")
@@ -121,6 +123,13 @@ public class ProductController {
   public String deletePrice(@PathVariable("priceId") int priceId,
                             @PathVariable("productId") int productId) {
     prices.deleteById(priceId);
+    return "redirect:/editProduct/" + productId;
+  }
+
+  @GetMapping("/deleteImage/{productId}/{imageId}")
+  public String deleteImage(@PathVariable("productId") int productId,
+                            @PathVariable("imageId") int imageId) {
+    images.deleteById(imageId);
     return "redirect:/editProduct/" + productId;
   }
 }
