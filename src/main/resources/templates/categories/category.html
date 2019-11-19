@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<form th:object="${categories}" class="form-horizontal" method="post" action="/admin/categories/save">
+    <div class="form-group">
+        <input th:each="category, iterator : ${categories}"
+               th:field="${categories[__${iterator.index}__].name}" th:id="${iterator.index}"/>
+        <button text="Update categories" class="btn btn-default" type="submit"></button>
+        <button text="Reset" class="btn btn-default" type="reset"></button>
+    </div>
+</form>
+<br/>
+<!--<form th:object="${category}" class="form-horizontal" method="post" action="/admin/category/save">-->
+<!--    <div class="form-group has-feedback">-->
+<!--        <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <div class="col-sm-offset-2 col-sm-10">-->
+<!--            <input type="hidden" name="id" th:value="*{id}"/>-->
+<!--            <button th:with="text=${category.isNew()} ? 'Add category' : 'Update category'"-->
+<!--                    class="btn btn-default" type="submit" th:text="${text}"></button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</form>-->
+
+</body>
+</html>

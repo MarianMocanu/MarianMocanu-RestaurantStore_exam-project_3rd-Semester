@@ -65,7 +65,7 @@ public class ProductController {
   public String search(@RequestParam(name = "search") String search){
     return "redirect:/list?input=" + search;
   }
-  @GetMapping("/add")
+  @GetMapping("/admin/product/add")
   public String addProduct(Model model) {
     model.addAttribute("product", new Product());
     model.addAttribute("newPrice", new Price());
@@ -74,7 +74,7 @@ public class ProductController {
     return ADD_OR_UPDATE_PRODUCT;
   }
 
-  @PostMapping("/addProduct")
+  @PostMapping("/admin/product/add")
   public String saveNewProduct(@ModelAttribute Product product, @ModelAttribute Price newPrice,
                                @ModelAttribute ProductImage newImage, BindingResult result, Model model) {
     if (result.hasErrors()) {
@@ -95,7 +95,7 @@ public class ProductController {
     }
   }
 
-  @GetMapping("/editProduct/{productId}")
+  @GetMapping("/admin/product/edit/{productId}")
   public String editProduct(@PathVariable("productId") int productId, Model model) {
     Product product = products.findById(productId).get();
     product.getPrices().sort(Price::compareTo);
@@ -106,7 +106,7 @@ public class ProductController {
     return ADD_OR_UPDATE_PRODUCT;
   }
 
-  @PostMapping("/editProduct/{productId}")
+  @PostMapping("/admin/product/edit/{productId}")
   public String saveEditedProduct(@PathVariable("productId") int productId,
                                   @ModelAttribute Product product, @ModelAttribute Price newPrice,
                                   @ModelAttribute ProductImage newImage, Model model, BindingResult result) {
@@ -130,20 +130,20 @@ public class ProductController {
     }
   }
 
-  @GetMapping("/delete/{product_id}")
+  @GetMapping("/admin/product/delete/{product_id}")
   public String deleteProduct(@PathVariable(name = "product_id", required = true) int id) {
     products.deleteById(id);
     return "redirect:/";
   }
 
-  @GetMapping("/deletePrice/{productId}/{priceId}")
+  @GetMapping("/admin/product/delete/{productId}/price/{priceId}")
   public String deletePrice(@PathVariable("priceId") int priceId,
                             @PathVariable("productId") int productId) {
     prices.deleteById(priceId);
     return "redirect:/editProduct/" + productId;
   }
 
-  @GetMapping("/deleteImage/{productId}/{imageId}")
+  @GetMapping("/admin/product/delete/{productId}/image/{imageId}")
   public String deleteImage(@PathVariable("productId") int productId,
                             @PathVariable("imageId") int imageId) {
     images.deleteById(imageId);
