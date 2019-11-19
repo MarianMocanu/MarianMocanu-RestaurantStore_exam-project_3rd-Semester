@@ -22,8 +22,15 @@
             <input th:field="${newPrice.quantity}"/>
             <input th:field="${newPrice.price}"/>
         </div>
+        <br>
+        <div class="form-group" th:each="image, iterator : *{images}">
+            <input th:field="*{images[__${iterator.index}__].url}" th:id="${iterator.index}"/>
+            <a th:href="'/deleteImage/' + ${product.id} + '/' + ${image.id}">Delete</a>
+        </div>
+        <div class="form-group">
+            <input th:field="${newImage.url}"/>
+        </div>
     </div>
-
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button th:with="text=${product.isNew()} ? 'Add product' : 'Update product'"

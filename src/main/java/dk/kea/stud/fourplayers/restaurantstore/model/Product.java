@@ -22,7 +22,9 @@ public class Product extends BaseEntity {
   @JoinColumn(name = "category_id")
   private Category category;
 
-  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.ProductImage.class)
+  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.ProductImage.class,
+      cascade = CascadeType.ALL)
+  @ElementCollection
   private List<ProductImage> images;
 
   public Product() {
@@ -73,5 +75,12 @@ public class Product extends BaseEntity {
       this.prices = new ArrayList<>();
     }
     this.prices.add(price);
+  }
+
+  public void addImage(ProductImage image) {
+    if (this.images == null) {
+      this.images = new ArrayList<>();
+    }
+    this.images.add(image);
   }
 }
