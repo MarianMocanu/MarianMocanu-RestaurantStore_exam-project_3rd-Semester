@@ -25,7 +25,7 @@
 <div class="container">
     <div class="row products-row">
         <div class="col-8 mx-auto">
-        <form action="#" th:action="@{search}" method="get" class="input-group">
+        <form action="/shop" method="get" class="input-group">
             <input class="form-control form-control-dark" type="text" placeholder="Search" name="search"
                    aria-label="Search">
             <div class="input-group-append">
@@ -45,7 +45,7 @@
                 <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="/">All Categories</a>
                     <th:block th:each="category : ${allCategories}">
-                        <a class="dropdown-item" th:href="'/?cat=' + ${category.getId()}" th:text="${category}"></a>
+                        <a class="dropdown-item" th:href="'/shop?cat=' + ${category.getId()}" th:text="${category}"></a>
                     </th:block>
                 </div>
             </div>
@@ -57,6 +57,10 @@
 
 
     <div class="row products-row text-center justify-content-center">
+        <th:block th:if="${noProducts}">
+            <h3>No products matched your query</h3>
+        </th:block>
+        <th:block th:unless="${noProducts}">
         <div class="card card-products rounded bg-dark" style="width: 18rem;" th:each="product: ${products}">
             <img th:src="${product.images.isEmpty()} ? '' : ${product.images[0].url}" class="card-img-top">
             <div class="card-body card-body-product-main">
@@ -74,6 +78,7 @@
                 <a th:href="'/admin/product/delete/' + ${product.id}" class="card-link btn btn-info">Delete</a>
             </div>
         </div>
+        </th:block>
     </div>
 </div>
 </body>

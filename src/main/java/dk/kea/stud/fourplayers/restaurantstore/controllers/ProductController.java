@@ -39,19 +39,23 @@ public class ProductController {
     return products.findAll();
   }
 
-  @GetMapping("/")
-  public String viewProducts(Model model, @RequestParam(name = "cat", required = false) Integer categoryId,
-                             @RequestParam(value = "input", required = false) String input) {
-    if(input!=null){
+  @GetMapping(value = {"/shop", "/"})
+  public String viewProducts(Model model,
+                             @RequestParam(name = "cat", required = false) Integer categoryId,
+                             @RequestParam(value = "search", required = false) String input) {
+    if (input != null) {
       Collection<Product> productsCollection = new HashSet<>();
-//      The \\W+ will match all non-alphabetic characters occurring one or more times
+      //The \\W+ will match all non-alphabetic characters occurring one or more times
       String[] words = input.split("\\W+");
-      for (String word: words) {
+      for (String word : words) {
         productsCollection.addAll(products.findProductBySearchInput(word));
       }
-      model.addAttribute("products", productsCollection);
-    }
-    else {
+      if (productsCollection.isEmpty()) {
+        model.addAttribute("noProducts", "none");
+      } else {
+        model.addAttribute("products", productsCollection);
+      }
+    } else {
       if (categoryId == null) {
         model.addAttribute("products", products.findAll());
       } else {
@@ -61,10 +65,6 @@ public class ProductController {
     return "products/viewProducts";
   }
 
-  @GetMapping("/search")
-  public String search(@RequestParam(name = "search") String search){
-    return "redirect:/?input=" + search;
-  }
   @GetMapping("/admin/product/add")
   public String addProduct(Model model) {
     Price newPrice = new Price();
@@ -79,7 +79,6 @@ public class ProductController {
   @PostMapping("/admin/product/add")
   public String saveNewProduct(@ModelAttribute Product product, @ModelAttribute Price newPrice,
                                @ModelAttribute ProductImage newImage, BindingResult result, Model model) {
-    System.out.println(newPrice.getQuantity() + ": " + newPrice.getPrice());
     if (result.hasErrors()) {
       model.addAttribute("product", product);
       model.addAttribute("price", newPrice);
