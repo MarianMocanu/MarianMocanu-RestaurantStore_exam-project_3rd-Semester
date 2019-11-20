@@ -34,13 +34,7 @@ public class CategoryController {
       model.addAttribute("categories", form);
       return CATEGORY;
     } else {
-      for (Category category : form.getCategories()) {
-        if (category.getName() == null || category.getName().equals("")) {
-          categoryRepo.delete(category);
-        } else {
-          categoryRepo.save(category);
-        }
-      }
+      categoryRepo.saveAll(form.getCategories());
     }
 
     return "redirect:/admin/category/view";
@@ -50,12 +44,20 @@ public class CategoryController {
   public String saveCategory(@ModelAttribute Category newCategory, BindingResult result, Model model) {
     if (result.hasErrors()) {
       model.addAttribute("category", newCategory);
+
       return CATEGORY;
     } else {
       categoryRepo.save(newCategory);
-
-      return "redirect:/admin/category/view";
     }
+
+    return "redirect:/admin/category/view";
   }
 
+
+  @GetMapping("/admin/category/delete/{categoryId}")
+  public String deleteCategory(@PathVariable("categoryId") int categoryId) {
+    categoryRepo.deleteById(categoryId);
+
+    return "redirect:/admin/category/view";
+  }
 }
