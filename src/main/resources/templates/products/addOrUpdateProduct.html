@@ -18,7 +18,7 @@
         <div class="form-group" th:each="price, iterator : *{prices}">
             <input th:field="*{prices[__${iterator.index}__].quantity}" th:id="${iterator.index}"/>
             <input th:field="*{prices[__${iterator.index}__].price}" th:id="${iterator.index}"/>
-            <a th:href="'/deletePrice/' + ${product.id} + '/' + ${price.id}">Delete</a>
+            <a th:href="'/admin/product/delete/' + ${product.id} + '/price/' + ${price.id}">Delete</a>
         </div>
         <div class="form-group">
             <input th:field="${newPrice.quantity}"/>
@@ -27,7 +27,7 @@
         <br>
         <div class="form-group" th:each="image, iterator : *{images}">
             <input th:field="*{images[__${iterator.index}__].url}" th:id="${iterator.index}"/>
-            <a th:href="'/deleteImage/' + ${product.id} + '/' + ${image.id}">Delete</a>
+            <a th:href="'/admin/product/delete/' + ${product.id} + '/image/' + ${image.id}">Delete</a>
         </div>
         <div class="form-group">
             <input th:field="${newImage.url}"/>

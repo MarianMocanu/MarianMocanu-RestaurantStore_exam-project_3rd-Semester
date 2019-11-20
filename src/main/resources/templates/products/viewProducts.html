@@ -29,12 +29,12 @@
             <td th:text="${product.description}"></td>
             <td th:text="${product.prices.isEmpty()} ? 'Nada' : 'Something'"></td>
             <td th:text="${product.category}"></td>
-            <td><a th:href="'/editProduct/' + ${product.id}">Edit</a></td>
-            <td><a th:href="'/delete/' + ${product.id}">Delete</a></td>
+            <td><a th:href="'/admin/product/edit/' + ${product.id}">Edit</a></td>
+            <td><a th:href="'/admin/product/delete/' + ${product.id}">Delete</a></td>
             <td th:each="picture : *{product.images}" th:text="${picture.url}"></td>
         </tr>
     </table>
-    <a href="/addProduct">Add new product</a>
+    <a href="/admin/product/add">Add new product</a>
 </body>
 </html>
 
