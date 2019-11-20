@@ -2,26 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
 <body>
-<style>
-    .card-products{
-        margin: 25px;
-        color: white;
 
-    }
-    .product-name a {
-        color: #5bc0de;
-    }
-
-    .product-name a:hover {
-        color: #3d94ad;
-    }
-
-    .products-row {
-        padding: 10px;
-    }
-
-
-</style>
 <div class="container">
     <div class="row products-row">
         <div class="col-8 mx-auto">
@@ -62,7 +43,7 @@
         </th:block>
         <th:block th:unless="${noProducts}">
         <div class="card card-products rounded bg-dark" style="width: 18rem;" th:each="product: ${products}">
-            <img th:src="${product.images.isEmpty()} ? '' : ${product.images[0].url}" class="card-img-top">
+            <img th:src="${product.images.isEmpty()} ? '../images/defaultImage.jpg' : ${product.images[0].url}" class="card-img-top">
             <div class="card-body card-body-product-main">
                 <h5 class="card-title product-name"><a th:href="'/product/' + ${product.id}"
                                           th:text="${product.name}"></a></h5>

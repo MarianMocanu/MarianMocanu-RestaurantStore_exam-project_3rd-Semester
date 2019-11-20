@@ -1,0 +1,31 @@
+html,
+body {
+    height: 100%;
+
+}
+
+.middle-align {
+    height: 100%;
+    background-size: cover;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.card-products{
+    margin: 25px;
+    color: white;
+
+}
+.product-name a {
+    color: #5bc0de;
+}
+
+.product-name a:hover {
+    color: #3d94ad;
+}
+
+.products-row {
+    padding: 10px;
+}
+
