@@ -58,7 +58,7 @@
 
     <div class="row products-row text-center justify-content-center">
         <div class="card card-products rounded bg-dark" style="width: 18rem;" th:each="product: ${products}">
-            <img th:src="${product.images[0].url}" class="card-img-top" alt="image">
+            <img th:src="${product.images.isEmpty()} ? '' : ${product.images[0].url}" class="card-img-top">
             <div class="card-body card-body-product-main">
                 <h5 class="card-title product-name"><a th:href="'/product/' + ${product.id}"
                                           th:text="${product.name}"></a></h5>
@@ -66,12 +66,12 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item bg-dark"
-                    th:text="'Price: ' + (${product.prices.isEmpty()} ? 'Nada' : 'Something') + ' DKK'"></li>
+                    th:text="'Price: ' + (${product.prices.isEmpty()} ? '0!!!' : ${product.prices[0].getPrice()}) + ' DKK'"></li>
                 <li class="list-group-item bg-dark" th:text="'Category: ' + ${product.category}"></li>
             </ul>
             <div class="card-body card-body-product-links">
                 <a th:href="'/admin/product/edit/' + ${product.id}" class="card-link btn btn-info">Edit</a>
-                <a th:href="'/admin/product//delete/' + ${product.id}" class="card-link btn btn-info">Delete</a>
+                <a th:href="'/admin/product/delete/' + ${product.id}" class="card-link btn btn-info">Delete</a>
             </div>
         </div>
     </div>

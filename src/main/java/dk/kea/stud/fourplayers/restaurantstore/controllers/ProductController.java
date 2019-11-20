@@ -67,8 +67,10 @@ public class ProductController {
   }
   @GetMapping("/admin/product/add")
   public String addProduct(Model model) {
+    Price newPrice = new Price();
+    newPrice.setQuantity(1);
     model.addAttribute("product", new Product());
-    model.addAttribute("newPrice", new Price());
+    model.addAttribute("newPrice", newPrice);
     model.addAttribute("newImage", new ProductImage());
 
     return ADD_OR_UPDATE_PRODUCT;
@@ -77,6 +79,7 @@ public class ProductController {
   @PostMapping("/admin/product/add")
   public String saveNewProduct(@ModelAttribute Product product, @ModelAttribute Price newPrice,
                                @ModelAttribute ProductImage newImage, BindingResult result, Model model) {
+    System.out.println(newPrice.getQuantity() + ": " + newPrice.getPrice());
     if (result.hasErrors()) {
       model.addAttribute("product", product);
       model.addAttribute("price", newPrice);

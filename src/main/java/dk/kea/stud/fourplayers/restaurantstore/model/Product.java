@@ -15,7 +15,6 @@ public class Product extends BaseEntity {
 
   @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Price.class,
       cascade = CascadeType.ALL)
-  @ElementCollection
   private List<Price> prices;
 
   @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Category.class)
@@ -24,7 +23,6 @@ public class Product extends BaseEntity {
 
   @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.ProductImage.class,
       cascade = CascadeType.ALL)
-  @ElementCollection
   private List<ProductImage> images;
 
   public Product() {
@@ -47,6 +45,9 @@ public class Product extends BaseEntity {
   }
 
   public List<Price> getPrices() {
+    if (prices == null) {
+      prices = new ArrayList<>();
+    }
     return prices;
   }
 
@@ -63,6 +64,9 @@ public class Product extends BaseEntity {
   }
 
   public List<ProductImage> getImages() {
+    if (images == null) {
+      images = new ArrayList<>();
+    }
     return images;
   }
 
