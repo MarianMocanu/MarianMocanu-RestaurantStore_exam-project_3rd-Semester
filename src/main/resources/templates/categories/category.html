@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<form th:object="${form}" class="form-horizontal" method="post" action="/admin/category/save">
+    <div class="form-group has-feedback" th:each="category, iterator : *{categories}">
+
+        <input type="hidden" th:field="*{categories[__${iterator.index}__].id}"/>
+
+        <input th:field="*{categories[__${iterator.index}__].name}"/>
+
+    </div>
+    <button class="btn btn-default" type="submit">Update</button>
+    <button class="btn btn-default" type="reset">Reset</button>
+</form>
+<form th:object="${newCategory}" method="post" action="/admin/category/add">
+    <div class="form-group">
+        <input th:field="${newCategory.name}"/>
+        <button class="btn btn-default" type="submit">Add new Category</button>
+    </div>
+</form>
+</body>
+</html>

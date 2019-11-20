@@ -1,64 +1,61 @@
 package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
 import dk.kea.stud.fourplayers.restaurantstore.model.Category;
+import dk.kea.stud.fourplayers.restaurantstore.model.CategoryForm;
 import dk.kea.stud.fourplayers.restaurantstore.model.CategoryRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 public class CategoryController {
-    private final CategoryRepository categoriesRepo;
+  private final CategoryRepository categoryRepo;
 
-    private final String ADD_OR_UPDATE_CATEGORY = "categories/addOrUpdateCategory";
+  private final String CATEGORY = "categories/category";
 
-    public CategoryController(CategoryRepository categoryRepository) {
-        this.categoriesRepo = categoryRepository;
-    }
+  public CategoryController(CategoryRepository categoryRepository) {
+    this.categoryRepo = categoryRepository;
+  }
 
-    @GetMapping("/listCategories")
-    @ResponseBody
-    public List<Category> listCategories() {
-        return categoriesRepo.findAll();
-    }
+  @GetMapping("/admin/category/view")
+  public String showCategoryView(Model model) {
+    CategoryForm form = new CategoryForm(categoryRepo.findAll());
+    model.addAttribute("form", form);
+    model.addAttribute("newCategory", new Category());
 
-    @GetMapping("viewCategory/{categoryId}")
-    @ResponseBody
-    public Category viewCategory(@PathVariable("categoryId") int categoryId) {
-        return categoriesRepo.findById(categoryId).get();
-    }
+    return CATEGORY;
+  }
 
-    @GetMapping("/newCategory")
-    public String addCategory(Model model) {
-        model.addAttribute("category", new Category());
-        return ADD_OR_UPDATE_CATEGORY;
-    }
-
-    @GetMapping("/editCategory/{categoryId}")
-    public String updateCategory(Model model, @PathVariable("categoryId") int categoryId) {
-        model.addAttribute(categoriesRepo.findById(categoryId).get());
-        return ADD_OR_UPDATE_CATEGORY;
-    }
-
-    @PostMapping("/saveCategory")
-    public String saveCategory(@ModelAttribute Category category, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("category", category);
-            return ADD_OR_UPDATE_CATEGORY;
+  @PostMapping("/admin/category/save")
+  public String saveEditedCategories(@ModelAttribute CategoryForm form,
+                                     Model model, BindingResult result) {
+    if (result.hasErrors()) {
+      model.addAttribute("categories", form);
+      return CATEGORY;
+    } else {
+      for (Category category : form.getCategories()) {
+        if (category.getName() == null || category.getName().equals("")) {
+          categoryRepo.delete(category);
         } else {
-            categoriesRepo.save(category);
-            return "redirect:/listCategories";
+          categoryRepo.save(category);
         }
+      }
     }
 
-    @PostMapping("/deleteCategory")
-    public String deleteCategory(@RequestParam("categoryId") String categoryId) {
-        Category category = categoriesRepo.findById(Integer.parseInt(categoryId)).get();
-        categoriesRepo.delete(category);
-        return "/listCategories";
+    return "redirect:/admin/category/view";
+  }
+
+  @PostMapping("/admin/category/add")
+  public String saveCategory(@ModelAttribute Category newCategory, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+      model.addAttribute("category", newCategory);
+      return CATEGORY;
+    } else {
+      categoryRepo.save(newCategory);
+
+      return "redirect:/admin/category/view";
     }
+  }
 
 }
