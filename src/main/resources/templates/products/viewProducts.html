@@ -1,40 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+
 <body>
-<form action="#" th:action="@{search}" method="get" class="input-group">
-    <input class="form-control form-control-dark" type="text" placeholder="Search" name="search" aria-label="Search">
-    <div class="input-group-append">
-        <button class="btn btn-outline-light" value="Search">Search</button>
+<style>
+    .card-body-product-main {
+        text-align: center;
+
+    }
+
+    .card-body-product-links {
+        text-align: center;
+    }
+
+    .card-products a {
+        color: #5bc0de;
+    }
+
+    .card-products a:hover {
+        color: #3d94ad;
+    }
+
+    .products-row {
+        padding: 10px;
+    }
+</style>
+<div class="container">
+    <div class="row products-row">
+        <div class="col-8 mx-auto">
+        <form action="#" th:action="@{search}" method="get" class="input-group">
+            <input class="form-control form-control-dark" type="text" placeholder="Search" name="search"
+                   aria-label="Search">
+            <div class="input-group-append">
+                <button class="btn btn-info" value="Search">Search</button>
+            </div>
+        </form>
+        </div>
     </div>
-</form>
-    <ul>
-        <li><a href="/list">All categories</a></li>
-        <li th:each="category : ${allCategories}">
-            <a th:href="'/list?cat=' + ${category.getId()}"
-               th:text="${category}"></a>
-        </li>
-    </ul>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Unit price</th>
-            <th>Category</th>
-            <th>Pictures</th>
-        </tr>
-        <tr th:each="product: ${products}">
-            <td><a th:href="'/product/' + ${product.id}"
-                   th:text="${product.name}"></a></td>
-            <td th:text="${product.description}"></td>
-            <td th:text="${product.prices.isEmpty()} ? 'Nada' : 'Something'"></td>
-            <td th:text="${product.category}"></td>
-            <td><a th:href="'/editProduct/' + ${product.id}">Edit</a></td>
-            <td><a th:href="'/delete/' + ${product.id}">Delete</a></td>
-            <td th:each="picture : *{product.images}" th:text="${picture.url}"></td>
-        </tr>
-    </table>
-    <a href="/addProduct">Add new product</a>
+
+    <div class="row products-row mx-auto">
+        <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Categories
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/">All Categories</a>
+                <th:block th:each="category : ${allCategories}">
+                    <a class="dropdown-item" th:href="'/?cat=' + ${category.getId()}" th:text="${category}"></a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+    <div class="row products-row">
+        <div class="col">
+        <div class="card card-products" style="width: 18rem;" th:each="product: ${products}">
+            <img th:src="${product.images[0].url}" class="card-img-top" alt="image">
+            <div class="card-body card-body-product-main">
+                <h5 class="card-title"><a th:href="'/product/' + ${product.id}"
+                                          th:text="${product.name}"></a></h5>
+                <p class="card-text" th:text="${product.description}"></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"
+                    th:text="'Price: ' + (${product.prices.isEmpty()} ? 'Nada' : 'Something') + ' DKK'"></li>
+                <li class="list-group-item" th:text="'Category: ' + ${product.category}"></li>
+            </ul>
+            <div class="card-body card-body-product-links">
+                <a th:href="'/addProduct' + ${product.id}" class="card-link">Add</a>
+                <a th:href="'/editProduct/' + ${product.id}" class="card-link">Edit</a>
+                <a th:href="'/delete/' + ${product.id}" class="card-link">Delete</a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
-

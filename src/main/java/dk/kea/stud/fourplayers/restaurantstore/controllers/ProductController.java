@@ -63,7 +63,7 @@ public class ProductController {
 
   @GetMapping("/search")
   public String search(@RequestParam(name = "search") String search){
-    return "redirect:/list?input=" + search;
+    return "redirect:/?input=" + search;
   }
   @GetMapping("/add")
   public String addProduct(Model model) {
@@ -126,7 +126,7 @@ public class ProductController {
       product.setId(productId);
       products.save(product);
 
-      return "redirect:/list";
+      return "redirect:/";
     }
   }
 
