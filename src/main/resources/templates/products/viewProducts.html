@@ -1,18 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
-
 <body>
 <style>
-    .card-body-product-main {
-        text-align: center;
-
-    }
-
-    .card-body-product-links {
-        text-align: center;
-    }
-
     .card-products a {
         color: #5bc0de;
     }
@@ -24,6 +14,8 @@
     .products-row {
         padding: 10px;
     }
+
+
 </style>
 <div class="container">
     <div class="row products-row">
@@ -38,22 +30,27 @@
         </div>
     </div>
 
-    <div class="row products-row mx-auto">
-        <div class="dropdown">
-            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                Categories
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/">All Categories</a>
-                <th:block th:each="category : ${allCategories}">
-                    <a class="dropdown-item" th:href="'/?cat=' + ${category.getId()}" th:text="${category}"></a>
-                </th:block>
+    <div class="row products-row text-center">
+        <div class="col">
+            <div class="dropdown">
+                <button class="btn btn-info w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </button>
+                <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/">All Categories</a>
+                    <th:block th:each="category : ${allCategories}">
+                        <a class="dropdown-item" th:href="'/?cat=' + ${category.getId()}" th:text="${category}"></a>
+                    </th:block>
+                </div>
             </div>
+        </div>
+        <div class="col">
+            <a href="/admin/product/add" class="btn btn-info w-100">Add Product</a>
         </div>
     </div>
 
-    <div class="row products-row">
+    <div class="row products-row text-center">
         <div class="col">
         <div class="card card-products" style="width: 18rem;" th:each="product: ${products}">
             <img th:src="${product.images[0].url}" class="card-img-top" alt="image">
@@ -68,9 +65,8 @@
                 <li class="list-group-item" th:text="'Category: ' + ${product.category}"></li>
             </ul>
             <div class="card-body card-body-product-links">
-                <a th:href="'/addProduct' + ${product.id}" class="card-link">Add</a>
-                <a th:href="'/editProduct/' + ${product.id}" class="card-link">Edit</a>
-                <a th:href="'/delete/' + ${product.id}" class="card-link">Delete</a>
+                <a th:href="'/admin/product/edit/' + ${product.id}" class="card-link">Edit</a>
+                <a th:href="'/admin/product//delete/' + ${product.id}" class="card-link">Delete</a>
             </div>
         </div>
         </div>

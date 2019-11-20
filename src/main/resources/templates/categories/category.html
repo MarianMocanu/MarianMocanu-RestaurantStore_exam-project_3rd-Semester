@@ -1,26 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+
 <head>
     <meta charset="UTF-8">
     <title>Categories</title>
 </head>
 <body>
-<form th:object="${form}" class="form-horizontal" method="post" action="/admin/category/save">
-    <div class="form-group has-feedback" th:each="category, iterator : *{categories}">
+<section class="middle-align">
+    <div class="container">
+        <div class="row">
+            <div class="col-10 offset-md-1">
+                <h3>Categories</h3>
+                <form th:object="${form}" method="post" action="/admin/category/save">
+                    <div class="form-group" th:each="category, iterator : *{categories}">
 
-        <input type="hidden" th:field="*{categories[__${iterator.index}__].id}"/>
+                        <input type="hidden" th:field="*{categories[__${iterator.index}__].id}"/>
 
-        <input th:field="*{categories[__${iterator.index}__].name}"/>
+                        <input class="form-control" th:field="*{categories[__${iterator.index}__].name}"/>
 
+                    </div>
+                    <div class="row" >
+                        <div class="col">
+                            <button class="btn btn-info form-control" type="submit">Update</button>
+
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-dark form-control" type="reset">Reset</button>
+                        </div>
+                    </div>
+
+                </form>
+                <br>
+                <hr>
+                <br>
+                <form th:object="${newCategory}" method="post" action="/admin/category/add">
+                    <div class="form-group">
+                        <label>Category name:</label>
+                        <input class="form-control" th:field="${newCategory.name}"/>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col">
+                            <button class="btn btn-info form-control" type="submit">Add new category</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <button class="btn btn-default" type="submit">Update</button>
-    <button class="btn btn-default" type="reset">Reset</button>
-</form>
-<form th:object="${newCategory}" method="post" action="/admin/category/add">
-    <div class="form-group">
-        <input th:field="${newCategory.name}"/>
-        <button class="btn btn-default" type="submit">Add new Category</button>
-    </div>
-</form>
+</section>
 </body>
 </html>
