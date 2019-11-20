@@ -5,28 +5,22 @@
     <title>Categories</title>
 </head>
 <body>
-<form th:object="${categoriesList}" class="form-horizontal" method="post" action="/admin/categories/save/">
-    <div class="form-group has-feedback">
-        <input th:each="category, iterator : ${categoriesList}"
-               th:field="${categoriesList[__${iterator.index}__].name}" th:id="${iterator.index}"/>
-        <button text="Update categories" class="btn btn-default" type="submit"></button>
-        <button text="Reset" class="btn btn-default" type="reset"></button>
+<form th:object="${form}" class="form-horizontal" method="post" action="/admin/category/save">
+    <div class="form-group has-feedback" th:each="category, iterator : *{categories}">
+
+        <input type="hidden" th:field="*{categories[__${iterator.index}__].id}"/>
+
+        <input th:field="*{categories[__${iterator.index}__].name}"/>
+
+    </div>
+    <button class="btn btn-default" type="submit">Update</button>
+    <button class="btn btn-default" type="reset">Reset</button>
+</form>
+<form th:object="${newCategory}" method="post" action="/admin/category/add">
+    <div class="form-group">
+        <input th:field="${newCategory.name}"/>
+        <button class="btn btn-default" type="submit">Add new Category</button>
     </div>
 </form>
-<br/>
-<!--<form th:object="${category}" class="form-horizontal" method="post" action="/admin/category/save">-->
-<!--    <div class="form-group has-feedback">-->
-<!--        <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>-->
-<!--    </div>-->
-
-<!--    <div class="form-group">-->
-<!--        <div class="col-sm-offset-2 col-sm-10">-->
-<!--            <input type="hidden" name="id" th:value="*{id}"/>-->
-<!--            <button th:with="text=${category.isNew()} ? 'Add category' : 'Update category'"-->
-<!--                    class="btn btn-default" type="submit" th:text="${text}"></button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</form>-->
-
 </body>
 </html>
