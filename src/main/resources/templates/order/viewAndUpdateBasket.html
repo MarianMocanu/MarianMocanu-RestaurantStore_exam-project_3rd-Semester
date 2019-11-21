@@ -17,6 +17,7 @@
                                    getBestPriceForQuantity(__${qty}__)}"
                           th:text="' x ' + ${price} + ' DKK = ' + (${price} * ${qty}) + ' DKK'"></span>
                 </th:block>
+                <a th:href="'/basket/delete/' + ${entry.key}">Remove</a>
             </div>
             <div>
                 <span th:text="'Total = ' + ${total} + ' DKK'"></span>

@@ -60,4 +60,11 @@ public class BasketController {
     basket.setProductsInBasket(submittedBasket.getProductsInBasket());
     return "redirect:/basket";
   }
+
+  @GetMapping("/basket/delete/{id}")
+  public String removeProduct(@SessionAttribute("basket") Basket basket,
+                              @PathVariable(name = "id") Integer itemId) {
+    basket.removeProduct(itemId);
+    return "redirect:/basket";
+  }
 }
