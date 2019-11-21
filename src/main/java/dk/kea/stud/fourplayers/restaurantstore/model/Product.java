@@ -1,6 +1,7 @@
 package dk.kea.stud.fourplayers.restaurantstore.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,8 @@ public class Product extends BaseEntity {
   @JoinColumn(name = "category_id")
   private Category category;
 
-  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.ProductImage.class)
+  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.ProductImage.class,
+      cascade = CascadeType.ALL)
   private List<ProductImage> images;
 
   public Product() {
@@ -43,6 +45,9 @@ public class Product extends BaseEntity {
   }
 
   public List<Price> getPrices() {
+    if (prices == null) {
+      prices = new ArrayList<>();
+    }
     return prices;
   }
 
@@ -59,10 +64,27 @@ public class Product extends BaseEntity {
   }
 
   public List<ProductImage> getImages() {
+    if (images == null) {
+      images = new ArrayList<>();
+    }
     return images;
   }
 
   public void setImages(List<ProductImage> images) {
     this.images = images;
+  }
+
+  public void addPrice(Price price) {
+    if (this.prices == null) {
+      this.prices = new ArrayList<>();
+    }
+    this.prices.add(price);
+  }
+
+  public void addImage(ProductImage image) {
+    if (this.images == null) {
+      this.images = new ArrayList<>();
+    }
+    this.images.add(image);
   }
 }

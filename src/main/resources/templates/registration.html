@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'login')}">
+<body>
+<section class="middle-align">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 offset-sm-3 text-center">
+                <div th:if="${param.error}">
+                    <p>Invalid email or password!</p>
+                </div>
+                <form th:action="@{/registration}" method="post" autocomplete="off" th:object="${user}" class="justify-content-center">
+                    <div class="form-control">
+
+                        <input type="text" th:field="*{name}" placeholder="Name" class="form-control"/>
+                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></label>
+
+                        <input type="text" th:field="*{lastName}" placeholder="Last Name" class="form-control"/>
+                        <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></label>
+
+                        <input type="text" th:field="*{email}" placeholder="Email" class="form-control"/>
+                        <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label>
+
+                        <input type="password" th:field="*{password}" placeholder="Password" class="form-control"/>
+                        <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></label>
+
+                    </div>
+<!--                    <button type="submit" class="btn btn-lg btn-info btn-block">Register</button>-->
+                </form>
+                <br>
+<!--                <a href="/login" class="btn btn-sm btn-dark btn-block">Login</a>-->
+<!--                <h2><span class="text-success" th:utext="${successMessage}"></span></h2>-->
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
+
+
+<!--<form th:action="@{/login}" method="POST" class="form-inlin justify-content-center">-->
+<!--    <div class="form-group">-->
+<!--        <input type="text" id="email" name="email" class="form-control" th:placeholder="Email" required autofocus/>-->
+
+<!--        <input type="password" id="password" name="password" class="form-control" th:placeholder="Password" required/>-->
+<!--    </div>-->
+<!--    <button type="submit" class="btn btn-lg btn-info btn-block">Sign in</button>-->
+<!--</form>-->

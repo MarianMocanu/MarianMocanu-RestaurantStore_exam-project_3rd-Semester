@@ -1,29 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Products</title>
 </head>
 <body>
-<!--/*@thymesVar id="product" type="dk.kea.stud.fourplayers.restaurantstore.controllers.ProductController"*/-->
-    <form th:object="${product}" class="form-horizontal" method="post">
-        <div class="form-group has-feedback">
-            <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}"/>
+<section class="middle-align">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h3><span th:text="${product.isNew()} ? 'Add' : 'Update'"></span> Product</h3>
+                <hr>
+                <form th:object="${product}" method="post">
+                    <div class="form-group">
+                        <input th:replace="~{fragments/inputField ::
+                         input ('Name:', 'name', 'text')}"/>
+                    </div>
+                    <div class="form-group">
+                        <input th:replace="~{fragments/inputField ::
+                         input ('Description:', 'description', 'text')}"/>
+                    </div>
+                    <div class="form-group">
+                        <input th:replace="~{fragments/selectField ::
+                         select ('Categories:', 'category', ${allCategories})}"/>
+                    </div>
+                    <div class="row" th:unless="${product.getPrices().isEmpty()}">
+                        <div class="col">Quantity:</div>
+                        <div class="col">Price:</div>
+                    </div>
+                    <div class="row">
+                        <th:block th:each="price, iterator : *{prices}">
+                            <div class="col">
+                            <input th:field="*{prices[__${iterator.index}__].quantity}"
+                                   th:id="${iterator.index}" class="form-control"
+                                   th:readonly="(*{prices[__${iterator.index}__].quantity} == 1)"/>
+                            </div>
+                            <div class="col">
+                            <input th:field="*{prices[__${iterator.index}__].price}"
+                                   th:id="${iterator.index}" class="form-control"/>
+                            <a th:href="'/admin/product/delete/' + ${product.id} +
+                             '/price/' + ${price.id}">Delete</a>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="quantity">Quantity:</label>
+                                    <input id="quantity" class="form-control"
+                                           th:field="${newPrice.quantity}"
+                                           th:readonly="${product.isNew()}" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="price">Price:</label>
+                                <input id="price" class="form-control"
+                                       th:field="${newPrice.price}"/>
+                            </div>
+                        </div>
 
-            <input th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}"/>
+                    </div>
+                    <div class="form-group" th:each="image, iterator : *{images}">
+                        <input class="form-control" th:field="*{images[__${iterator.index}__].url}"
+                               th:id="${iterator.index}"/>
+                        <a th:href="'/admin/product/delete/' + ${product.id} +
+                         '/image/' + ${image.id}">Delete</a>
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Images:</div>
+                        <input class="form-control" th:field="${newImage.url}"/>
+                    </div>
 
-            <!--/*@thymesVar id="allCategories" type="dk.kea.stud.fourplayers.restaurantstore.controllers.ProductController"*/-->
-            <input th:replace="~{fragments/selectField :: select ('Categories', 'category', ${allCategories})}"/>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <input type="hidden" name="id" th:value="*{id}"/>
-                <button th:with="text=${product.isNew()} ? 'Add product' : 'Update product'"
-                        class="btn btn-default" type="submit" th:text="${text}"></button>
+                    <button class="btn btn-info form-control" type="submit"
+                            th:text="(${product.isNew()} ? 'Add' : 'Update') + ' product'"></button>
+                </form>
             </div>
         </div>
-    </form>
-
+    </div>
+</section>
 </body>
 </html>
