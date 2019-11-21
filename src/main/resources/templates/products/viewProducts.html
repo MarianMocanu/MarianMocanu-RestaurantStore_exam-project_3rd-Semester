@@ -49,19 +49,21 @@
                                           th:text="${product.name}"></a></h5>
                 <p class="card-text" th:text="${product.description}"></p>
             </div>
-            <ul class="list-group list-group-flush">
+            <ul class="card-body list-group list-group-flush">
                 <li class="list-group-item bg-dark"
                     th:text="'Price: ' + (${product.prices.isEmpty()} ? '0!!!' : ${product.prices[0].getPrice()}) + ' DKK'"></li>
                 <li class="list-group-item bg-dark" th:text="'Category: ' + ${product.category}"></li>
             </ul>
+            <div class="card-body">
+            <form action="/addToBasket" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-info">Add to cart</button>
+            </form>
+            </div>
             <div class="card-body card-body-product-links">
                 <a th:href="'/admin/product/edit/' + ${product.id}" class="card-link btn btn-info">Edit</a>
                 <a th:href="'/admin/product/delete/' + ${product.id}" class="card-link btn btn-info">Delete</a>
-                <form action="/addToBasket" method="post">
-                    <input type="hidden" name="productId" th:value="${product.id}">
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="btn btn-primary">Add to cart</button>
-                </form>
             </div>
         </div>
         </th:block>

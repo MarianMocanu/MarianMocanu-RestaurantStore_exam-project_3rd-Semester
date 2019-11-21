@@ -1,9 +1,7 @@
 package dk.kea.stud.fourplayers.restaurantstore.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "products")
@@ -87,6 +85,27 @@ public class Product extends BaseEntity {
       this.images = new ArrayList<>();
     }
     this.images.add(image);
+  }
+
+  public int getBestPriceForQuantity(int quantity) {
+    int result = 0;
+    if (quantity < 1) {
+      return result;
+    }
+
+    Map<Integer, Integer> sortedPrices = new TreeMap<>();
+    for (Price price : this.prices) {
+      sortedPrices.put(price.getQuantity(), price.getPrice());
+    }
+
+    for (Map.Entry<Integer, Integer> entry : sortedPrices.entrySet()) {
+      if (entry.getKey() > quantity) {
+        break;
+      }
+      result = entry.getValue();
+    }
+
+    return result;
   }
 
   @Override
