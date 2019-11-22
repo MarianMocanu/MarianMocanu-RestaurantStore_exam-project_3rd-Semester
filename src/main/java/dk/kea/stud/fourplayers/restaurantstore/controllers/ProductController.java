@@ -7,10 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ProductController {
@@ -150,5 +147,12 @@ public class ProductController {
                             @PathVariable("imageId") int imageId) {
     images.deleteById(imageId);
     return "redirect:/admin/product/edit/" + productId;
+  }
+
+  @GetMapping("/product/{id}")
+  public String productDetails(@PathVariable(name = "id") int id, Model model){
+    Optional<Product> product = products.findById(id);
+    model.addAttribute("product", product.get());
+    return "products/productDetail";
   }
 }
