@@ -1,5 +1,6 @@
 package dk.kea.stud.fourplayers.restaurantstore.security;
 
+import dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -23,25 +24,21 @@ public class User {
     @Length(min = 5, message = "*Your password must have at least 5 characters")
     @NotEmpty(message = "*Please provide your password")
     private String password;
-    @Column(name = "name")
-    @NotEmpty(message = "*Please provide your name")
-    private String name;
-    @Column(name = "last_name")
-    @NotEmpty(message = "*Please provide your last name")
-    private String lastName;
     @Column(name = "active")
     private int active;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+    @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails.class,
+            cascade = CascadeType.ALL)
+    private BusinessDetails businessDetails;
 
-    public User(@Email(message = "*Please provide a valid Email") @NotEmpty(message = "*Please provide an email") String email, @Length(min = 5, message = "*Your password must have at least 5 characters") @NotEmpty(message = "*Please provide your password") String password, @NotEmpty(message = "*Please provide your name") String name, @NotEmpty(message = "*Please provide your last name") String lastName, int active, Set<Role> roles) {
+    public User(@Email(message = "*Please provide a valid Email") @NotEmpty(message = "*Please provide an email") String email, @Length(min = 5, message = "*Your password must have at least 5 characters") @NotEmpty(message = "*Please provide your password") String password, int active, Set<Role> roles, BusinessDetails businessDetails) {
         this.email = email;
         this.password = password;
-        this.name = name;
-        this.lastName = lastName;
         this.active = active;
         this.roles = roles;
+        this.businessDetails = businessDetails;
     }
 
     public User() {
@@ -71,22 +68,6 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public int getActive() {
         return active;
     }
@@ -103,14 +84,20 @@ public class User {
         this.roles = roles;
     }
 
+    public BusinessDetails getBusinessDetails() {
+        return businessDetails;
+    }
+
+    public void setBusinessDetails(BusinessDetails businessDetails) {
+        this.businessDetails = businessDetails;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", active=" + active +
                 ", roles=" + roles +
                 '}';
