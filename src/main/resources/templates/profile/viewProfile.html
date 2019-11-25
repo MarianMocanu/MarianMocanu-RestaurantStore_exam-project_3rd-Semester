@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'profile')}">
+<body>
+
+<div class="container">
+    <form th:object="${businessDetails}" method="post" action="/profile/update">
+        <label>Company Name</label>
+        <input type="text" th:field="*{companyName}"/>
+        <label>CVR</label>
+        <input type="text" th:field="*{cvr}"/>
+        <label>First Name</label>
+        <input type="text" th:field="*{firstName}"/>
+        <label>Last Name</label>
+        <input type="text" th:field="*{lastName}"/>
+        <label>Mobile Phone</label>
+        <input type="text" th:field="*{mobilePhone}"/>
+        <label>Address</label>
+        <input type="text" th:field="*{address}"/>
+        <label>ZIP Code</label>
+        <input type="text" th:field="*{zipCode}"/>
+        <button type="submit">Update</button>
+    </form>
+</div>
+
+</body>
+</html>
