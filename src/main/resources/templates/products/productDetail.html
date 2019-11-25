@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+
+
+<body>
+
+<div class="container">
+    <div th:text="${product.getName()}"></div>
+    <div th:text="${product.getDescription()}"></div>
+    <div th:text="${product.getCategory().getName()}"></div>
+    <div >
+        <div class="row" th:unless="${product.getPrices().isEmpty()}">
+            <div class="col-5">Quantity:</div>
+            <div class="col-5">Price:</div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <th:block th:each="price : ${product.getPrices()}">
+                <div class="col-5" th:text="${price.getPrice()}">
+                </div>
+                <div class="col-5" th:text="${price.getQuantity()}">
+                </div>
+            </th:block>
+        </div>
+
+    </div>
+    <div th:if="${product.images.isEmpty()}">
+        <img src="../images/defaultImage.jpg">
+    </div>
+    <div th:unless="${product.images.isEmpty()}" th:each="image: ${product.getImages()}" >
+        <img th:src="${image.url}">
+    </div>
+
+    
+
+</div>
+</body>
+</html>
