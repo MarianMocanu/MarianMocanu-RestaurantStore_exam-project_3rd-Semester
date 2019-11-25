@@ -4,36 +4,65 @@
 
 
 <body>
-
-<div class="container">
-    <div th:text="${product.getName()}"></div>
-    <div th:text="${product.getDescription()}"></div>
-    <div th:text="${product.getCategory().getName()}"></div>
-    <div >
-        <div class="row" th:unless="${product.getPrices().isEmpty()}">
-            <div class="col-5">Quantity:</div>
-            <div class="col-5">Price:</div>
-            <div class="col-2"></div>
-        </div>
+<section class="middle-align">
+    <div class="container">
         <div class="row">
-            <th:block th:each="price : ${product.getPrices()}">
-                <div class="col-5" th:text="${price.getPrice()}">
+            <div class="col-md-6 offset-md-3">
+                <h3 th:text="${product.getName()}"></h3>
+                <div th:text="'Description: ' + ${product.getDescription()}"></div>
+                <div th:text="'Category: ' + ${product.getCategory().getName()}"></div>
+                <div>
+                    <div class="row" th:unless="${product.getPrices().isEmpty()}">
+                        <div class="col-6">Quantity:</div>
+                        <div class="col-6">Price:</div>
+                    </div>
+                    <div class="row">
+                        <th:block th:each="price : ${product.getPrices()}">
+                            <div class="col-6" th:text="${price.getPrice()}">
+                            </div>
+                            <div class="col-6" th:text="${price.getQuantity()}">
+                            </div>
+                        </th:block>
+                    </div>
                 </div>
-                <div class="col-5" th:text="${price.getQuantity()}">
+                <div class="row">
+                    <div class="col-12">Images:</div>
                 </div>
-            </th:block>
+
+                <div class="row" th:if="${product.images.isEmpty()}">
+                    <img class="card-img" src="../images/defaultImage.jpg">
+                </div>
+                <div th:unless="${product.images.isEmpty()}"
+                     id="carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div th:each="image, iterator: ${product.getImages()}"
+                             th:class="${iterator.index} == 0 ? 'carousel-item active' : 'carousel-item'">
+                            <img class="helper" th:src="${image.url}"
+                                 th:alt="'Image id: ' + ${image.id} + ' not working.'">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel" role="button"
+                       data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel" role="button"
+                       data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <br>
+                <form action="/addToBasket" method="post">
+                    <div class="form-group">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input name="quantity" placeholder="Quantity">
+                    </div>
+                    <button type="submit" class="btn btn-info form-control">Add to cart</button>
+                </form>
+            </div>
         </div>
-
     </div>
-    <div th:if="${product.images.isEmpty()}">
-        <img src="../images/defaultImage.jpg">
-    </div>
-    <div th:unless="${product.images.isEmpty()}" th:each="image: ${product.getImages()}" >
-        <img th:src="${image.url}">
-    </div>
-
-    
-
-</div>
+</section>
 </body>
 </html>

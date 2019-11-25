@@ -12,11 +12,12 @@ body {
     align-items: center;
 }
 
-.card-products{
+.card-products {
     margin: 25px;
     color: white;
 
 }
+
 .product-name a {
     color: #5bc0de;
 }
@@ -27,4 +28,11 @@ body {
 
 .products-row {
     padding: 10px;
+}
+
+.helper{
+    max-height: 300px;
+    vertical-align: middle;
+    display: inline-flex;
+    justify-content: center;
 }
