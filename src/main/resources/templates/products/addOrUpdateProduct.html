@@ -12,40 +12,42 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <h3><span th:text="${product.isNew()} ? 'Add' : 'Update'"></span> Product</h3>
+                <h3><span th:text="${formData.getProduct().isNew()} ? 'Add' : 'Update'"></span> Product</h3>
                 <hr>
-                <form th:object="${product}" method="post">
+                <form th:object="${formData}" method="post">
                     <div class="form-group">
                         <input th:replace="~{fragments/inputField ::
-                         input ('Name:', 'name', 'text')}"/>
+                         input ('Name:', 'product.name', 'text')}"/>
                     </div>
                     <div class="form-group">
                         <input th:replace="~{fragments/inputField ::
-                         input ('Description:', 'description', 'text')}"/>
+                         input ('Description:', 'product.description', 'text')}"/>
                     </div>
                     <div class="form-group">
                         <input th:replace="~{fragments/selectField ::
-                         select ('Categories:', 'category', ${allCategories})}"/>
+                         select ('Categories:', 'product.category', ${allCategories})}"/>
                     </div>
-                    <div class="row" th:unless="${product.getPrices().isEmpty()}">
+                    <div class="row" th:unless="*{product.getPrices().isEmpty()}">
                         <div class="col-5">Quantity:</div>
                         <div class="col-5">Price:</div>
                         <div class="col-2"></div>
                     </div>
                     <div class="row">
-                        <th:block th:each="price, iterator : *{prices}">
+                        <th:block th:each="price, iterator : *{product.prices}">
                             <div class="col-5">
-                                <input th:field="*{prices[__${iterator.index}__].quantity}"
+                                <input th:field="*{product.prices[__${iterator.index}__].quantity}"
                                        th:id="${iterator.index}" class="form-control"
-                                       th:readonly="(*{prices[__${iterator.index}__].quantity} == 1)"/>
+                                       th:readonly="(*{product.prices[__${iterator.index}__].quantity} == 1)"/>
                             </div>
                             <div class="col-5">
-                                <input th:field="*{prices[__${iterator.index}__].price}"
+                                <input th:field="*{product.prices[__${iterator.index}__].price}"
                                        th:id="${iterator.index}" class="form-control"/>
                             </div>
                             <div class="col-2">
-                                <a class="btn btn-danger" th:href="'/admin/product/delete/' + ${product.id} +
+                                <th:block th:unless="${price.quantity} == 1">
+                                <a class="btn btn-danger" th:href="'/admin/product/delete/' + *{product.id} +
                              '/price/' + ${price.id}"><i class="fas fa-times"></i></a>
+                                </th:block>
                             </div>
                         </th:block>
                     </div>
@@ -54,38 +56,38 @@
                             <div class="form-group">
                                 <label for="quantity">Quantity:</label>
                                 <input id="quantity" class="form-control"
-                                       th:field="${newPrice.quantity}"
-                                       th:readonly="${product.isNew()}"/>
+                                       th:field="*{newPrice.quantity}"
+                                       th:readonly="*{product.isNew()}"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="price">Price:</label>
                                 <input id="price" class="form-control"
-                                       th:field="${newPrice.price}"/>
+                                       th:field="*{newPrice.price}"/>
                             </div>
                         </div>
 
                     </div>
-                    <div class="form-group" th:each="image, iterator : *{images}">
+                    <div class="form-group" th:each="image, iterator : *{product.images}">
                         <row>
                             <div class="col-10">
-                                <input class="form-control" th:field="*{images[__${iterator.index}__].url}"
+                                <input class="form-control" th:field="*{product.images[__${iterator.index}__].url}"
                                        th:id="${iterator.index}"/>
                             </div>
                             <div class="col-2">
-                                <a class="btn btn-danger" th:href="'/admin/product/delete/' + ${product.id} +
-                         '/image/' + ${image.id}"><i class="fas fa-times"></i></a>
+                                <a class="btn btn-danger" th:href="'/admin/product/delete/' + *{product.id} +
+                                    '/image/' + ${image.id}"><i class="fas fa-times"></i></a>
                             </div>
                         </row>
                     </div>
                     <div class="form-group">
                         <div class="label">Images:</div>
-                        <input class="form-control" th:field="${newImage.url}"/>
+                        <input class="form-control" th:field="*{newImage.url}"/>
                     </div>
 
                     <button class="btn btn-info form-control" type="submit"
-                            th:text="(${product.isNew()} ? 'Add' : 'Update') + ' product'"></button>
+                            th:text="(*{product.isNew()} ? 'Add' : 'Update') + ' product'"></button>
                 </form>
             </div>
         </div>

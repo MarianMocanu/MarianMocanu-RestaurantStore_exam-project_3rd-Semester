@@ -5,7 +5,6 @@ import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -71,68 +70,66 @@ public class ProductController {
 
   @GetMapping("/admin/product/add")
   public String addProduct(Model model) {
+    ProductForm formData = new ProductForm();
+    formData.setProduct(new Product());
     Price newPrice = new Price();
     newPrice.setQuantity(1);
-    model.addAttribute("product", new Product());
-    model.addAttribute("newPrice", newPrice);
-    model.addAttribute("newImage", new ProductImage());
+    formData.setNewPrice(newPrice);
+    formData.setNewImage(new ProductImage());
+    model.addAttribute("formData", formData);
 
     return ADD_OR_UPDATE_PRODUCT;
   }
 
   @PostMapping("/admin/product/add")
-  public String saveNewProduct(@ModelAttribute Product product, @ModelAttribute Price newPrice,
-                               @ModelAttribute ProductImage newImage, BindingResult result, Model model) {
+  public String saveNewProduct(ProductForm formData, BindingResult result, Model model) {
     if (result.hasErrors()) {
-      model.addAttribute("product", product);
-      model.addAttribute("price", newPrice);
-      model.addAttribute("image", newImage);
+      model.addAttribute("formData", formData);
 
       return ADD_OR_UPDATE_PRODUCT;
     } else {
-      if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
-        product.addPrice(newPrice);
+      if (formData.getNewPrice().getQuantity() > 0 && formData.getNewPrice().getPrice() > 0) {
+        formData.getProduct().addPrice(formData.getNewPrice());
       }
-      if (newImage.getUrl() != null && !newImage.getUrl().equals("")) {
-        product.addImage(newImage);
+      if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
+        formData.getProduct().addImage(formData.getNewImage());
       }
-      products.save(product);
-      return "redirect:/";
+      products.save(formData.getProduct());
+      return "redirect:/admin/product/edit/{productId}";
     }
   }
 
   @GetMapping("/admin/product/edit/{productId}")
   public String editProduct(@PathVariable("productId") int productId, Model model) {
+    ProductForm formData = new ProductForm();
     Product product = products.findById(productId).get();
     product.getPrices().sort(Price::compareTo);
-    model.addAttribute("product", product);
-    model.addAttribute("newPrice", new Price());
-    model.addAttribute("newImage", new ProductImage());
+    formData.setProduct(product);
+    formData.setNewPrice(new Price());
+    formData.setNewImage(new ProductImage());
+    model.addAttribute("formData", formData);
 
     return ADD_OR_UPDATE_PRODUCT;
   }
 
   @PostMapping("/admin/product/edit/{productId}")
-  public String saveEditedProduct(@PathVariable("productId") int productId,
-                                  @ModelAttribute Product product, @ModelAttribute Price newPrice,
-                                  @ModelAttribute ProductImage newImage, Model model, BindingResult result) {
+  public String saveEditedProduct(@PathVariable("productId") int productId, ProductForm formData,
+                                  BindingResult result, Model model) {
     if (result.hasErrors()) {
-      model.addAttribute("product", product);
-      model.addAttribute("price", newPrice);
-      model.addAttribute("image", newImage);
+      model.addAttribute("formData", formData);
 
       return ADD_OR_UPDATE_PRODUCT;
     } else {
-      if (newPrice.getQuantity() > 0 && newPrice.getPrice() > 0) {
-        product.addPrice(newPrice);
+      if (formData.getNewPrice().getQuantity() > 0 && formData.getNewPrice().getPrice() > 0) {
+        formData.getProduct().addPrice(formData.getNewPrice());
       }
-      if (newImage.getUrl() != null && !newImage.getUrl().equals("")) {
-        product.addImage(newImage);
+      if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
+        formData.getProduct().addImage(formData.getNewImage());
       }
-      product.setId(productId);
-      products.save(product);
+      formData.getProduct().setId(productId);
+      products.save(formData.getProduct());
 
-      return "redirect:/";
+      return "redirect:/admin/product/edit/{productId}";
     }
   }
 
