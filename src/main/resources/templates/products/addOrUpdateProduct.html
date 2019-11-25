@@ -13,7 +13,6 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <h3><span th:text="${product.isNew()} ? 'Add' : 'Update'"></span> Product</h3>
-                <hr>
                 <form th:object="${product}" method="post">
                     <div class="form-group">
                         <input th:replace="~{fragments/inputField ::
@@ -32,11 +31,12 @@
                         <div class="col-5">Price:</div>
                         <div class="col-2"></div>
                     </div>
-                    <div class="row" >
+                    <div class="row">
                         <th:block th:each="price, iterator : *{prices}">
                             <div class="col-5">
                                 <input th:field="*{prices[__${iterator.index}__].quantity}"
-                                       th:id="${iterator.index}" class="form-control" style="margin: 0.2em"
+                                       th:id="${iterator.index}" class="form-control"
+                                       style="margin: 0.2em"
                                        th:readonly="(*{prices[__${iterator.index}__].quantity} == 1)"/>
                             </div>
                             <div class="col-5">
@@ -46,7 +46,8 @@
                             </div>
                             <div class="col-2">
                                 <a class="btn btn-danger" th:href="'/admin/product/delete/' + ${product.id} +
-                             '/price/' + ${price.id}" style="margin: 0.2em"><i class="fas fa-times" ></i></a>
+                             '/price/' + ${price.id}" style="margin: 0.2em"><i
+                                        class="fas fa-times"></i></a>
                             </div>
                         </th:block>
                     </div>
