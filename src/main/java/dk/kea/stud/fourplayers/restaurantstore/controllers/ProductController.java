@@ -5,8 +5,10 @@ import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -36,10 +38,9 @@ public class ProductController {
     return new Basket();
   }
 
-  @GetMapping("/list_resp")
-  @ResponseBody
-  public List<Product> testProducts() {
-    return products.findAll();
+  @InitBinder("productForm")
+  public void initProductFormBinder(WebDataBinder dataBinder) {
+    dataBinder.setValidator(new ProductFormValidator());
   }
 
   @GetMapping(value = {"/shop", "/"})
@@ -82,7 +83,7 @@ public class ProductController {
   }
 
   @PostMapping("/admin/product/add")
-  public String saveNewProduct(ProductForm formData, BindingResult result, Model model) {
+  public String saveNewProduct(@Valid ProductForm formData, BindingResult result, Model model) {
     if (result.hasErrors()) {
       model.addAttribute("formData", formData);
 
@@ -94,8 +95,8 @@ public class ProductController {
       if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
         formData.getProduct().addImage(formData.getNewImage());
       }
-      products.save(formData.getProduct());
-      return "redirect:/admin/product/edit/{productId}";
+      int id = products.save(formData.getProduct()).getId();
+      return "redirect:/admin/product/edit/" + id;
     }
   }
 
@@ -113,9 +114,10 @@ public class ProductController {
   }
 
   @PostMapping("/admin/product/edit/{productId}")
-  public String saveEditedProduct(@PathVariable("productId") int productId, ProductForm formData,
+  public String saveEditedProduct(@PathVariable("productId") int productId, @Valid  ProductForm formData,
                                   BindingResult result, Model model) {
     if (result.hasErrors()) {
+      formData.getProduct().setId(productId);
       model.addAttribute("formData", formData);
 
       return ADD_OR_UPDATE_PRODUCT;

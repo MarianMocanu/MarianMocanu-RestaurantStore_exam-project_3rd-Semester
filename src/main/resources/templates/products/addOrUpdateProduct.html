@@ -67,7 +67,12 @@
                                        th:field="*{newPrice.price}"/>
                             </div>
                         </div>
-
+                    </div>
+                    <div th:text="${#fields.hasErrors()}"></div>
+                    <div th:if="${#fields.hasErrors()}" class="row">
+                        <th:block th:each="error : ${#fields.detailedErrors()}">
+                        <div class="alert" th:text="${error.getMessage()}"></div>
+                        </th:block>
                     </div>
                     <div class="form-group" th:each="image, iterator : *{product.images}">
                         <row>
