@@ -9,8 +9,8 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <h3 th:text="${product.getName()}"></h3>
-                <div th:text="'Description: ' + ${product.getDescription()}"></div>
-                <div th:text="'Category: ' + ${product.getCategory().getName()}"></div>
+                <div style="margin: 0.5em" th:text="'Description: ' + ${product.getDescription()}"></div>
+                <div style="margin: 0.5em" th:text="'Category: ' + ${product.getCategory().getName()}"></div>
                 <div>
                     <div class="row" th:unless="${product.getPrices().isEmpty()}">
                         <div class="col-6">Quantity:</div>

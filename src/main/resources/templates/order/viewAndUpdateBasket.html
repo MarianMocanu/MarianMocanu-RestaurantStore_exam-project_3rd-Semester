@@ -36,10 +36,10 @@
                             </a>
                         </div>
                     </div>
-                    <div class="row" style="margin: 3em">
+                    <div class="row" style="margin: 3em" th:unless="${basket.isEmpty()}">
                         <button type="submit" class="btn btn-info form-control">Update basket</button>
                     </div>
-                    <div class="row">
+                    <div class="row" th:unless="${basket.isEmpty()}">
                         <div class="col-6">
                             <span th:text="'Total = ' + ${total} + ' DKK'"></span>
                         </div>
