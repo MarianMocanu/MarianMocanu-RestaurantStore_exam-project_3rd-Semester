@@ -18,9 +18,9 @@
                     </div>
                     <div class="row">
                         <th:block th:each="price : ${product.getPrices()}">
-                            <div class="col-6" th:text="${price.getPrice()}">
-                            </div>
                             <div class="col-6" th:text="${price.getQuantity()}">
+                            </div>
+                            <div class="col-6" th:text="${price.getPrice()}">
                             </div>
                         </th:block>
                     </div>
