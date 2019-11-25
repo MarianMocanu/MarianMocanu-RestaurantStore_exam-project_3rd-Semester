@@ -32,27 +32,28 @@
                         <div class="col-5">Price:</div>
                         <div class="col-2"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" >
                         <th:block th:each="price, iterator : *{prices}">
                             <div class="col-5">
                                 <input th:field="*{prices[__${iterator.index}__].quantity}"
-                                       th:id="${iterator.index}" class="form-control"
+                                       th:id="${iterator.index}" class="form-control" style="margin: 0.2em"
                                        th:readonly="(*{prices[__${iterator.index}__].quantity} == 1)"/>
                             </div>
                             <div class="col-5">
                                 <input th:field="*{prices[__${iterator.index}__].price}"
-                                       th:id="${iterator.index}" class="form-control"/>
+                                       th:id="${iterator.index}" class="form-control"
+                                       style="margin: 0.2em"/>
                             </div>
                             <div class="col-2">
                                 <a class="btn btn-danger" th:href="'/admin/product/delete/' + ${product.id} +
-                             '/price/' + ${price.id}"><i class="fas fa-times"></i></a>
+                             '/price/' + ${price.id}" style="margin: 0.2em"><i class="fas fa-times" ></i></a>
                             </div>
                         </th:block>
                     </div>
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="quantity">Quantity:</label>
+                                <label for="quantity">New Quantity:</label>
                                 <input id="quantity" class="form-control"
                                        th:field="${newPrice.quantity}"
                                        th:readonly="${product.isNew()}"/>
@@ -60,27 +61,28 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="price">Price:</label>
+                                <label for="price">New Price:</label>
                                 <input id="price" class="form-control"
                                        th:field="${newPrice.price}"/>
                             </div>
                         </div>
-
                     </div>
-                    <div class="form-group" th:each="image, iterator : *{images}">
-                        <row>
-                            <div class="col-10">
-                                <input class="form-control" th:field="*{images[__${iterator.index}__].url}"
-                                       th:id="${iterator.index}"/>
-                            </div>
-                            <div class="col-2">
-                                <a class="btn btn-danger" th:href="'/admin/product/delete/' + ${product.id} +
+                    <div class="row">
+                        <div class="col-12">Images:</div>
+                    </div>
+                    <div class="row" th:each="image, iterator : *{images}">
+                        <div class="col-10">
+                            <input class="form-control"
+                                   th:field="*{images[__${iterator.index}__].url}"
+                                   th:id="${iterator.index}"/>
+                        </div>
+                        <div class="col-2">
+                            <a class="btn btn-danger" th:href="'/admin/product/delete/' + ${product.id} +
                          '/image/' + ${image.id}"><i class="fas fa-times"></i></a>
-                            </div>
-                        </row>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <div class="label">Images:</div>
+                        <div class="label">Add New Image:</div>
                         <input class="form-control" th:field="${newImage.url}"/>
                     </div>
 
