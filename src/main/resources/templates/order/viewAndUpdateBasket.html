@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+<body>
+
+<div class="container">
+    <th:block th:if="${basket.isEmpty()}">
+        <h3>No items in your basket</h3>
+    </th:block>
+    <th:block th:unless="${basket.isEmpty()}">
+        <form action="/basket" method="post" th:object="${basket}">
+            <div th:each="entry : *{productsInBasket.entrySet()}">
+                <span th:text="${productMap.get(entry.key).getName()}"></span>
+                <input type="text" th:field="*{productsInBasket[__${entry.key}__]}">
+                <th:block th:with="qty = ${basket.getProductsInBasket().get(entry.key)}">
+                    <span th:with="price = ${productMap.get(entry.key).
+                                   getBestPriceForQuantity(__${qty}__)}"
+                          th:text="' x ' + ${price} + ' DKK = ' + (${price} * ${qty}) + ' DKK'"></span>
+                </th:block>
+                <a th:href="'/basket/delete/' + ${entry.key}">Remove</a>
+            </div>
+            <div>
+                <span th:text="'Total = ' + ${total} + ' DKK'"></span>
+            </div>
+            <button type="submit" class="btn btn-info">Update</button>
+        </form>
+    </th:block>
+</div>
+</body>
+</html>

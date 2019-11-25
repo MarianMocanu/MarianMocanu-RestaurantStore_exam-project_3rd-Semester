@@ -42,7 +42,10 @@
 
         </ul>
         <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
-
+            <li th:replace="::menuItem ('/basket', 'basket', 'Basket', 'basket', 'Basket')">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <span>Basket</span>
+            </li>
             <li th:replace="::menuItem ('/login','login','Login','login','Login')">
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                 <span>Login</span>

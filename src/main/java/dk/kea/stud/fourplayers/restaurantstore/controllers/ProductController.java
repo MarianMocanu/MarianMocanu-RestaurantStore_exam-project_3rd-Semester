@@ -1,6 +1,7 @@
 package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
 import dk.kea.stud.fourplayers.restaurantstore.model.*;
+import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Controller
+@SessionAttributes("basket")
 public class ProductController {
   private final CategoryRepository categories;
   private final ProductRepository products;
@@ -31,6 +33,11 @@ public class ProductController {
   @ModelAttribute("allCategories")
   public List<Category> populateCategories() {
     return categories.findAll();
+  }
+
+  @ModelAttribute("basket")
+  public Basket setUpBasket() {
+    return new Basket();
   }
 
   @GetMapping("/list_resp")
