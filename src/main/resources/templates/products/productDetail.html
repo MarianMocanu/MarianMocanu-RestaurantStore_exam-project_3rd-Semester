@@ -25,10 +25,6 @@
                         </th:block>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">Images:</div>
-                </div>
-
                 <div class="row" th:if="${product.images.isEmpty()}">
                     <img class="card-img" src="../images/defaultImage.jpg">
                 </div>
@@ -54,11 +50,15 @@
                 </div>
                 <br>
                 <form action="/addToBasket" method="post">
-                    <div class="form-group">
-                        <input type="hidden" name="productId" th:value="${product.id}">
-                        <input type="number" name="quantity" placeholder="Quantity">
+                    <div class="row form-group">
+                        <div class="col-6">
+                            <input type="hidden" name="productId" th:value="${product.id}">
+                            <input class="form-control" type="number" name="quantity" placeholder="Quantity">
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-info form-control">Add to cart</button>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-info form-control">Add to cart</button>
                 </form>
             </div>
         </div>
