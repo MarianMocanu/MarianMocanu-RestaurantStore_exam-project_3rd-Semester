@@ -47,6 +47,7 @@ public class Product extends BaseEntity {
     if (prices == null) {
       prices = new ArrayList<>();
     }
+    prices.sort(Price::compareTo);
     return prices;
   }
 

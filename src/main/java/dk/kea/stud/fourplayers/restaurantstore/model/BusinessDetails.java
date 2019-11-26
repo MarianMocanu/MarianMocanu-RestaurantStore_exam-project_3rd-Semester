@@ -1,6 +1,5 @@
 package dk.kea.stud.fourplayers.restaurantstore.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity

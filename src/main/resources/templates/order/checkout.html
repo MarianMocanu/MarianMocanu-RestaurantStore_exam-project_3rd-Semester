@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+<body>
+
+<section class="middle-align">
+    <div class="container">
+        <form th:object="${order}" method="post" action="/checkout">
+            <h3>Your order:</h3>
+            <div th:each="item, iterator : *{itemList}">
+                <span th:text="(${iterator.index} + 1) + '. ' + ${item.getProductName()} + ': ' +
+                      ${item.getQuantity()} + ' x ' + ${item.getPrice()} + ' DKK = ' +
+                      ${item.getPrice()} * ${item.getQuantity()}"></span>
+            </div>
+            <div th:text="'Total = ' + *{total}"></div>
+            <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('Name:', 'recipientName', 'text')}">
+            </div>
+            <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('Address:', 'deliveryAddress', 'text')}">
+            </div>
+            <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('Delivery time:', 'deliveryTimestamp', 'datetime')}">
+            </div>
+            <button class="btn btn-info" type="submit">Submit</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

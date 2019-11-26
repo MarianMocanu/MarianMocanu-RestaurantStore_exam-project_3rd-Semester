@@ -103,14 +103,17 @@ public class ProductController {
   @GetMapping("/admin/product/edit/{productId}")
   public String editProduct(@PathVariable("productId") int productId, Model model) {
     ProductForm formData = new ProductForm();
-    Product product = products.findById(productId).get();
-    product.getPrices().sort(Price::compareTo);
-    formData.setProduct(product);
-    formData.setNewPrice(new Price());
-    formData.setNewImage(new ProductImage());
-    model.addAttribute("formData", formData);
+    Optional<Product> product = products.findById(productId);
+    if (!product.isPresent()) {
+      return "redirect:/shop";
+    } else {
+      formData.setProduct(product.get());
+      formData.setNewPrice(new Price());
+      formData.setNewImage(new ProductImage());
+      model.addAttribute("formData", formData);
 
-    return ADD_OR_UPDATE_PRODUCT;
+      return ADD_OR_UPDATE_PRODUCT;
+    }
   }
 
   @PostMapping("/admin/product/edit/{productId}")
