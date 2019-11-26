@@ -40,7 +40,9 @@ public class OrderController {
     Order order = orders.findById(orderId).get();
     order.setStatus(status);
     orders.save(order);
-    
+    //TODO if status == ACCEPTED ? send accepted type of mail + invoice
+    //TODO if status == DECLINED ? send declined type of mail
+
     return "redirect:/admin/order/viewAll";
   }
 }
