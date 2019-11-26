@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "order_table")
 public class Order extends BaseEntity {
     public enum Status {
         PENDING,
