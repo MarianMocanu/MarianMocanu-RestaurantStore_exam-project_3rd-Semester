@@ -37,16 +37,18 @@
                             <div class="col-5">
                                 <input th:field="*{product.prices[__${iterator.index}__].quantity}"
                                        th:id="${iterator.index}" class="form-control"
+                                       style="margin: 0.2em"
                                        th:readonly="(*{product.prices[__${iterator.index}__].quantity} == 1)"/>
                             </div>
                             <div class="col-5">
                                 <input th:field="*{product.prices[__${iterator.index}__].price}"
-                                       th:id="${iterator.index}" class="form-control"/>
+                                       th:id="${iterator.index}" class="form-control"
+                                       style="margin: 0.2em"/>
                             </div>
                             <div class="col-2">
                                 <th:block th:unless="${price.quantity} == 1">
                                 <a class="btn btn-danger" th:href="'/admin/product/delete/' + *{product.id} +
-                             '/price/' + ${price.id}"><i class="fas fa-times"></i></a>
+                             '/price/' + ${price.id}" style="margin: 0.2em"><i class="fas fa-times"></i></a>
                                 </th:block>
                             </div>
                         </th:block>
@@ -54,7 +56,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="quantity">Quantity:</label>
+                                <label for="quantity">New Quantity:</label>
                                 <input id="quantity" class="form-control"
                                        th:field="*{newPrice.quantity}"
                                        th:readonly="*{product.isNew()}"/>
@@ -62,7 +64,7 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="price">Price:</label>
+                                <label for="price">New Price:</label>
                                 <input id="price" class="form-control"
                                        th:field="*{newPrice.price}"/>
                             </div>
@@ -77,17 +79,18 @@
                     <div class="form-group" th:each="image, iterator : *{product.images}">
                         <row>
                             <div class="col-10">
-                                <input class="form-control" th:field="*{product.images[__${iterator.index}__].url}"
-                                       th:id="${iterator.index}"/>
-                            </div>
-                            <div class="col-2">
-                                <a class="btn btn-danger" th:href="'/admin/product/delete/' + *{product.id} +
-                                    '/image/' + ${image.id}"><i class="fas fa-times"></i></a>
-                            </div>
-                        </row>
+                            <input class="form-control" style="margin: 0.2em"
+                                   th:field="*{product.images[__${iterator.index}__].url}"
+                                   th:id="${iterator.index}"/>
+                        </div>
+                        <div class="col-2">
+                            <a class="btn btn-danger" style="margin: 0.2em"
+                               th:href="'/admin/product/delete/' + *{product.id} +
+                         '/image/' + ${image.id}"><i class="fas fa-times"></i></a>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <div class="label">Images:</div>
+                        <div class="label">Add New Image:</div>
                         <input class="form-control" th:field="*{newImage.url}"/>
                     </div>
 

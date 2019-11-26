@@ -3,28 +3,54 @@
       th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
 <body>
 
-<div class="container">
-    <th:block th:if="${basket.isEmpty()}">
-        <h3>No items in your basket</h3>
-    </th:block>
-    <th:block th:unless="${basket.isEmpty()}">
-        <form action="/basket" method="post" th:object="${basket}">
-            <div th:each="entry : *{productsInBasket.entrySet()}">
-                <span th:text="${productMap.get(entry.key).getName()}"></span>
-                <input type="text" th:field="*{productsInBasket[__${entry.key}__]}">
-                <th:block th:with="qty = ${basket.getProductsInBasket().get(entry.key)}">
-                    <span th:with="price = ${productMap.get(entry.key).
-                                   getBestPriceForQuantity(__${qty}__)}"
-                          th:text="' x ' + ${price} + ' DKK = ' + (${price} * ${qty}) + ' DKK'"></span>
-                </th:block>
-                <a th:href="'/basket/delete/' + ${entry.key}">Remove</a>
+<section class="middle-align">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="row" th:if="${basket.isEmpty()}">
+                    <h3>No items in your basket</h3>
+                </div>
+                <form action="/basket" method="post" th:object="${basket}">
+                    <div class="row" style="margin: 1em" th:unless="${basket.isEmpty()}">
+                        <div class="col-3">Product:</div>
+                        <div class="col-2">Quantity:</div>
+                        <div class="col-5">Total for quantity</div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row" th:each="entry : *{productsInBasket.entrySet()}" style="margin: 0.2em">
+                        <div class="col-3"
+                             th:text="${productMap.get(entry.key).getName()}">
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control" type="number"
+                                   th:field="*{productsInBasket[__${entry.key}__]}">
+                        </div>
+                        <div class="col-5"
+                             th:with="qty = ${basket.getProductsInBasket().get(entry.key)}">
+                                    <span th:with="price = ${productMap.get(entry.key).getBestPriceForQuantity(__${qty}__)}"
+                                          th:text="' x ' + ${price} + ' DKK = ' + (${price} * ${qty}) + ' DKK'"></span>
+                        </div>
+                        <div class="col-2">
+                            <a class="btn btn-danger" th:href="'/basket/delete/' + ${entry.key}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row" style="margin: 3em" th:unless="${basket.isEmpty()}">
+                        <button type="submit" class="btn btn-info form-control">Update basket</button>
+                    </div>
+                    <div class="row" th:unless="${basket.isEmpty()}">
+                        <div class="col-6">
+                            <span th:text="'Total = ' + ${total} + ' DKK'"></span>
+                        </div>
+                        <div class="col-6">
+                            <a href="/basket"> Proceed to checkout</a>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div>
-                <span th:text="'Total = ' + ${total} + ' DKK'"></span>
-            </div>
-            <button type="submit" class="btn btn-info">Update</button>
-        </form>
-    </th:block>
-</div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
