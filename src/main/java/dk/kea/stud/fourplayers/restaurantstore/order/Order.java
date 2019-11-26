@@ -3,10 +3,7 @@ package dk.kea.stud.fourplayers.restaurantstore.order;
 import dk.kea.stud.fourplayers.restaurantstore.model.BaseEntity;
 import dk.kea.stud.fourplayers.restaurantstore.security.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +14,7 @@ public class Order extends BaseEntity {
         ACCEPTED,
         DECLINED
     }
-    @Column(name = "user")
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     private User user;
     @Column(name = "order_timestamp")
     private LocalDateTime orderTimestamp;
@@ -29,20 +26,31 @@ public class Order extends BaseEntity {
     private Status status;
     @Column(name = "delivery_address")
     private String deliveryAddress;
+    @Column(name = "recipient_name")
+    private String recipientName;
     @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
     private List<OrderItem> itemList;
 
-    public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, List<OrderItem> itemList) {
+    public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, String recipientName, List<OrderItem> itemList) {
         this.user = user;
         this.orderTimestamp = orderTimestamp;
         this.processedTimestamp = processedTimestamp;
         this.deliveryTimestamp = deliveryTimestamp;
         this.status = status;
         this.deliveryAddress = deliveryAddress;
+        this.recipientName = recipientName;
         this.itemList = itemList;
     }
 
     public Order() {
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
     }
 
     public User getUser() {
@@ -110,6 +118,7 @@ public class Order extends BaseEntity {
                 ", deliveryTimestamp=" + deliveryTimestamp +
                 ", status=" + status +
                 ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", recipientName='" + recipientName + '\'' +
                 ", itemList=" + itemList +
                 '}';
     }
