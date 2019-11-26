@@ -13,8 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionAttributeStore;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,14 +53,14 @@ public class OrderController {
   }
 
   @PostMapping("/checkout")
-  public String processOrder(@ModelAttribute Order order, @ModelAttribute Basket basket, WebRequest request) {
+  public String processOrder(@ModelAttribute Order order, @ModelAttribute Basket basket, SessionStatus session) {
     Order finalOrder = processOrderFromBasket(basket);
     finalOrder.setRecipientName(order.getRecipientName());
     finalOrder.setDeliveryAddress(order.getDeliveryAddress());
     finalOrder.setDeliveryTimestamp(order.getDeliveryTimestamp());
     finalOrder.setOrderTimestamp(LocalDateTime.now());
     orders.save(finalOrder);
-    request.removeAttribute("basket", WebRequest.SCOPE_SESSION);
+    session.setComplete();
     return "redirect:/";
   }
 
