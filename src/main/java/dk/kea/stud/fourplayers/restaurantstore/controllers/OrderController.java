@@ -32,6 +32,10 @@ public class OrderController {
 
   private final String ORDERS = "order/orders";
   private final String ORDER_DETAILS = "order/orderDetails";
+
+  public OrderController(ProductRepository products, UserService users, OrderRepository orders) {
+    this.products = products;
+    this.users = users;
     this.orders = orders;
   }
 
