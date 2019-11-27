@@ -1,4 +1,4 @@
-package dk.kea.stud.fourplayers.restaurantstore.controllers;
+package dk.kea.stud.fourplayers.restaurantstore.order;
 
 import dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails;
 import dk.kea.stud.fourplayers.restaurantstore.model.Product;
@@ -94,7 +94,10 @@ public class OrderController {
 
   @GetMapping("/admin/order/viewAll")
   public String viewAllOrders(Model model) {
-    model.addAttribute("orders", orders.findAllByOrderByOrderTimestampDesc());
+    model.addAttribute("pendingOrders",
+        orders.findAllByStatusOrderByOrderTimestampDesc(Order.Status.PENDING));
+    model.addAttribute("notPendingOrders",
+        orders.findAllByStatusNotLikeOrderByOrderTimestampDesc(Order.Status.PENDING));
 
     return ORDERS;
   }

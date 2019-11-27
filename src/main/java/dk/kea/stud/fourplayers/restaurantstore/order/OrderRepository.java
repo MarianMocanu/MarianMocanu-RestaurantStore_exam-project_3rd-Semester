@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Integer> {
-    List<Order> findAllByOrderByOrderTimestampDesc();
+    List<Order> findAllByStatusOrderByOrderTimestampDesc(Order.Status status);
+
+    List<Order> findAllByStatusNotLikeOrderByOrderTimestampDesc(Order.Status status);
 
 }

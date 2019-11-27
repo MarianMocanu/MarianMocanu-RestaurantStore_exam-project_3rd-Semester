@@ -13,14 +13,30 @@
     <div class="container">
         <div class="row">
             <div class="col-10 offset-md-1">
-                <h3>Orders</h3>
+                <h3>Pending Orders</h3>
                 <div class="row">
                     <div class="col">Order id:</div>
                     <div class="col">Date and time of delivery:</div>
                     <div class="col">Recipient name:</div>
                     <div class="col">Status:</div>
                 </div>
-                <div class="row" th:each="order : ${orders}">
+                <div class="row" th:each="order : ${pendingOrders}">
+                    <div class="col" th:text="${order.getId()}"></div>
+                    <div class="col" th:text="${order.getDeliveryTimestamp()}"></div>
+                    <div class="col" th:text="${order.getRecipientName()}"></div>
+                    <div class="col">
+                        <a th:text="${order.getStatus()}"
+                           th:href="'/admin/order/view/' + ${order.getId()}"> </a>
+                    </div>
+                </div>
+                <h3>Accepted/Declined Orders</h3>
+                <div class="row">
+                    <div class="col">Order id:</div>
+                    <div class="col">Date and time of delivery:</div>
+                    <div class="col">Recipient name:</div>
+                    <div class="col">Status:</div>
+                </div>
+                <div class="row" th:each="order : ${notPendingOrders}">
                     <div class="col" th:text="${order.getId()}"></div>
                     <div class="col" th:text="${order.getDeliveryTimestamp()}"></div>
                     <div class="col" th:text="${order.getRecipientName()}"></div>
