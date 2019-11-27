@@ -30,9 +30,8 @@ public class OrderController {
   private final UserService users;
   private final OrderRepository orders;
 
-  public OrderController(ProductRepository products, UserService users, OrderRepository orders) {
-    this.products = products;
-    this.users = users;
+  private final String ORDERS = "order/orders";
+  private final String ORDER_DETAILS = "order/orderDetails";
     this.orders = orders;
   }
 
@@ -87,5 +86,31 @@ public class OrderController {
       order.setDeliveryAddress(details.getAddress());
     }
     return order;
+  }
+
+  @GetMapping("/admin/order/viewAll")
+  public String viewAllOrders(Model model) {
+    model.addAttribute("orders", orders.findAllByOrderByOrderTimestampDesc());
+
+    return ORDERS;
+  }
+
+  @GetMapping("/admin/order/view/{orderId}")
+  public String viewOrderDetails(@PathVariable("orderId") int orderId, Model model) {
+    model.addAttribute("order", orders.findById(orderId).get());
+
+    return ORDER_DETAILS;
+  }
+
+  @PostMapping("/admin/order/view/{orderId}")
+  public String updateOrderStatus(@PathVariable("orderId") int orderId,
+                                        @RequestParam("status") Order.Status status) {
+    Order order = orders.findById(orderId).get();
+    order.setStatus(status);
+    orders.save(order);
+    //TODO if status == ACCEPTED ? send accepted type of mail + invoice
+    //TODO if status == DECLINED ? send declined type of mail
+
+    return "redirect:/admin/order/viewAll";
   }
 }

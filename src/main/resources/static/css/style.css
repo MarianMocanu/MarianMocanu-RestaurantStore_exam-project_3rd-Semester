@@ -36,3 +36,6 @@ body {
     display: inline-flex;
     justify-content: center;
 }
+.customMargin {
+    margin: 0.75em;
+}
