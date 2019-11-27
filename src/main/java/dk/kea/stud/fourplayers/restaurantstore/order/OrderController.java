@@ -1,5 +1,6 @@
 package dk.kea.stud.fourplayers.restaurantstore.order;
 
+import dk.kea.stud.fourplayers.restaurantstore.controllers.EmailController;
 import dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails;
 import dk.kea.stud.fourplayers.restaurantstore.model.Product;
 import dk.kea.stud.fourplayers.restaurantstore.model.ProductRepository;
@@ -7,8 +8,7 @@ import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import dk.kea.stud.fourplayers.restaurantstore.order.Order;
 import dk.kea.stud.fourplayers.restaurantstore.order.OrderItem;
 import dk.kea.stud.fourplayers.restaurantstore.order.OrderRepository;
-import dk.kea.stud.fourplayers.restaurantstore.security.User;
-import dk.kea.stud.fourplayers.restaurantstore.security.UserService;
+import dk.kea.stud.fourplayers.restaurantstore.security.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import dk.kea.stud.fourplayers.restaurantstore.controllers.EmailController;
 
 @Controller
 @SessionAttributes("basket")
@@ -29,14 +30,18 @@ public class OrderController {
   private final ProductRepository products;
   private final UserService users;
   private final OrderRepository orders;
+  private final EmailController email;
+  private RoleRepository roleRepository;
 
   private final String ORDERS = "order/orders";
   private final String ORDER_DETAILS = "order/orderDetails";
 
-  public OrderController(ProductRepository products, UserService users, OrderRepository orders) {
+  public OrderController(ProductRepository products, UserService users, OrderRepository orders, EmailController email, RoleRepository roleRepository) {
     this.products = products;
     this.users = users;
     this.orders = orders;
+    this.email = email;
+    this.roleRepository = roleRepository;
   }
 
   @GetMapping("/checkout")
@@ -64,6 +69,11 @@ public class OrderController {
     finalOrder.setOrderTimestamp(LocalDateTime.now());
     orders.save(finalOrder);
     session.setComplete();
+    //Send new order mail
+    Role adminRole = roleRepository.findByRole("ADMIN");
+    List<User> adminUsers = users.findUsersByRole(adminRole);
+    for(User admin : adminUsers)
+      email.sendNewOrderMail(admin.getEmail(), finalOrder);
     return "redirect:/";
   }
 
@@ -123,8 +133,12 @@ public class OrderController {
     }
 
     orders.save(order);
-    //TODO if status == ACCEPTED ? send accepted type of mail + invoice
-    //TODO if status == DECLINED ? send declined type of mail
+    email.sendOrderProcessedMail(order);
+
+    if(status == Order.Status.ACCEPTED){
+      email.sendInvoiceMail(order);
+    }
+
 
     return "redirect:/admin/order/viewAll";
   }
