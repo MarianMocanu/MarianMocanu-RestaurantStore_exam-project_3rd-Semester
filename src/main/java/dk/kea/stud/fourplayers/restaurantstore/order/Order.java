@@ -2,6 +2,7 @@ package dk.kea.stud.fourplayers.restaurantstore.order;
 
 import dk.kea.stud.fourplayers.restaurantstore.model.BaseEntity;
 import dk.kea.stud.fourplayers.restaurantstore.security.User;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,10 +19,13 @@ public class Order extends BaseEntity {
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     private User user;
     @Column(name = "order_timestamp")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderTimestamp;
     @Column(name = "processed_timestamp")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime processedTimestamp;
     @Column(name = "delivery_timestamp")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deliveryTimestamp;
     @Column(name = "order_status")
     private Status status;
@@ -31,8 +35,10 @@ public class Order extends BaseEntity {
     private String recipientName;
     @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
     private List<OrderItem> itemList;
+    @Column(name = "total")
+    private int total;
 
-    public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, String recipientName, List<OrderItem> itemList) {
+    public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, String recipientName, List<OrderItem> itemList, int total) {
         this.user = user;
         this.orderTimestamp = orderTimestamp;
         this.processedTimestamp = processedTimestamp;
@@ -41,9 +47,18 @@ public class Order extends BaseEntity {
         this.deliveryAddress = deliveryAddress;
         this.recipientName = recipientName;
         this.itemList = itemList;
+        this.total = total;
     }
 
     public Order() {
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public String getRecipientName() {
@@ -121,6 +136,7 @@ public class Order extends BaseEntity {
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", recipientName='" + recipientName + '\'' +
                 ", itemList=" + itemList +
+                ", total=" + total +
                 '}';
     }
 }
