@@ -105,7 +105,7 @@ public class OrderController {
   @GetMapping("/admin/order/view/{orderId}")
   public String viewOrderDetails(@PathVariable("orderId") int orderId, Model model) {
     model.addAttribute("order", orders.findById(orderId).get());
-    int discount = 0;
+    Integer discount = 0;
     model.addAttribute("discountAmount", discount);
 
     return ORDER_DETAILS;
@@ -114,12 +114,14 @@ public class OrderController {
   @PostMapping("/admin/order/view/{orderId}")
   public String updateOrderStatus(@PathVariable("orderId") int orderId,
                                   @RequestParam("status") Order.Status status,
-                                  @RequestParam("discountAmount") int discount) {
+                                  @RequestParam(value = "discountAmount", required = false) Integer discount) {
     Order order = orders.findById(orderId).get();
     order.setStatus(status);
     order.setProcessedTimestamp(LocalDateTime.now());
-    if (discount > 0) {
-      order.setTotal(order.getTotal() - discount);
+    if (discount != null) {
+      if (discount > 0) {
+        order.setTotal(order.getTotal() - discount);
+      }
     }
 
     orders.save(order);
