@@ -35,6 +35,10 @@
                         <div class="col">Recipient Name:</div>
                         <div class="col" th:text="*{recipientName}"></div>
                     </div>
+<!--                    <div class="row customMargin">-->
+<!--                        <div class="col">Ordered by:</div>-->
+<!--                        <div class="col" th:text="*{user.businessDetails.firstName + ' ' + user.businessDetails.lastName}"></div>-->
+<!--                    </div>-->
                     <div class="row customMargin">
                         <div class="col">Product name:</div>
                         <div class="col">Category:</div>
@@ -45,19 +49,28 @@
                         <div class="col" th:text="${item.productName}"></div>
                         <div class="col" th:text="${item.categoryName}"></div>
                         <div class="col" th:text="${item.quantity}"></div>
-                        <div class="col" th:text="${item.price}"></div>
+                        <div class="col" th:text="${item.price} + ' DKK'"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">-------------------------------</div>
+                        <div class="col">Total price of products: </div>
+                        <div class="col">-------------------------------</div>
+                        <div class="col" th:text="${order.getTotal()} + ' DKK '"></div>
                     </div>
                     <div class="row customMargin">
                         <div class="col">Order status:</div>
                         <div class="col">
-                            <select class="form-control" name="status"
-                                    th:field="*{status}">
+                            <select class="form-control" name="status" th:field="*{status}">
                                 <option th:each="statusValue :
                             ${T(dk.kea.stud.fourplayers.restaurantstore.order.Order.Status).values()}"
                                         th:value="${statusValue}" th:text="${statusValue}"
                                         th:selected="*{status}">
                                 </option>
                             </select>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="number"
+                                   name="discountAmount" placeholder="Discount amount">
                         </div>
                         <div class="col">
                             <button class="btn btn-info form-control" type="submit">Update order</button>

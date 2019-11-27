@@ -105,15 +105,23 @@ public class OrderController {
   @GetMapping("/admin/order/view/{orderId}")
   public String viewOrderDetails(@PathVariable("orderId") int orderId, Model model) {
     model.addAttribute("order", orders.findById(orderId).get());
+    int discount = 0;
+    model.addAttribute("discountAmount", discount);
 
     return ORDER_DETAILS;
   }
 
   @PostMapping("/admin/order/view/{orderId}")
   public String updateOrderStatus(@PathVariable("orderId") int orderId,
-                                        @RequestParam("status") Order.Status status) {
+                                  @RequestParam("status") Order.Status status,
+                                  @RequestParam("discountAmount") int discount) {
     Order order = orders.findById(orderId).get();
     order.setStatus(status);
+    order.setProcessedTimestamp(LocalDateTime.now());
+    if (discount > 0) {
+      order.setTotal(order.getTotal() - discount);
+    }
+
     orders.save(order);
     //TODO if status == ACCEPTED ? send accepted type of mail + invoice
     //TODO if status == DECLINED ? send declined type of mail
