@@ -3,19 +3,26 @@ package dk.kea.stud.fourplayers.restaurantstore.controllers;
 import dk.kea.stud.fourplayers.restaurantstore.model.Category;
 import dk.kea.stud.fourplayers.restaurantstore.model.CategoryForm;
 import dk.kea.stud.fourplayers.restaurantstore.model.CategoryRepository;
+import dk.kea.stud.fourplayers.restaurantstore.order.OrderItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 @Controller
 public class CategoryController {
   private final CategoryRepository categoryRepo;
 
   private final String CATEGORY = "categories/category";
+  private final OrderItemRepository orderItems;
 
-  public CategoryController(CategoryRepository categoryRepository) {
+  public CategoryController(CategoryRepository categoryRepository, OrderItemRepository orderItems) {
     this.categoryRepo = categoryRepository;
+    this.orderItems = orderItems;
   }
 
   @GetMapping("/admin/category/view")
@@ -60,4 +67,5 @@ public class CategoryController {
 
     return "redirect:/admin/category/view";
   }
+
 }
