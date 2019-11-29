@@ -11,132 +11,133 @@ import java.util.List;
 @Entity
 @Table(name = "order_table")
 public class Order extends BaseEntity {
-    public enum Status {
-        PENDING,
-        ACCEPTED,
-        DECLINED
-    }
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
-    private User user;
-    @Column(name = "order_timestamp")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderTimestamp;
-    @Column(name = "processed_timestamp")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime processedTimestamp;
-    @Column(name = "delivery_timestamp")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime deliveryTimestamp;
-    @Column(name = "order_status")
-    private Status status;
-    @Column(name = "delivery_address")
-    private String deliveryAddress;
-    @Column(name = "recipient_name")
-    private String recipientName;
-    @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
-    private List<OrderItem> itemList;
-    @Column(name = "total")
-    private int total;
+  public enum Status {
+    PENDING,
+    ACCEPTED,
+    DECLINED
+  }
 
-    public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, String recipientName, List<OrderItem> itemList, int total) {
-        this.user = user;
-        this.orderTimestamp = orderTimestamp;
-        this.processedTimestamp = processedTimestamp;
-        this.deliveryTimestamp = deliveryTimestamp;
-        this.status = status;
-        this.deliveryAddress = deliveryAddress;
-        this.recipientName = recipientName;
-        this.itemList = itemList;
-        this.total = total;
-    }
+  @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+  private User user;
+  @Column(name = "order_timestamp")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime orderTimestamp;
+  @Column(name = "processed_timestamp")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime processedTimestamp;
+  @Column(name = "delivery_timestamp")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime deliveryTimestamp;
+  @Column(name = "order_status")
+  private Status status;
+  @Column(name = "delivery_address")
+  private String deliveryAddress;
+  @Column(name = "recipient_name")
+  private String recipientName;
+  @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
+  private List<OrderItem> itemList;
+  @Column(name = "total")
+  private int total;
 
-    public Order() {
-    }
+  public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, String recipientName, List<OrderItem> itemList, int total) {
+    this.user = user;
+    this.orderTimestamp = orderTimestamp;
+    this.processedTimestamp = processedTimestamp;
+    this.deliveryTimestamp = deliveryTimestamp;
+    this.status = status;
+    this.deliveryAddress = deliveryAddress;
+    this.recipientName = recipientName;
+    this.itemList = itemList;
+    this.total = total;
+  }
 
-    public int getTotal() {
-        return total;
-    }
+  public Order() {
+  }
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
+  public int getTotal() {
+    return total;
+  }
 
-    public String getRecipientName() {
-        return recipientName;
-    }
+  public void setTotal(int total) {
+    this.total = total;
+  }
 
-    public void setRecipientName(String recipientName) {
-        this.recipientName = recipientName;
-    }
+  public String getRecipientName() {
+    return recipientName;
+  }
 
-    public User getUser() {
-        return user;
-    }
+  public void setRecipientName(String recipientName) {
+    this.recipientName = recipientName;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public LocalDateTime getOrderTimestamp() {
-        return orderTimestamp;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    public void setOrderTimestamp(LocalDateTime orderTimestamp) {
-        this.orderTimestamp = orderTimestamp;
-    }
+  public LocalDateTime getOrderTimestamp() {
+    return orderTimestamp;
+  }
 
-    public LocalDateTime getProcessedTimestamp() {
-        return processedTimestamp;
-    }
+  public void setOrderTimestamp(LocalDateTime orderTimestamp) {
+    this.orderTimestamp = orderTimestamp;
+  }
 
-    public void setProcessedTimestamp(LocalDateTime processedTimestamp) {
-        this.processedTimestamp = processedTimestamp;
-    }
+  public LocalDateTime getProcessedTimestamp() {
+    return processedTimestamp;
+  }
 
-    public LocalDateTime getDeliveryTimestamp() {
-        return deliveryTimestamp;
-    }
+  public void setProcessedTimestamp(LocalDateTime processedTimestamp) {
+    this.processedTimestamp = processedTimestamp;
+  }
 
-    public void setDeliveryTimestamp(LocalDateTime deliveryTimestamp) {
-        this.deliveryTimestamp = deliveryTimestamp;
-    }
+  public LocalDateTime getDeliveryTimestamp() {
+    return deliveryTimestamp;
+  }
 
-    public Status getStatus() {
-        return status;
-    }
+  public void setDeliveryTimestamp(LocalDateTime deliveryTimestamp) {
+    this.deliveryTimestamp = deliveryTimestamp;
+  }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+  public Status getStatus() {
+    return status;
+  }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
-    }
+  public void setStatus(Status status) {
+    this.status = status;
+  }
 
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
-    }
+  public String getDeliveryAddress() {
+    return deliveryAddress;
+  }
 
-    public List<OrderItem> getItemList() {
-        return itemList;
-    }
+  public void setDeliveryAddress(String deliveryAddress) {
+    this.deliveryAddress = deliveryAddress;
+  }
 
-    public void setItemList(List<OrderItem> itemList) {
-        this.itemList = itemList;
-    }
+  public List<OrderItem> getItemList() {
+    return itemList;
+  }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "user=" + user +
-                ", orderTimestamp=" + orderTimestamp +
-                ", processedTimestamp=" + processedTimestamp +
-                ", deliveryTimestamp=" + deliveryTimestamp +
-                ", status=" + status +
-                ", deliveryAddress='" + deliveryAddress + '\'' +
-                ", recipientName='" + recipientName + '\'' +
-                ", itemList=" + itemList +
-                ", total=" + total +
-                '}';
-    }
+  public void setItemList(List<OrderItem> itemList) {
+    this.itemList = itemList;
+  }
+
+  @Override
+  public String toString() {
+    return "Order{" +
+        "user=" + user +
+        ", orderTimestamp=" + orderTimestamp +
+        ", processedTimestamp=" + processedTimestamp +
+        ", deliveryTimestamp=" + deliveryTimestamp +
+        ", status=" + status +
+        ", deliveryAddress='" + deliveryAddress + '\'' +
+        ", recipientName='" + recipientName + '\'' +
+        ", itemList=" + itemList +
+        ", total=" + total +
+        '}';
+  }
 }
