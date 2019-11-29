@@ -2,6 +2,7 @@ package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
 import dk.kea.stud.fourplayers.restaurantstore.model.*;
 import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
+import dk.kea.stud.fourplayers.restaurantstore.order.OrderItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,13 +20,15 @@ public class ProductController {
   private final PriceRepository prices;
   private final ProductImageRepository images;
   private final String ADD_OR_UPDATE_PRODUCT = "products/addOrUpdateProduct";
+  private final OrderItemRepository orderItems;
 
   public ProductController(CategoryRepository categoryRepo, ProductRepository productRepo,
-                           PriceRepository priceRepo, ProductImageRepository imageRepo) {
+                           PriceRepository priceRepo, ProductImageRepository imageRepo, OrderItemRepository orderItems) {
     this.categories = categoryRepo;
     this.products = productRepo;
     this.prices = priceRepo;
     this.images = imageRepo;
+    this.orderItems = orderItems;
   }
 
   @ModelAttribute("allCategories")
@@ -164,4 +167,10 @@ public class ProductController {
     model.addAttribute("product", product.get());
     return "products/productDetail";
   }
+
+  @GetMapping("/admin/statistics")
+  public String statistics(){
+    return "statistics/statisticsList";
+  }
+
 }

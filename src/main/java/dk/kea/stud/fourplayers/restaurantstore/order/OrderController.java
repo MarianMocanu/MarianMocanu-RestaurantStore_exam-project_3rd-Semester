@@ -19,9 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @SessionAttributes("basket")
@@ -29,14 +27,16 @@ public class OrderController {
   private final ProductRepository products;
   private final UserService users;
   private final OrderRepository orders;
+  private final OrderItemRepository orderItems;
 
   private final String ORDERS = "order/orders";
   private final String ORDER_DETAILS = "order/orderDetails";
 
-  public OrderController(ProductRepository products, UserService users, OrderRepository orders) {
+  public OrderController(ProductRepository products, UserService users, OrderRepository orders, OrderItemRepository orderItems) {
     this.products = products;
     this.users = users;
     this.orders = orders;
+    this.orderItems = orderItems;
   }
 
   @GetMapping("/checkout")
@@ -130,4 +130,5 @@ public class OrderController {
 
     return "redirect:/admin/order/viewAll";
   }
+
 }

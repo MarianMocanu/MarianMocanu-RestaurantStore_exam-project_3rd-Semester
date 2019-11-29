@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Repository
@@ -21,4 +22,5 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
   " OR LOWER(product.description) LIKE(CONCAT('%', :search, '%'))")
   @Transactional(readOnly = true)
   Collection<Product> findProductBySearchInput(@Param("search") String search);
+
 }
