@@ -1,11 +1,12 @@
 package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.security.BusinessDetails;
+import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
+import dk.kea.stud.fourplayers.restaurantstore.order.Order;
+import dk.kea.stud.fourplayers.restaurantstore.order.OrderItem;
+import dk.kea.stud.fourplayers.restaurantstore.order.OrderRepository;
 import dk.kea.stud.fourplayers.restaurantstore.product.Product;
 import dk.kea.stud.fourplayers.restaurantstore.product.ProductRepository;
-import dk.kea.stud.fourplayers.restaurantstore.order.*;
-import dk.kea.stud.fourplayers.restaurantstore.security.User;
-import dk.kea.stud.fourplayers.restaurantstore.security.UserService;
+import dk.kea.stud.fourplayers.restaurantstore.security.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,24 +14,28 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @SessionAttributes("basket")
 public class OrderController {
   private final ProductRepository products;
+  private final RoleRepository roleRepository;
   private final UserService users;
   private final OrderRepository orders;
-  private final OrderItemRepository orderItems;
+  private final EmailController email;
 
   private final String ORDERS = "order/orders";
   private final String ORDER_DETAILS = "order/orderDetails";
 
-  public OrderController(ProductRepository products, UserService users, OrderRepository orders, OrderItemRepository orderItems) {
+  public OrderController(ProductRepository products, UserService users, OrderRepository orders, RoleRepository roleRepository, EmailController email) {
+    this.email = email;
     this.products = products;
     this.users = users;
     this.orders = orders;
-    this.orderItems = orderItems;
+    this.roleRepository = roleRepository;
   }
 
   @GetMapping("/checkout")
@@ -62,6 +67,12 @@ public class OrderController {
     finalOrder.setOrderTimestamp(LocalDateTime.now());
     orders.save(finalOrder);
     session.setComplete();
+
+    Role adminRole = roleRepository.findByRole("ADMIN");
+    List<User> adminUsers = users.findUsersByRole(adminRole);
+    for (User admin : adminUsers) {
+      email.sendNewOrderMail(admin.getEmail(), finalOrder);
+    }
     return "redirect:/";
   }
 
@@ -127,8 +138,12 @@ public class OrderController {
     }
 
     orders.save(order);
-    //TODO if status == ACCEPTED ? send accepted type of mail + invoice
-    //TODO if status == DECLINED ? send declined type of mail
+
+    email.sendOrderProcessedMail(order);
+
+    if (status == Order.Status.ACCEPTED) {
+      email.sendInvoiceMail(order);
+    }
 
     return "redirect:/admin/order/viewAll";
   }
