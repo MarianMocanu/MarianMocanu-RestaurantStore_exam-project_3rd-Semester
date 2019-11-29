@@ -28,9 +28,12 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public List<User> findUsersByRole(Role role)
-    {
+    public List<User> findUsersByRole(Role role) {
         return userRepository.findByRoles(role);
+    }
+
+    public User findUserById(int id){
+        return userRepository.findById(id);
     }
 
     public User saveNewUser(User user) {
@@ -44,7 +47,7 @@ public class UserService {
     public void saveExistingUser(User user) {
         userRepository.save(user);
     }
-    
+
     public User saveAdmin(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
