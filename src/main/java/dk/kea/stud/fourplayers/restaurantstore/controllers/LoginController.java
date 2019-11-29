@@ -1,8 +1,9 @@
-package dk.kea.stud.fourplayers.restaurantstore.security;
+package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import dk.kea.stud.fourplayers.restaurantstore.security.User;
+import dk.kea.stud.fourplayers.restaurantstore.security.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,7 +46,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             return "registration";
         } else {
-            userService.saveUser(user);
+            userService.saveNewUser(user);
             model.addAttribute("registrationSuccess", "User has been registered successfully.");
             model.addAttribute("registrationUsername", user.getEmail());
             System.out.println(user);

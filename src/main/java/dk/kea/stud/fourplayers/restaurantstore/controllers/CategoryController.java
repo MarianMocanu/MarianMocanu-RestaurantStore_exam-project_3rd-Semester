@@ -1,17 +1,13 @@
 package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.Category;
-import dk.kea.stud.fourplayers.restaurantstore.model.CategoryForm;
-import dk.kea.stud.fourplayers.restaurantstore.model.CategoryRepository;
+import dk.kea.stud.fourplayers.restaurantstore.product.Category;
+import dk.kea.stud.fourplayers.restaurantstore.product.CategoryForm;
+import dk.kea.stud.fourplayers.restaurantstore.product.CategoryRepository;
 import dk.kea.stud.fourplayers.restaurantstore.order.OrderItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 @Controller
 public class CategoryController {

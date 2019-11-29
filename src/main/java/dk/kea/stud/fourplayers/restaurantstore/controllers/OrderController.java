@@ -1,23 +1,17 @@
-package dk.kea.stud.fourplayers.restaurantstore.order;
+package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails;
-import dk.kea.stud.fourplayers.restaurantstore.model.Product;
-import dk.kea.stud.fourplayers.restaurantstore.model.ProductRepository;
-import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
-import dk.kea.stud.fourplayers.restaurantstore.order.Order;
-import dk.kea.stud.fourplayers.restaurantstore.order.OrderItem;
-import dk.kea.stud.fourplayers.restaurantstore.order.OrderRepository;
+import dk.kea.stud.fourplayers.restaurantstore.security.BusinessDetails;
+import dk.kea.stud.fourplayers.restaurantstore.product.Product;
+import dk.kea.stud.fourplayers.restaurantstore.product.ProductRepository;
+import dk.kea.stud.fourplayers.restaurantstore.order.*;
 import dk.kea.stud.fourplayers.restaurantstore.security.User;
 import dk.kea.stud.fourplayers.restaurantstore.security.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -59,7 +53,11 @@ public class OrderController {
   public String processOrder(@ModelAttribute Order order, @ModelAttribute Basket basket, SessionStatus session) {
     Order finalOrder = processOrderFromBasket(basket);
     finalOrder.setRecipientName(order.getRecipientName());
+    finalOrder.setPhoneNo(order.getPhoneNo());
+    finalOrder.setCompanyName(order.getCompanyName());
+    finalOrder.setCVR(order.getCVR());
     finalOrder.setDeliveryAddress(order.getDeliveryAddress());
+    finalOrder.setZipCode(order.getZipCode());
     finalOrder.setDeliveryTimestamp(order.getDeliveryTimestamp());
     finalOrder.setOrderTimestamp(LocalDateTime.now());
     orders.save(finalOrder);
@@ -87,7 +85,11 @@ public class OrderController {
     if (currentUser.getBusinessDetails() != null) {
       BusinessDetails details = currentUser.getBusinessDetails();
       order.setRecipientName(details.getFirstName() + " " + details.getLastName());
+      order.setCompanyName(details.getCompanyName());
+      order.setCVR(details.getCvr());
       order.setDeliveryAddress(details.getAddress());
+      order.setPhoneNo(details.getMobilePhone());
+      order.setZipCode(details.getZipCode());
     }
     return order;
   }

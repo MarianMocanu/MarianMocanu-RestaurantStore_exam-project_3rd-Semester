@@ -1,6 +1,5 @@
 package dk.kea.stud.fourplayers.restaurantstore.security;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -29,7 +28,7 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails.class,
+    @OneToOne(targetEntity = BusinessDetails.class,
             cascade = CascadeType.ALL)
     private BusinessDetails businessDetails;
 

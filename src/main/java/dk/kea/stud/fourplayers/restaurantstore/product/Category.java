@@ -1,4 +1,6 @@
-package dk.kea.stud.fourplayers.restaurantstore.model;
+package dk.kea.stud.fourplayers.restaurantstore.product;
+
+import dk.kea.stud.fourplayers.restaurantstore.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

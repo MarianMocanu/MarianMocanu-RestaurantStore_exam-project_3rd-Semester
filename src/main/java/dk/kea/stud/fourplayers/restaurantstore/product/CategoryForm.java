@@ -1,4 +1,4 @@
-package dk.kea.stud.fourplayers.restaurantstore.model;
+package dk.kea.stud.fourplayers.restaurantstore.product;
 
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package dk.kea.stud.fourplayers.restaurantstore.order;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.BaseEntity;
+import dk.kea.stud.fourplayers.restaurantstore.BaseEntity;
 import dk.kea.stud.fourplayers.restaurantstore.security.User;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,22 +34,20 @@ public class Order extends BaseEntity {
   private String deliveryAddress;
   @Column(name = "recipient_name")
   private String recipientName;
+  @Column(name = "company_name")
+  private String companyName;
+  @Column(name = "CVR")
+  private String CVR;
+  @Column(name = "phone_no")
+  private String phoneNo;
+  @Column(name = "zip_code")
+  private String zipCode;
   @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
   private List<OrderItem> itemList;
   @Column(name = "total")
   private int total;
-
-  public Order(User user, LocalDateTime orderTimestamp, LocalDateTime processedTimestamp, LocalDateTime deliveryTimestamp, Status status, String deliveryAddress, String recipientName, List<OrderItem> itemList, int total) {
-    this.user = user;
-    this.orderTimestamp = orderTimestamp;
-    this.processedTimestamp = processedTimestamp;
-    this.deliveryTimestamp = deliveryTimestamp;
-    this.status = status;
-    this.deliveryAddress = deliveryAddress;
-    this.recipientName = recipientName;
-    this.itemList = itemList;
-    this.total = total;
-  }
+  @Column(name = "discount")
+  private int discount;
 
   public Order() {
   }
@@ -60,6 +58,14 @@ public class Order extends BaseEntity {
 
   public void setTotal(int total) {
     this.total = total;
+  }
+
+  public int getDiscount() {
+    return discount;
+  }
+
+  public void setDiscount(int discount) {
+    this.discount = discount;
   }
 
   public String getRecipientName() {
@@ -124,6 +130,38 @@ public class Order extends BaseEntity {
 
   public void setItemList(List<OrderItem> itemList) {
     this.itemList = itemList;
+  }
+
+  public String getCompanyName() {
+    return companyName;
+  }
+
+  public void setCompanyName(String companyName) {
+    this.companyName = companyName;
+  }
+
+  public String getCVR() {
+    return CVR;
+  }
+
+  public void setCVR(String CVR) {
+    this.CVR = CVR;
+  }
+
+  public String getPhoneNo() {
+    return phoneNo;
+  }
+
+  public void setPhoneNo(String phoneNo) {
+    this.phoneNo = phoneNo;
+  }
+
+  public String getZipCode() {
+    return zipCode;
+  }
+
+  public void setZipCode(String zipCode) {
+    this.zipCode = zipCode;
   }
 
   @Override

@@ -12,12 +12,24 @@
                       ${item.getQuantity()} + ' x ' + ${item.getPrice()} + ' DKK = ' +
                       ${item.getPrice()} * ${item.getQuantity()}"></span>
             </div>
-            <div th:text="'Total = ' + *{total}"></div>
+            <div th:text="'Total = ' + *{total} + ' DKK'"></div>
             <div class="form-group">
                 <input th:replace="~{fragments/inputField :: input ('Name:', 'recipientName', 'text')}">
             </div>
             <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('Company:', 'companyName', 'text')}">
+            </div>
+            <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('CVR:', 'CVR', 'text')}">
+            </div>
+            <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('Phone No:', 'phoneNo', 'text')}">
+            </div>
+            <div class="form-group">
                 <input th:replace="~{fragments/inputField :: input ('Address:', 'deliveryAddress', 'text')}">
+            </div>
+            <div class="form-group">
+                <input th:replace="~{fragments/inputField :: input ('Zip Code:', 'zipCode', 'text')}">
             </div>
             <div class="form-group">
                 <input th:replace="~{fragments/inputField :: input ('Delivery time:', 'deliveryTimestamp', 'datetime')}">
