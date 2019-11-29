@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service("userService")
 public class UserService {
@@ -25,6 +26,11 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public List<User> findUsersByRole(Role role)
+    {
+        return userRepository.findByRoles(role);
     }
 
     public User saveNewUser(User user) {

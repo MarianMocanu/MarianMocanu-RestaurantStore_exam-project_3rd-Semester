@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+Your order #<span th:text="${order.id}"></span> has been processed at <span th:text="${order.processedTimestamp}"></span>.<br>
+<span th:text="'Order status: ' + ${order.status}"></span><br>
+<span th:text="'Order date & time: ' + ${order.orderTimestamp}"></span><br>
+<span th:text="'Customers name ' + ${order.recipientName}"></span><br>
+<span th:text="'Customers email: ' + ${order.user.email}"></span><br>
+<span th:text="'Delivery Address ' + ${order.deliveryAddress}"></span><br>
+<span th:text="'Delivery date & time: ' + ${order.deliveryTimestamp}"></span><br>
+Order list: <br>
+<div th:each="orderItem : ${order.itemList}">
+    <span th:text="'Id: #' + ${orderItem.id}"></span>
+    <span th:text="' - Name: ' +${orderItem.productName}"></span>
+    <span th:text="' - Category: ' + ${orderItem.categoryName}"></span>
+    <span th:text="' - Price: ' + ${orderItem.price}"></span>
+    <span th:text="' - Quantity: ' + ${orderItem.quantity}"></span>
+</div>
+<span th:text="'Total: ' + ${order.total}"></span><br>
+</body>
+</html>
