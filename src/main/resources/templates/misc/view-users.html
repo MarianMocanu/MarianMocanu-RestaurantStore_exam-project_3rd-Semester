@@ -2,7 +2,9 @@
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'dashboard')}">
 <body>
-
+<div th:if="${error}">
+    <span th:text="${error}"></span>
+</div>
 ADMINS:
 <div th:each="admin : ${admins}" class="row">
         <span th:text="${admin.email}"></span>

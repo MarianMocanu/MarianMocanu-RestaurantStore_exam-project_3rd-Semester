@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashSet;
 import java.util.List;
@@ -120,13 +121,21 @@ public class LoginController {
     }
 
     @GetMapping("/admin/users/remove-admin/{id}")
-    public String makeUser(@PathVariable("id") int id){
+    public String makeUser(@PathVariable("id") int id, RedirectAttributes redirectAttributes){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserById(id);
-        Role userRole = roleRepository.findByRole("USER");
-        Set roles = new HashSet();
-        roles.add(userRole);
-        user.setRoles(roles);
-        userService.saveExistingUser(user);
+        //if the targeted user is not the same as the one that is logged in
+        if(!authentication.getName().equals(user.getEmail()))
+        {
+            Role userRole = roleRepository.findByRole("USER");
+            Set roles = new HashSet();
+            roles.add(userRole);
+            user.setRoles(roles);
+            userService.saveExistingUser(user);
+        }
+        else{
+            redirectAttributes.addFlashAttribute("error", "You can not edit your own role.");
+        }
         return "redirect:/admin/users/view";
     }
 
