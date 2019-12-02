@@ -1,10 +1,8 @@
-package dk.kea.stud.fourplayers.restaurantstore.security;
+package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.BusinessDetails;
-import dk.kea.stud.fourplayers.restaurantstore.model.CategoryRepository;
-import dk.kea.stud.fourplayers.restaurantstore.model.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import dk.kea.stud.fourplayers.restaurantstore.security.BusinessDetails;
+import dk.kea.stud.fourplayers.restaurantstore.security.User;
+import dk.kea.stud.fourplayers.restaurantstore.security.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -41,7 +39,7 @@ public class ProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
         user.setBusinessDetails(businessDetails);
-        userService.saveUser(user);
+        userService.saveExistingUser(user);
         return "redirect:/profile";
     }
 }

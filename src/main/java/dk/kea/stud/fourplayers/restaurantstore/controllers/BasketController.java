@@ -1,7 +1,8 @@
-package dk.kea.stud.fourplayers.restaurantstore.order;
+package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.Product;
-import dk.kea.stud.fourplayers.restaurantstore.model.ProductRepository;
+import dk.kea.stud.fourplayers.restaurantstore.product.Product;
+import dk.kea.stud.fourplayers.restaurantstore.product.ProductRepository;
+import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

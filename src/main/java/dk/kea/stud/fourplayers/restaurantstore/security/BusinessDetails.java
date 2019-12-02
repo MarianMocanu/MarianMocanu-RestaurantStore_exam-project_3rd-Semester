@@ -1,10 +1,11 @@
-package dk.kea.stud.fourplayers.restaurantstore.model;
+package dk.kea.stud.fourplayers.restaurantstore.security;
 
-import javax.persistence.Column;
+import dk.kea.stud.fourplayers.restaurantstore.BaseEntity;
+
 import javax.persistence.Entity;
 
 @Entity
-public class BusinessDetails extends BaseEntity{
+public class BusinessDetails extends BaseEntity {
     private String companyName;
     private String cvr;
     private String firstName;

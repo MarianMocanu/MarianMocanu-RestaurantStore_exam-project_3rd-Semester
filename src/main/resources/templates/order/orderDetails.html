@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+
+
+<body>
+<section class="middle-align">
+    <div class="container">
+        <div class="row">
+            <div class="col-10 offset-md-1">
+                <h3>Detailed Order</h3>
+                <form th:object="${order}" method="post">
+                    <div class="row customMargin">
+                        <div class="col">Date and time when the order was received:</div>
+                        <div class="col" th:text="*{orderTimestamp}"></div>
+                    </div>
+                    <div class="row customMargin">
+                        <div class="col">Date and time when the order was processed:</div>
+                        <div class="col" th:text="*{processedTimestamp}"></div>
+                    </div>
+                    <div class="row customMargin">
+                        <div class="col">Date and time when the order must be delivered:</div>
+                        <div class="col" th:text="*{deliveryTimestamp}"></div>
+                    </div>
+                    <div class="row customMargin">
+                        <div class="col">Delivery address:</div>
+                        <div class="col" th:text="*{deliveryAddress}"></div>
+                    </div>
+                    <div class="row customMargin">
+                        <div class="col">Recipient Name:</div>
+                        <div class="col" th:text="*{recipientName}"></div>
+                    </div>
+<!--                    <div class="row customMargin">-->
+<!--                        <div class="col">Ordered by:</div>-->
+<!--                        <div class="col" th:text="*{user.businessDetails.firstName + ' ' + user.businessDetails.lastName}"></div>-->
+<!--                    </div>-->
+                    <div class="row customMargin">
+                        <div class="col">Product name:</div>
+                        <div class="col">Category:</div>
+                        <div class="col">Quantity:</div>
+                        <div class="col">Price:</div>
+                    </div>
+                    <div class="row customMargin" th:each="item : *{itemList}">
+                        <div class="col" th:text="${item.productName}"></div>
+                        <div class="col" th:text="${item.categoryName}"></div>
+                        <div class="col" th:text="${item.quantity}"></div>
+                        <div class="col" th:text="${item.price} + ' DKK'"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">-------------------------------</div>
+                        <div class="col">Total price of products: </div>
+                        <div class="col">-------------------------------</div>
+                        <div class="col" th:text="${order.getTotal()} + ' DKK '"></div>
+                    </div>
+                    <div class="row customMargin">
+                        <div class="col">Order status:</div>
+                        <div class="col">
+                            <select class="form-control" name="status" th:field="*{status}">
+                                <option th:each="statusValue :
+                            ${T(dk.kea.stud.fourplayers.restaurantstore.order.Order.Status).values()}"
+                                        th:value="${statusValue}" th:text="${statusValue}"
+                                        th:selected="*{status}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="number"
+                                   name="discountAmount" placeholder="Discount amount">
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-info form-control" type="submit">Update order</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

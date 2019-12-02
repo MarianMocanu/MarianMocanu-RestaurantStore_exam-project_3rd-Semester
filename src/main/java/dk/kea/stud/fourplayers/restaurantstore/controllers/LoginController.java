@@ -1,8 +1,11 @@
-package dk.kea.stud.fourplayers.restaurantstore.security;
+package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import dk.kea.stud.fourplayers.restaurantstore.security.Role;
+import dk.kea.stud.fourplayers.restaurantstore.security.RoleRepository;
+import dk.kea.stud.fourplayers.restaurantstore.security.User;
+import dk.kea.stud.fourplayers.restaurantstore.security.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,15 +14,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
 public class LoginController {
     private final UserService userService;
+    private final RoleRepository roleRepository;
 
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/login")
@@ -45,7 +56,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             return "registration";
         } else {
-            userService.saveUser(user);
+            userService.saveNewUser(user);
             model.addAttribute("registrationSuccess", "User has been registered successfully.");
             model.addAttribute("registrationUsername", user.getEmail());
             System.out.println(user);
@@ -83,6 +94,49 @@ public class LoginController {
     @GetMapping("/access-denied")
     public String accessDenied() {
         return "misc/access-denied";
+    }
+
+    @GetMapping("/admin/users/view")
+    public String getAllUsers(Model model){
+        Role adminRole = roleRepository.findByRole("ADMIN");
+        Role userRole = roleRepository.findByRole("USER");
+        List<User> admins = userService.findUsersByRole(adminRole);
+        List<User> users = userService.findUsersByRole(userRole);
+
+        model.addAttribute("admins", admins);
+        model.addAttribute("users", users);
+
+        return "misc/view-users";
+    }
+
+    @GetMapping("/admin/users/add-admin/{id}")
+    public String makeAdmin(@PathVariable("id") int id){
+        User user = userService.findUserById(id);
+        Role adminRole = roleRepository.findByRole("ADMIN");
+        Set roles = new HashSet();
+        roles.add(adminRole);
+        user.setRoles(roles);
+        userService.saveExistingUser(user);
+        return "redirect:/admin/users/view";
+    }
+
+    @GetMapping("/admin/users/remove-admin/{id}")
+    public String makeUser(@PathVariable("id") int id, RedirectAttributes redirectAttributes){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserById(id);
+        //if the targeted user is not the same as the one that is logged in
+        if(!authentication.getName().equals(user.getEmail()))
+        {
+            Role userRole = roleRepository.findByRole("USER");
+            Set roles = new HashSet();
+            roles.add(userRole);
+            user.setRoles(roles);
+            userService.saveExistingUser(user);
+        }
+        else{
+            redirectAttributes.addFlashAttribute("error", "You can not edit your own role.");
+        }
+        return "redirect:/admin/users/view";
     }
 
 //    @GetMapping("/admin/home")
