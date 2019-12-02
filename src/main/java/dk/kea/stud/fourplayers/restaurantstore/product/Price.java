@@ -31,6 +31,14 @@ public class Price extends BaseEntity implements Comparable {
     return price;
   }
 
+  public double getFormattedPrice() {
+    return (double) price / 100.0;
+  }
+
+  public void setDoublePrice(double price) {
+    this.price = (int)(price * 100);
+  }
+
   public void setPrice(int price) {
     this.price = price;
   }
