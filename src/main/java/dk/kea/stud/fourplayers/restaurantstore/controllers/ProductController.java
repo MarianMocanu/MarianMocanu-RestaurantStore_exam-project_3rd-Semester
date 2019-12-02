@@ -92,14 +92,14 @@ public class ProductController {
 
       return ADD_OR_UPDATE_PRODUCT;
     } else {
-      if (formData.getNewPrice().getQuantity() > 0 && formData.getNewPrice().getPrice() > 0) {
+      if (formData.getNewPrice().getQuantity() > 0) {
         formData.getProduct().addPrice(formData.getNewPrice());
       }
       if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
         formData.getProduct().addImage(formData.getNewImage());
       }
-      int id = products.save(formData.getProduct()).getId();
-      return "redirect:/admin/product/edit/" + id;
+      Product newProduct = products.save(formData.getProduct());
+      return "redirect:/admin/product/edit/" + newProduct.getId();
     }
   }
 

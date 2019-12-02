@@ -45,26 +45,26 @@ public class Order extends BaseEntity {
   @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
   private List<OrderItem> itemList;
   @Column(name = "total")
-  private int total;
+  private double total;
   @Column(name = "discount")
-  private int discount;
+  private double discount;
 
   public Order() {
   }
 
-  public int getTotal() {
+  public double getTotal() {
     return total;
   }
 
-  public void setTotal(int total) {
+  public void setTotal(double total) {
     this.total = total;
   }
 
-  public int getDiscount() {
+  public double getDiscount() {
     return discount;
   }
 
-  public void setDiscount(int discount) {
+  public void setDiscount(double discount) {
     this.discount = discount;
   }
 

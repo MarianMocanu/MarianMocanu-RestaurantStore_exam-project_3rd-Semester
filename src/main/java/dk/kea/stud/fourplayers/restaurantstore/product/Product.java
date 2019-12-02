@@ -90,18 +90,18 @@ public class Product extends BaseEntity {
     this.images.add(image);
   }
 
-  public int getBestPriceForQuantity(int quantity) {
-    int result = 0;
+  public Double getBestPriceForQuantity(int quantity) {
+    Double result = 0.0;
     if (quantity < 1) {
       return result;
     }
 
-    Map<Integer, Integer> sortedPrices = new TreeMap<>();
+    Map<Integer, Double> sortedPrices = new TreeMap<>();
     for (Price price : this.prices) {
       sortedPrices.put(price.getQuantity(), price.getPrice());
     }
 
-    for (Map.Entry<Integer, Integer> entry : sortedPrices.entrySet()) {
+    for (Map.Entry<Integer, Double> entry : sortedPrices.entrySet()) {
       if (entry.getKey() > quantity) {
         break;
       }

@@ -45,7 +45,7 @@ public class BasketController {
         productMap.put(id, product.get());
       }
     }
-    int total = 0;
+    double total = 0;
     for (Map.Entry<Integer, Integer> entry : basket.getProductsInBasket().entrySet()) {
       total += productMap.get(entry.getKey()).getBestPriceForQuantity(entry.getValue()) * entry.getValue();
     }

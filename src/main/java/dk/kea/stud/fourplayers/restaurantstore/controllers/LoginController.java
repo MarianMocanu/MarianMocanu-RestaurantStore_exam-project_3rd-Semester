@@ -121,31 +121,19 @@ public class LoginController {
     }
 
     @GetMapping("/admin/users/remove-admin/{id}")
-    public String makeUser(@PathVariable("id") int id, RedirectAttributes redirectAttributes){
+    public String makeUser(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserById(id);
         //if the targeted user is not the same as the one that is logged in
-        if(!authentication.getName().equals(user.getEmail()))
-        {
+        if (!authentication.getName().equals(user.getEmail())) {
             Role userRole = roleRepository.findByRole("USER");
             Set roles = new HashSet();
             roles.add(userRole);
             user.setRoles(roles);
             userService.saveExistingUser(user);
-        }
-        else{
+        } else {
             redirectAttributes.addFlashAttribute("error", "You can not edit your own role.");
         }
         return "redirect:/admin/users/view";
     }
-
-//    @GetMapping("/admin/home")
-//    public String home(Model model){
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userService.findUserByEmail(auth.getName());
-//        model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-//        model.addAttribute("adminMessage","Content available only for admins.");
-//        return "misc/admin";
-//    }
-
 }
