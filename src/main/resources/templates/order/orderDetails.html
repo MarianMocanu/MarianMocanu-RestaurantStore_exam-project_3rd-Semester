@@ -35,10 +35,10 @@
                         <div class="col">Recipient Name:</div>
                         <div class="col" th:text="*{recipientName}"></div>
                     </div>
-<!--                    <div class="row customMargin">-->
-<!--                        <div class="col">Ordered by:</div>-->
-<!--                        <div class="col" th:text="*{user.businessDetails.firstName + ' ' + user.businessDetails.lastName}"></div>-->
-<!--                    </div>-->
+                    <!--                    <div class="row customMargin">-->
+                    <!--                        <div class="col">Ordered by:</div>-->
+                    <!--                        <div class="col" th:text="*{user.businessDetails.firstName + ' ' + user.businessDetails.lastName}"></div>-->
+                    <!--                    </div>-->
                     <div class="row customMargin">
                         <div class="col">Product name:</div>
                         <div class="col">Category:</div>
@@ -49,16 +49,22 @@
                         <div class="col" th:text="${item.productName}"></div>
                         <div class="col" th:text="${item.categoryName}"></div>
                         <div class="col" th:text="${item.quantity}"></div>
-                        <div class="col" th:text="${item.price} + ' DKK'"></div>
+                        <div class="col" th:text="${item.price / 100.0} + ' DKK'"></div>
                     </div>
                     <div class="row">
                         <div class="col">-------------------------------</div>
-                        <div class="col">Total price of products: </div>
+                        <div class="col">Discount:</div>
                         <div class="col">-------------------------------</div>
-                        <div class="col" th:text="${order.getTotal()} + ' DKK '"></div>
+                        <div class="col" th:text="${order.getFormattedDiscount()}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">-------------------------------</div>
+                        <div class="col">Total price of products:</div>
+                        <div class="col">-------------------------------</div>
+                        <div class="col" th:text="${order.getFormattedTotal()}"></div>
                     </div>
                     <div class="row customMargin">
-                        <div class="col">Order status:</div>
+                        <div class="col form-control">Order status:</div>
                         <div class="col">
                             <select class="form-control" name="status" th:field="*{status}">
                                 <option th:each="statusValue :
@@ -69,12 +75,19 @@
                             </select>
                         </div>
                         <div class="col">
-                            <input class="form-control" type="number"
-                                   name="discountAmount" placeholder="Discount amount">
+                            <select class="form-control" name="discountType">
+                                <option value="0" selected>Discount value</option>
+                                <option value="1">Discount percentage</option>
+                            </select>
                         </div>
                         <div class="col">
-                            <button class="btn btn-info form-control" type="submit">Update order</button>
+                            <input class="form-control" type="number"
+                                   name="discountAmount" placeholder="Input amount">
                         </div>
+                    </div>
+                    <div class="row customMargin">
+                        <button class="btn btn-info form-control" type="submit">Update order
+                        </button>
                     </div>
                 </form>
             </div>

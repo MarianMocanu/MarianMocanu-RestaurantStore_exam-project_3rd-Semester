@@ -56,12 +56,20 @@ public class Order extends BaseEntity {
     return total;
   }
 
+  public String getFormattedTotal() {
+    return this.total / 100.0 + " DKK";
+  }
+
   public void setTotal(int total) {
     this.total = total;
   }
 
   public int getDiscount() {
     return discount;
+  }
+
+  public String getFormattedDiscount() {
+    return this.discount / 100.0 + " DKK";
   }
 
   public void setDiscount(int discount) {
