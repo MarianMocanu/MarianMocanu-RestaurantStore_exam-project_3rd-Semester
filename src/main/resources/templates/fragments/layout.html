@@ -43,19 +43,9 @@
                 <span>Shop</span>
             </li>
 
-            <li th:replace="::menuItem ('/admin/statistics','statistics','Statistics','statistics','Statistics')">
-                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                <span>Shop</span>
-            </li>
-
-            <li th:replace="::menuItem ('/profile','profile','Profile','profile','Profile')">
-                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                <span>Profile</span>
-            </li>
-
         </ul>
         <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
-            <li th:replace="::menuItem ('/basket', 'basket', 'Basket', 'basket', 'Basket')">
+            <li th:replace="::menuItem ('/basket', 'basket', 'Basket', 'basket', ('Basket' + (${session.basket} == null or ${session.basket.getNumProducts()} == 0 ? '' :  ' (' + ${session.basket.getNumProducts()} + ')')))">
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                 <span>Basket</span>
             </li>
@@ -67,13 +57,25 @@
             </div>
 
             <div sec:authorize="isAuthenticated()">
-                <li th:replace="::menuItem ('/logout','logout','Logout','logout', 'Logout, ' + ${#authentication.getPrincipal().getUsername()})">
-                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                    <span>Logout</span>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <span th:text="${#authentication.getPrincipal().getUsername()}">Account</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a href="/profile" class="dropdown-item">Profile</a>
+                        <div sec:authorize="hasAuthority('ADMIN')">
+                            <a href="/admin/product/add" class="dropdown-item">Add Product</a>
+                            <a href="/admin/category/view" class="dropdown-item">Manage Categories</a>
+                            <a href="/admin/order/viewAll" class="dropdown-item">Manage Orders</a>
+                            <a href="/admin/statistics" class="dropdown-item">Statistics</a>
+                            <a href="/admin/users/view" class="dropdown-item">Manage Admins</a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" class="dropdown-item">Logout</a>
+                    </div>
                 </li>
-
             </div>
-
 
         </ul>
     </div>
