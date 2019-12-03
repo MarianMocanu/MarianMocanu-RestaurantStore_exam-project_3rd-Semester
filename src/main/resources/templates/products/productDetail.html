@@ -17,9 +17,11 @@
                         <div class="col-6">Price:</div>
                     </div>
                     <div class="row">
-                        <th:block th:each="price : ${product.getPrices()}">
-                            <div class="col-6" th:text="${price.getQuantity()}">
+                        <th:block th:each="price, iter : ${product.getPrices()}">
+                            <div class="col-6" th:unless="${iter.last}"
+                                 th:text="${price.getQuantity()} + ' - ' + (${product.getPrices()[__${iter.index}__ + 1].getQuantity()} - 1)">
                             </div>
+                            <div class="col-6" th:if="${iter.last}" th:text="${price.getQuantity()} + '+'"></div>
                             <div class="col-6" th:text="${price.getPrice()}">
                             </div>
                         </th:block>
