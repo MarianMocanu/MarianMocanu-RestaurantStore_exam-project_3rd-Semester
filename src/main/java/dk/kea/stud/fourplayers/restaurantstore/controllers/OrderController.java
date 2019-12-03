@@ -138,13 +138,22 @@ public class OrderController {
   @PostMapping("/admin/order/view/{orderId}")
   public String updateOrderStatus(@PathVariable("orderId") int orderId,
                                   @RequestParam("status") Order.Status status,
-                                  @RequestParam(value = "discountAmount", required = false) Integer discount) {
+                                  @RequestParam(value = "discountAmount", required = false) Integer discount,
+                                  @RequestParam(value = "discountType", required = false) int discountType) {
     Order order = orders.findById(orderId).get();
     order.setStatus(status);
     order.setProcessedTimestamp(LocalDateTime.now());
     if (discount != null) {
       if (discount > 0) {
-        order.setTotal(order.getTotal() - discount);
+        if (discountType == 0) {
+          order.setDiscount(discount * 100);
+          order.setTotal(order.getTotal() - order.getDiscount());
+        }
+        if (discountType == 1) {
+          double processedDiscount = order.getTotal() * discount / 100.0;
+          order.setDiscount((int) processedDiscount);
+          order.setTotal(order.getTotal() - order.getDiscount());
+        }
       }
     }
 
