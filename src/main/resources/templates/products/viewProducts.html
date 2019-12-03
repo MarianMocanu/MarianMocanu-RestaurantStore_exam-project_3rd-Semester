@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
 <body>
+<style>
 
+</style>
 <div class="container">
     <div class="row products-row">
         <div class="col-8 mx-auto">
-        <form action="/shop" method="get" class="input-group">
-            <input class="form-control form-control-dark" type="text" placeholder="Search" name="search"
-                   aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-info" value="Search">Search</button>
-            </div>
-        </form>
+            <form action="/shop" method="get" class="input-group">
+                <input class="form-control form-control-dark" type="text" placeholder="Search" name="search"
+                       aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-info" value="Search">Search</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <div class="row products-row text-center">
         <div class="col">
             <div class="dropdown">
-                <button class="btn btn-info w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                <button class="btn btn-info w-100 dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                     Categories
                 </button>
@@ -32,52 +37,68 @@
             </div>
         </div>
         <div class="col">
-            <a href="/admin/product/add" class="btn btn-info w-100">Add Product</a>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="minPrice" placeholder="Min. price">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">-</div>
+                    </div>
+                    <input type="number" class="form-control" id="maxPrice" placeholder="Max. price">
+                </div>
+            </div>
         </div>
-        <div class="col">
-            <input type="number" id="minPrice" placeholder="Min price"/>
-            <input type="number" id="maxPrice" placeholder="Max price"/>
-        </div>
+    </div>
+    <div class="row">
+
     </div>
 
 
-    <div class="row products-row text-center justify-content-center">
-        <th:block th:if="${noProducts}">
-            <h3>No products matched your query</h3>
-        </th:block>
-        <th:block th:unless="${noProducts}">
-        <div class="card card-products rounded bg-dark" style="width: 18rem;" th:each="product: ${products}">
-            <img th:src="${product.images.isEmpty()} ? '../images/defaultImage.jpg' : ${product.images[0].url}" class="card-img-top">
-            <div class="card-body card-body-product-main">
-                <h5 class="card-title product-name"><a th:href="'/product/' + ${product.id}"
-                                          th:text="${product.name}"></a></h5>
-                <p class="card-text" th:text="${product.description}"></p>
-            </div>
-            <ul class="card-body list-group list-group-flush">
-                <li class="list-group-item bg-dark price"
-                    th:text="'Price: ' + (${product.prices.isEmpty()} ? '0!!!' : ${product.prices[0].getPrice()}) + ' DKK'"></li>
-                <li class="list-group-item bg-dark" th:text="'Category: ' + ${product.category}"></li>
-            </ul>
-            <div class="card-body">
-            <form action="/addToBasket" method="post">
-                <input type="hidden" name="productId" th:value="${product.id}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="btn btn-info">Add to cart</button>
-            </form>
-            </div>
-            <div class="card-body card-body-product-links">
-                <a th:href="'/admin/product/edit/' + ${product.id}" class="card-link btn btn-info">Edit</a>
-                <a th:href="'/admin/product/delete/' + ${product.id}" class="card-link btn btn-info">Delete</a>
-            </div>
+    <!-- Products -->
+    <div class="container">
+        <div class="row">
+            <th:block th:if="${noProducts}">
+                <h3>No products matched your query</h3>
+            </th:block>
+            <th:block th:unless="${noProducts}">
+                <div class="col-md-3 col-sm-6" th:each="product: ${products}">
+                    <div class="product-grid2">
+                        <div class="product-image2">
+                            <a th:href="'/product/' + ${product.id}">
+                                <img class="pic-1"
+                                     th:src="${product.images.isEmpty()} ? '../images/defaultImage.jpg' : ${product.images[0].url}">
+                            </a>
+                            <ul class="social" sec:authorize="hasAuthority('ADMIN')">
+                                <li><a th:href="'/admin/product/edit/' + ${product.id}" data-tip="Edit Product"><i
+                                        class="fas fa-edit"></i></a></li>
+                                <li><a th:href="'/admin/product/delete/' + ${product.id}" data-tip="Delete Product"><i
+                                        class="fas fa-trash-alt"></i></i></a></li>
+                            </ul>
+                            <form action="/addToBasket" method="post">
+                                <input type="hidden" name="productId" th:value="${product.id}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="add-to-cart">Add to cart</button>
+                            </form>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a th:href="'/product/' + ${product.id}"
+                                                 th:text="${product.name}">Name</a></h3>
+                            <span class="price"
+                                  th:text="'Price: ' + (${product.prices.isEmpty()} ? '0!!!' : ${product.prices[0].getPrice()}) + ' DKK'">$599.99</span>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
         </div>
-        </th:block>
     </div>
+
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
+
+
         let minPrice = document.querySelector("#minPrice");
         let maxPrice = document.querySelector("#maxPrice");
 
@@ -111,14 +132,14 @@
                 }
                 if (isNaN(max)) {
                     if (price >= min) {
-                        priceString.parentElement.parentElement.style.display = "block";
+                        priceString.parentElement.parentElement.parentElement.style.display = "block";
                     } else {
-                        priceString.parentElement.parentElement.style.display = "none";
+                        priceString.parentElement.parentElement.parentElement.style.display = "none";
                     }
                 } else if (price >= min && price <= max) {
-                    priceString.parentElement.parentElement.style.display = "block";
+                    priceString.parentElement.parentElement.parentElement.style.display = "block";
                 } else {
-                    priceString.parentElement.parentElement.style.display = "none";
+                    priceString.parentElement.parentElement.parentElement.style.display = "none";
                 }
             }
         }
