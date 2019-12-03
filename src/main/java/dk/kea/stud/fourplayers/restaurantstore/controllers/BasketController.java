@@ -1,7 +1,8 @@
-package dk.kea.stud.fourplayers.restaurantstore.order;
+package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.Product;
-import dk.kea.stud.fourplayers.restaurantstore.model.ProductRepository;
+import dk.kea.stud.fourplayers.restaurantstore.product.Product;
+import dk.kea.stud.fourplayers.restaurantstore.product.ProductRepository;
+import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class BasketController {
         productMap.put(id, product.get());
       }
     }
-    int total = 0;
+    double total = 0;
     for (Map.Entry<Integer, Integer> entry : basket.getProductsInBasket().entrySet()) {
       total += productMap.get(entry.getKey()).getBestPriceForQuantity(entry.getValue()) * entry.getValue();
     }

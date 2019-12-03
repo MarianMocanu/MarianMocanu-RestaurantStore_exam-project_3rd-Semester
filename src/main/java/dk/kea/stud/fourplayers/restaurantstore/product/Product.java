@@ -1,4 +1,6 @@
-package dk.kea.stud.fourplayers.restaurantstore.model;
+package dk.kea.stud.fourplayers.restaurantstore.product;
+
+import dk.kea.stud.fourplayers.restaurantstore.BaseEntity;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,15 +14,15 @@ public class Product extends BaseEntity {
   @Column(name = "description")
   private String description;
 
-  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Price.class,
+  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.product.Price.class,
       cascade = CascadeType.ALL)
   private List<Price> prices;
 
-  @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.Category.class)
+  @OneToOne(targetEntity = dk.kea.stud.fourplayers.restaurantstore.product.Category.class)
   @JoinColumn(name = "category_id")
   private Category category;
 
-  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.model.ProductImage.class,
+  @OneToMany(targetEntity = dk.kea.stud.fourplayers.restaurantstore.product.ProductImage.class,
       cascade = CascadeType.ALL)
   private List<ProductImage> images;
 
@@ -47,6 +49,7 @@ public class Product extends BaseEntity {
     if (prices == null) {
       prices = new ArrayList<>();
     }
+    prices.sort(Price::compareTo);
     return prices;
   }
 
@@ -87,18 +90,18 @@ public class Product extends BaseEntity {
     this.images.add(image);
   }
 
-  public int getBestPriceForQuantity(int quantity) {
-    int result = 0;
+  public Double getBestPriceForQuantity(int quantity) {
+    Double result = 0.0;
     if (quantity < 1) {
       return result;
     }
 
-    Map<Integer, Integer> sortedPrices = new TreeMap<>();
+    Map<Integer, Double> sortedPrices = new TreeMap<>();
     for (Price price : this.prices) {
       sortedPrices.put(price.getQuantity(), price.getPrice());
     }
 
-    for (Map.Entry<Integer, Integer> entry : sortedPrices.entrySet()) {
+    for (Map.Entry<Integer, Double> entry : sortedPrices.entrySet()) {
       if (entry.getKey() > quantity) {
         break;
       }

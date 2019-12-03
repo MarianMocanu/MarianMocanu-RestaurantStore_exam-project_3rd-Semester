@@ -1,7 +1,8 @@
 package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.model.*;
+import dk.kea.stud.fourplayers.restaurantstore.product.*;
 import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
+import dk.kea.stud.fourplayers.restaurantstore.order.OrderItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,13 +20,15 @@ public class ProductController {
   private final PriceRepository prices;
   private final ProductImageRepository images;
   private final String ADD_OR_UPDATE_PRODUCT = "products/addOrUpdateProduct";
+  private final OrderItemRepository orderItems;
 
   public ProductController(CategoryRepository categoryRepo, ProductRepository productRepo,
-                           PriceRepository priceRepo, ProductImageRepository imageRepo) {
+                           PriceRepository priceRepo, ProductImageRepository imageRepo, OrderItemRepository orderItems) {
     this.categories = categoryRepo;
     this.products = productRepo;
     this.prices = priceRepo;
     this.images = imageRepo;
+    this.orderItems = orderItems;
   }
 
   @ModelAttribute("allCategories")
@@ -89,28 +92,31 @@ public class ProductController {
 
       return ADD_OR_UPDATE_PRODUCT;
     } else {
-      if (formData.getNewPrice().getQuantity() > 0 && formData.getNewPrice().getPrice() > 0) {
+      if (formData.getNewPrice().getQuantity() > 0) {
         formData.getProduct().addPrice(formData.getNewPrice());
       }
       if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
         formData.getProduct().addImage(formData.getNewImage());
       }
-      int id = products.save(formData.getProduct()).getId();
-      return "redirect:/admin/product/edit/" + id;
+      Product newProduct = products.save(formData.getProduct());
+      return "redirect:/admin/product/edit/" + newProduct.getId();
     }
   }
 
   @GetMapping("/admin/product/edit/{productId}")
   public String editProduct(@PathVariable("productId") int productId, Model model) {
     ProductForm formData = new ProductForm();
-    Product product = products.findById(productId).get();
-    product.getPrices().sort(Price::compareTo);
-    formData.setProduct(product);
-    formData.setNewPrice(new Price());
-    formData.setNewImage(new ProductImage());
-    model.addAttribute("formData", formData);
+    Optional<Product> product = products.findById(productId);
+    if (!product.isPresent()) {
+      return "redirect:/shop";
+    } else {
+      formData.setProduct(product.get());
+      formData.setNewPrice(new Price());
+      formData.setNewImage(new ProductImage());
+      model.addAttribute("formData", formData);
 
-    return ADD_OR_UPDATE_PRODUCT;
+      return ADD_OR_UPDATE_PRODUCT;
+    }
   }
 
   @PostMapping("/admin/product/edit/{productId}")
@@ -161,4 +167,10 @@ public class ProductController {
     model.addAttribute("product", product.get());
     return "products/productDetail";
   }
+
+  @GetMapping("/admin/statistics")
+  public String statistics(){
+    return "statistics/statisticsList";
+  }
+
 }

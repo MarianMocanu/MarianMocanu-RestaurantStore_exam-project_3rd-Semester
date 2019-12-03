@@ -1,4 +1,4 @@
-package dk.kea.stud.fourplayers.restaurantstore.model;
+package dk.kea.stud.fourplayers.restaurantstore.product;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,4 +21,5 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
   " OR LOWER(product.description) LIKE(CONCAT('%', :search, '%'))")
   @Transactional(readOnly = true)
   Collection<Product> findProductBySearchInput(@Param("search") String search);
+
 }

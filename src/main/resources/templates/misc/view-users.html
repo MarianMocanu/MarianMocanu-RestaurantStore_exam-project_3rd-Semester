@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'dashboard')}">
+<body>
+<div th:if="${error}">
+    <span th:text="${error}"></span>
+</div>
+ADMINS:
+<div th:each="admin : ${admins}" class="row">
+        <span th:text="${admin.email}"></span>
+        <a th:href="'/admin/users/remove-admin/' + ${admin.id}">Make User</a>
+</div>
+<div class="row"><hr></div>
+USERS:
+<div th:each="user : ${users}" class="row">
+    <span th:text="${user.email}"></span>
+    <a th:href="'/admin/users/add-admin/' + ${user.id}">Make Admin</a>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package dk.kea.stud.fourplayers.restaurantstore.model;
+package dk.kea.stud.fourplayers.restaurantstore.product;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,7 +11,6 @@ public class ProductFormValidator implements Validator {
 
   @Override
   public void validate(Object o, Errors errors) {
-    System.out.println("Validator validating");
     ProductForm formData = (ProductForm) o;
 
     if (formData.getNewPrice().getQuantity() < 0 || formData.getNewPrice().getPrice() < 0) {
