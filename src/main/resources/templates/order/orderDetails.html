@@ -55,13 +55,13 @@
                         <div class="col">-------------------------------</div>
                         <div class="col">Discount:</div>
                         <div class="col">-------------------------------</div>
-                        <div class="col" th:text="${order.getFormattedDiscount()}"></div>
+                        <div class="col" th:text="${order.getDiscount()}"></div>
                     </div>
                     <div class="row">
                         <div class="col">-------------------------------</div>
                         <div class="col">Total price of products:</div>
                         <div class="col">-------------------------------</div>
-                        <div class="col" th:text="${order.getFormattedTotal()}"></div>
+                        <div class="col" th:text="${order.getTotal()}"></div>
                     </div>
                     <div class="row customMargin">
                         <div class="col form-control">Order status:</div>
