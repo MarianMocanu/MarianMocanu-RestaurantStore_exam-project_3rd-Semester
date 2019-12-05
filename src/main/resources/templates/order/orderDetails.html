@@ -21,7 +21,8 @@
                     </div>
                     <div class="row customMargin">
                         <div class="col">Date and time when the order was processed:</div>
-                        <div class="col" th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(processedTimestamp)}"></div>
+                        <div class="col" th:if="*{processedTimestamp != null}"
+                             th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(processedTimestamp)}"></div>
                     </div>
                     <div class="row customMargin">
                         <div class="col">Date and time when the order must be delivered:</div>
@@ -49,7 +50,7 @@
                         <div class="col" th:text="${item.productName}"></div>
                         <div class="col" th:text="${item.categoryName}"></div>
                         <div class="col" th:text="${item.quantity}"></div>
-                        <div class="col" th:text="${item.price / 100.0} + ' DKK'"></div>
+                        <div class="col" th:text="${item.getPrice()}"></div>
                     </div>
                     <div class="row">
                         <div class="col">-------------------------------</div>
