@@ -17,15 +17,15 @@
                 <form th:object="${order}" method="post">
                     <div class="row customMargin">
                         <div class="col">Date and time when the order was received:</div>
-                        <div class="col" th:text="*{orderTimestamp}"></div>
+                        <div class="col" th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(orderTimestamp)}"></div>
                     </div>
                     <div class="row customMargin">
                         <div class="col">Date and time when the order was processed:</div>
-                        <div class="col" th:text="*{processedTimestamp}"></div>
+                        <div class="col" th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(processedTimestamp)}"></div>
                     </div>
                     <div class="row customMargin">
                         <div class="col">Date and time when the order must be delivered:</div>
-                        <div class="col" th:text="*{deliveryTimestamp}"></div>
+                        <div class="col" th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(deliveryTimestamp)}"></div>
                     </div>
                     <div class="row customMargin">
                         <div class="col">Delivery address:</div>

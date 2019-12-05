@@ -22,7 +22,7 @@
                 </div>
                 <div class="row" th:each="order : ${pendingOrders}">
                     <div class="col" th:text="${order.getId()}"></div>
-                    <div class="col" th:text="${order.getDeliveryTimestamp()}"></div>
+                    <div class="col" th:text="${T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(order.getDeliveryTimestamp())}"></div>
                     <div class="col" th:text="${order.getRecipientName()}"></div>
                     <div class="col">
                         <a th:text="${order.getStatus()}"
@@ -38,7 +38,7 @@
                 </div>
                 <div class="row" th:each="order : ${notPendingOrders}">
                     <div class="col" th:text="${order.getId()}"></div>
-                    <div class="col" th:text="${order.getDeliveryTimestamp()}"></div>
+                    <div class="col" th:text="${T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(order.getDeliveryTimestamp())}"></div>
                     <div class="col" th:text="${order.getRecipientName()}"></div>
                     <div class="col">
                         <a th:text="${order.getStatus()}"
