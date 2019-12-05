@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Categories</title>
+    <title>Detailed Order</title>
 </head>
 
 
@@ -29,7 +29,7 @@
                         <tbody>
                         <tr>
                             <td th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(orderTimestamp)}"></td>
-                            <td th:text="*{processedTimestamp == null ? 'N/A' : T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(deliveryTimestamp)}"></td>
+                            <td th:text="*{processedTimestamp == null ? 'N/A' : T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(processedTimestamp)}"></td>
                             <td th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(deliveryTimestamp)}"></td>
                             <td th:text="*{deliveryAddress}"></td>
                             <td th:text="*{recipientName}"></td>
@@ -53,24 +53,30 @@
                             <td th:text="${item.getPrice()} + ' DKK'"></td>
                         </tr>
                         </tbody>
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col">Discount</th>
+                            <td th:text="${order.getDiscount() + ' DKK'}"></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <th scope="row">Total</th>
+                            <td th:text="${order.getTotal() + ' DKK'}"></td>
+                        </tr>
+                        </tbody>
                     </table>
-
-                    <div class="row">
-                        <div class="col">-------------------------------</div>
-                        <div class="col">Discount:</div>
-                        <div class="col">-------------------------------</div>
-                        <div class="col" th:text="${order.getDiscount()/100.0} + ' DKK'"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col">-------------------------------</div>
-                        <div class="col">Total price of products:</div>
-                        <div class="col">-------------------------------</div>
-                        <div class="col" th:text="${order.getTotal()} + ' DKK'"></div>
-                    </div>
                     <div class="row customMargin">
-                        <div class="col form-control">Order status:</div>
-                        <div class="col">
-                            <select class="form-control" name="status" th:field="*{status}">
+                        <div class="col-2 form-control">Order status:</div>
+                        <div class="col-3">
+                            <select id="status"
+                                    class="form-control" name="status" th:field="*{status}">
                                 <option th:each="statusValue :
                             ${T(dk.kea.stud.fourplayers.restaurantstore.order.Order.Status).values()}"
                                         th:value="${statusValue}" th:text="${statusValue}"
@@ -84,14 +90,13 @@
                                 <option value="1">Discount percentage</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="col-3">
                             <input class="form-control" type="number"
                                    name="discountAmount" placeholder="Input amount">
                         </div>
                     </div>
                     <div class="row customMargin">
-                        <button class="btn btn-info form-control" type="submit">Update order
-                        </button>
+                        <button class="btn btn-info form-control" type="submit">Update order</button>
                     </div>
                 </form>
             </div>

@@ -146,12 +146,12 @@ public class OrderController {
     if (discount != null) {
       if (discount > 0) {
         if (discountType == 0) {
-          order.setDiscount(discount * 100);
+          order.setDiscount(discount);
           order.setTotal(order.getTotal() - discount);
         }
         if (discountType == 1) {
           double processedDiscount = order.getTotal() * discount / 100.0;
-          order.setDiscount((int) (processedDiscount * 100));
+          order.setDiscount(processedDiscount);
           order.setTotal(order.getTotal() - processedDiscount);
         }
       }
