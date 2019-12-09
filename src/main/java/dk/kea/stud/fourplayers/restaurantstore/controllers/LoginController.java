@@ -75,20 +75,9 @@ public class LoginController {
                 if (user.getBusinessDetails() == null) {
                     return "redirect:/profile";
                 }
-                //Else return the shop view
-                else {
-                    return "redirect:/shop";
-                }
             }
-            //RETURN ADMIN DASHBOARD IF USER HAS ROLE ADMIN
-            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) ;
-            {
-                return "redirect:/admin/dashboard";
-            }
-
         }
         return "redirect:/shop";
-
     }
 
     @GetMapping("/access-denied")
