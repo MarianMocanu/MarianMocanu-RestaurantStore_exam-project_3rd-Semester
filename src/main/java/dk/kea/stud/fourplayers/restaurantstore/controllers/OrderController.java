@@ -46,8 +46,14 @@ public class OrderController {
   }
 
   @GetMapping("/checkout")
-  public String displayCheckout(Model model, @ModelAttribute Basket basket) {
+  public String displayCheckout(Model model, @ModelAttribute Basket basket, RedirectAttributes redir) {
     if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+      for (Integer quantity: basket.getProductsInBasket().values()) {
+        if (quantity < 1) {
+          redir.addFlashAttribute("error", "All quantities must be greater than 0");
+          return "redirect:/basket";
+        }
+      }
       if (basket == null || basket.isEmpty()) {
         return "redirect:/shop";
       }
