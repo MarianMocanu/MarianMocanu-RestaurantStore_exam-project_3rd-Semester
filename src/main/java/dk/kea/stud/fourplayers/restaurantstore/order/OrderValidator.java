@@ -15,27 +15,27 @@ public class OrderValidator implements Validator {
     Order order = (Order) o;
 
     if (!StringUtils.hasLength(order.getCompanyName())) {
-      errors.rejectValue("companyName", "req", "Required field");
+      errors.rejectValue("companyName", "req", "Company name is required");
     }
 
     if (!StringUtils.hasLength(order.getRecipientName())) {
-      errors.rejectValue("recipientName", "req", "Required field");
+      errors.rejectValue("recipientName", "req", "Recipient name is required");
     }
 
     if (!StringUtils.hasLength(order.getCVR())) {
-      errors.rejectValue("CVR", "req", "Required field");
+      errors.rejectValue("CVR", "req", "CVR number is required");
     }
 
     if (!StringUtils.hasLength(order.getDeliveryAddress())) {
-      errors.rejectValue("deliveryAddress", "req", "Required field");
+      errors.rejectValue("deliveryAddress", "req", "Delivery address is required");
     }
 
     if (!StringUtils.hasLength(order.getZipCode())) {
-      errors.rejectValue("zipCode", "req", "Required field");
+      errors.rejectValue("zipCode", "req", "Zip code is required");
     }
 
     if (!StringUtils.hasLength(order.getPhoneNo())) {
-      errors.rejectValue("phoneNo", "req", "Required field");
+      errors.rejectValue("phoneNo", "req", "Phone number is required");
     }
   }
 }

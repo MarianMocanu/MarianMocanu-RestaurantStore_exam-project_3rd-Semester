@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -45,9 +46,15 @@ public class OrderController {
   }
 
   @GetMapping("/checkout")
-  public String displayCheckout(Model model, @ModelAttribute Basket basket) {
+  public String displayCheckout(Model model, @ModelAttribute Basket basket, RedirectAttributes redir) {
     if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-      if (basket == null) {
+      for (Integer quantity: basket.getProductsInBasket().values()) {
+        if (quantity < 1) {
+          redir.addFlashAttribute("error", "All quantities must be greater than 0");
+          return "redirect:/basket";
+        }
+      }
+      if (basket == null || basket.isEmpty()) {
         return "redirect:/shop";
       }
 
@@ -62,10 +69,10 @@ public class OrderController {
 
   @PostMapping("/checkout")
   public String processOrder(@ModelAttribute @Valid Order order, BindingResult result,
-                             @ModelAttribute Basket basket, SessionStatus session, Model model) {
+                             @ModelAttribute Basket basket, SessionStatus session, RedirectAttributes redirectAttributes) {
     if (result.hasErrors()) {
-      model.addAttribute("order", order);
-      return "order/checkout";
+      redirectAttributes.addFlashAttribute("error", result.getAllErrors().get(0).getDefaultMessage());
+      return "redirect:/checkout";
     }
     Order finalOrder = processOrderFromBasket(basket);
     finalOrder.setRecipientName(order.getRecipientName());
@@ -104,7 +111,7 @@ public class OrderController {
     order.setItemList(orderedProducts);
     order.setUser(currentUser);
     order.setStatus(Order.Status.PENDING);
-    if (currentUser.getBusinessDetails() != null) {
+    if (currentUser != null && currentUser.getBusinessDetails() != null) {
       BusinessDetails details = currentUser.getBusinessDetails();
       order.setRecipientName(details.getFirstName() + " " + details.getLastName());
       order.setCompanyName(details.getCompanyName());
