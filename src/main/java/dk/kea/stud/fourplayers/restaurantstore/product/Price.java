@@ -14,7 +14,7 @@ public class Price extends BaseEntity implements Comparable {
   @Column(name = "quantity")
   private int quantity;
   @Column(name = "price")
-  private int price;
+  private double price;
 
   public Price() {
   }
@@ -27,11 +27,11 @@ public class Price extends BaseEntity implements Comparable {
     this.quantity = quantity;
   }
 
-  public int getPrice() {
+  public double getPrice() {
     return price;
   }
 
-  public void setPrice(int price) {
+  public void setPrice(double price) {
     this.price = price;
   }
 

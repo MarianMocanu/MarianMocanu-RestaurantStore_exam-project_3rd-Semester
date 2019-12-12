@@ -16,14 +16,14 @@ public class OrderItem extends BaseEntity {
     @Column(name = "category_name")
     private String categoryName;
     @Column(name = "price")
-    private int price;
+    private double price;
     @Column(name = "quantity")
     private int quantity;
 
     public OrderItem() {
     }
 
-    public OrderItem(int productId, String productName, int categoryId, String categoryName, int price, int quantity) {
+    public OrderItem(int productId, String productName, int categoryId, String categoryName, double price, int quantity) {
         this.productId = productId;
         this.productName = productName;
         this.categoryId = categoryId;
@@ -64,11 +64,11 @@ public class OrderItem extends BaseEntity {
         this.categoryName = categoryName;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

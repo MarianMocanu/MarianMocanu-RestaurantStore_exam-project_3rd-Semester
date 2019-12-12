@@ -2,20 +2,81 @@
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'dashboard')}">
 <body>
+<style>
+    .user-container {
+        margin-top: 5%;
+        margin-bottom: 5%;
+        color: white;
+    }
+
+    .admin-column {
+        padding: 9%;
+        background: #5bc0de;
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .admin-column h3 {
+        text-align: center;
+        margin-bottom: 12%;
+        color: #fff;
+    }
+
+    .user-column {
+        padding: 9%;
+        background: #343a40;
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .user-column h3 {
+        text-align: center;
+        margin-bottom: 12%;
+        color: #fff;
+    }
+
+    .users-left {
+        float: left;
+    }
+
+    .users-right {
+        float: right;
+    }
+
+    .users-line {
+        overflow: hidden;
+    }
+
+
+</style>
 <div th:if="${error}">
     <span th:text="${error}"></span>
 </div>
-ADMINS:
-<div th:each="admin : ${admins}" class="row">
-        <span th:text="${admin.email}"></span>
-        <a th:href="'/admin/users/remove-admin/' + ${admin.id}">Make User</a>
-</div>
-<div class="row"><hr></div>
-USERS:
-<div th:each="user : ${users}" class="row">
-    <span th:text="${user.email}"></span>
-    <a th:href="'/admin/users/add-admin/' + ${user.id}">Make Admin</a>
-</div>
 
+<section class="middle-align">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 offset-sm-0 text-center">
+
+                <div class="container user-container">
+                    <div class="row">
+                        <div class="col-md-6 admin-column">
+                            <h3>Admins</h3>
+                            <p class="users-line" th:each="admin : ${admins}">
+                                <span th:text="${admin.email}" class="users-left"></span>
+                                <a th:href="'/admin/users/remove-admin/' + ${admin.id}" class="users-right btn btn-dark">Make User</a>
+                            </p>
+                        </div>
+                        <div class="col-md-6 user-column">
+                            <h3>Users</h3>
+                            <p class="users-line" th:each="user : ${users}">
+                                <span th:text="${user.email}" class="users-left"></span>
+                                <a th:href="'/admin/users/add-admin/' + ${user.id}" class="users-right btn btn-info">Make Admin</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

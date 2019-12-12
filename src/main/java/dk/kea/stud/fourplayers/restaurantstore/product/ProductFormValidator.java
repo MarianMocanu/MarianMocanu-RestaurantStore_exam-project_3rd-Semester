@@ -11,7 +11,6 @@ public class ProductFormValidator implements Validator {
 
   @Override
   public void validate(Object o, Errors errors) {
-    System.out.println("Validator validating");
     ProductForm formData = (ProductForm) o;
 
     if (formData.getNewPrice().getQuantity() < 0 || formData.getNewPrice().getPrice() < 0) {
