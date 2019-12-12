@@ -12,9 +12,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <h3><span th:text="${formData.getProduct().isNew()} ? 'Add' : 'Update'"></span>
+                <h3><span style="margin: 1em;" th:text="${formData.getProduct().isNew()} ? 'Add' : 'Update'"></span>
                     Product</h3>
                 <hr>
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
                 <form th:object="${formData}" method="post">
                     <div class="form-group">
                         <input th:replace="~{fragments/inputField ::

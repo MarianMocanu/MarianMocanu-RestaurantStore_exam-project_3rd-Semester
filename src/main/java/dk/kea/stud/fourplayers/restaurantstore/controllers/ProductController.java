@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -122,13 +123,11 @@ public class ProductController {
   }
 
   @PostMapping("/admin/product/edit/{productId}")
-  public String saveEditedProduct(@PathVariable("productId") int productId, ProductForm formData,
-                                  BindingResult result, Model model) {
+  public String saveEditedProduct(@PathVariable("productId") int productId, @Valid ProductForm formData,
+                                  BindingResult result, Model model, RedirectAttributes redir) {
     if (result.hasErrors()) {
-      formData.getProduct().setId(productId);
-      model.addAttribute("formData", formData);
-
-      return ADD_OR_UPDATE_PRODUCT;
+      redir.addFlashAttribute("error", result.getAllErrors().get(0).getDefaultMessage());
+      return "redirect:/admin/product/edit/" + productId;
     } else {
       Product product = formData.getProduct();
       product.setPrices(formData.getPrices());
@@ -138,8 +137,7 @@ public class ProductController {
       if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
         product.addImage(formData.getNewImage());
       }
-      System.out.println(product);
-      //product.setId(productId);
+
       products.save(product);
 
       return "redirect:/admin/product/edit/{productId}";

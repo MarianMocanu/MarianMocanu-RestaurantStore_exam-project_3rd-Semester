@@ -65,8 +65,7 @@ public class OrderController {
   public String processOrder(@ModelAttribute @Valid Order order, BindingResult result,
                              @ModelAttribute Basket basket, SessionStatus session, RedirectAttributes redirectAttributes) {
     if (result.hasErrors()) {
-      redirectAttributes.addFlashAttribute("order", order);
-      redirectAttributes.addFlashAttribute("the_errors", result.getAllErrors());
+      redirectAttributes.addFlashAttribute("error", result.getAllErrors().get(0).getDefaultMessage());
       return "redirect:/checkout";
     }
     Order finalOrder = processOrderFromBasket(basket);
