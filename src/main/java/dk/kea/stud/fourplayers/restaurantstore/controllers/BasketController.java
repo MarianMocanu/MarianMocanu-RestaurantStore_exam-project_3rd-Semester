@@ -6,6 +6,7 @@ import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class BasketController {
         productMap.put(id, product.get());
       }
     }
-    int total = 0;
+    double total = 0;
     for (Map.Entry<Integer, Integer> entry : basket.getProductsInBasket().entrySet()) {
       total += productMap.get(entry.getKey()).getBestPriceForQuantity(entry.getValue()) * entry.getValue();
     }
@@ -57,7 +58,13 @@ public class BasketController {
 
   @PostMapping("/basket")
   public String updateBasket(@SessionAttribute("basket") Basket basket,
-                             @ModelAttribute Basket submittedBasket) {
+                             @ModelAttribute Basket submittedBasket, RedirectAttributes redir) {
+    for (Integer quantity: submittedBasket.getProductsInBasket().values()) {
+      if (quantity < 1) {
+        redir.addFlashAttribute("error", "All quantities must be greater than 0");
+        return "redirect:/basket";
+      }
+    }
     basket.setProductsInBasket(submittedBasket.getProductsInBasket());
     return "redirect:/basket";
   }

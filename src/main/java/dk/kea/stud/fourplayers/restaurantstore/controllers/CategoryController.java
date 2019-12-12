@@ -14,11 +14,9 @@ public class CategoryController {
   private final CategoryRepository categoryRepo;
 
   private final String CATEGORY = "categories/category";
-  private final OrderItemRepository orderItems;
 
-  public CategoryController(CategoryRepository categoryRepository, OrderItemRepository orderItems) {
+  public CategoryController(CategoryRepository categoryRepository) {
     this.categoryRepo = categoryRepository;
-    this.orderItems = orderItems;
   }
 
   @GetMapping("/admin/category/view")

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Categories</title>
+    <title>Detailed Order</title>
 </head>
 
 
@@ -14,53 +14,69 @@
         <div class="row">
             <div class="col-10 offset-md-1">
                 <h3>Detailed Order</h3>
+                <br><br>
                 <form th:object="${order}" method="post">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Order timestamp</th>
+                            <th scope="col">Process timestamp</th>
+                            <th scope="col">Delivery timestamp</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Recipient name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(orderTimestamp)}"></td>
+                            <td th:text="*{processedTimestamp == null ? 'N/A' : T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(processedTimestamp)}"></td>
+                            <td th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(deliveryTimestamp)}"></td>
+                            <td th:text="*{deliveryAddress}"></td>
+                            <td th:text="*{recipientName}"></td>
+                        </tr>
+                        </tbody>
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item, iterator : *{itemList}">
+                            <th scope="row" th:text="${iterator.index + 1}"></th>
+                            <td th:text="${item.productName}"></td>
+                            <td th:text="${item.categoryName}"></td>
+                            <td th:text="${item.quantity}"></td>
+                            <td th:text="${item.getPrice()} + ' DKK'"></td>
+                        </tr>
+                        </tbody>
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col">Discount</th>
+                            <td th:text="${order.getDiscount() + ' DKK'}"></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <th scope="row">Total</th>
+                            <td th:text="${order.getTotal() + ' DKK'}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <div class="row customMargin">
-                        <div class="col">Date and time when the order was received:</div>
-                        <div class="col" th:text="*{orderTimestamp}"></div>
-                    </div>
-                    <div class="row customMargin">
-                        <div class="col">Date and time when the order was processed:</div>
-                        <div class="col" th:text="*{processedTimestamp}"></div>
-                    </div>
-                    <div class="row customMargin">
-                        <div class="col">Date and time when the order must be delivered:</div>
-                        <div class="col" th:text="*{deliveryTimestamp}"></div>
-                    </div>
-                    <div class="row customMargin">
-                        <div class="col">Delivery address:</div>
-                        <div class="col" th:text="*{deliveryAddress}"></div>
-                    </div>
-                    <div class="row customMargin">
-                        <div class="col">Recipient Name:</div>
-                        <div class="col" th:text="*{recipientName}"></div>
-                    </div>
-<!--                    <div class="row customMargin">-->
-<!--                        <div class="col">Ordered by:</div>-->
-<!--                        <div class="col" th:text="*{user.businessDetails.firstName + ' ' + user.businessDetails.lastName}"></div>-->
-<!--                    </div>-->
-                    <div class="row customMargin">
-                        <div class="col">Product name:</div>
-                        <div class="col">Category:</div>
-                        <div class="col">Quantity:</div>
-                        <div class="col">Price:</div>
-                    </div>
-                    <div class="row customMargin" th:each="item : *{itemList}">
-                        <div class="col" th:text="${item.productName}"></div>
-                        <div class="col" th:text="${item.categoryName}"></div>
-                        <div class="col" th:text="${item.quantity}"></div>
-                        <div class="col" th:text="${item.price} + ' DKK'"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col">-------------------------------</div>
-                        <div class="col">Total price of products: </div>
-                        <div class="col">-------------------------------</div>
-                        <div class="col" th:text="${order.getTotal()} + ' DKK '"></div>
-                    </div>
-                    <div class="row customMargin">
-                        <div class="col">Order status:</div>
-                        <div class="col">
-                            <select class="form-control" name="status" th:field="*{status}">
+                        <div class="col-2 form-control">Order status:</div>
+                        <div class="col-3">
+                            <select id="status"
+                                    class="form-control" name="status" th:field="*{status}">
                                 <option th:each="statusValue :
                             ${T(dk.kea.stud.fourplayers.restaurantstore.order.Order.Status).values()}"
                                         th:value="${statusValue}" th:text="${statusValue}"
@@ -69,12 +85,18 @@
                             </select>
                         </div>
                         <div class="col">
+                            <select class="form-control" name="discountType">
+                                <option value="0" selected>Discount value</option>
+                                <option value="1">Discount percentage</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
                             <input class="form-control" type="number"
-                                   name="discountAmount" placeholder="Discount amount">
+                                   name="discountAmount" placeholder="Input amount">
                         </div>
-                        <div class="col">
-                            <button class="btn btn-info form-control" type="submit">Update order</button>
-                        </div>
+                    </div>
+                    <div class="row customMargin">
+                        <button class="btn btn-info form-control" type="submit">Update order</button>
                     </div>
                 </form>
             </div>

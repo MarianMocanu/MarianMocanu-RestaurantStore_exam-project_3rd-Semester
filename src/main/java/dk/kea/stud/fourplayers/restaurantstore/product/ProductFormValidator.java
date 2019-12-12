@@ -11,14 +11,16 @@ public class ProductFormValidator implements Validator {
 
   @Override
   public void validate(Object o, Errors errors) {
-    System.out.println("Validator validating");
     ProductForm formData = (ProductForm) o;
 
     if (formData.getNewPrice().getQuantity() < 0 || formData.getNewPrice().getPrice() < 0) {
       errors.rejectValue("newPrice", "invalidValue", "Price and quantity must be greater than 0");
     }
 
-    for (Price price : formData.getProduct().getPrices()) {
+    for (Price price : formData.getPrices()) {
+      if (price.getQuantity() < 0 || price.getPrice() < 0) {
+        errors.rejectValue("newPrice", "invalidValue", "Price and quantity must be greater than 0");
+      }
       if (formData.getNewPrice().getQuantity() == price.getQuantity()) {
         errors.rejectValue("newPrice", "notUnique", "Price already exists for quantity");
       }

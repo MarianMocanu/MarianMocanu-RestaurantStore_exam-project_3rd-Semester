@@ -1,18 +1,19 @@
 package dk.kea.stud.fourplayers.restaurantstore.controllers;
 
-import dk.kea.stud.fourplayers.restaurantstore.order.Basket;
-import dk.kea.stud.fourplayers.restaurantstore.order.Order;
-import dk.kea.stud.fourplayers.restaurantstore.order.OrderItem;
-import dk.kea.stud.fourplayers.restaurantstore.order.OrderRepository;
+import dk.kea.stud.fourplayers.restaurantstore.order.*;
 import dk.kea.stud.fourplayers.restaurantstore.product.Product;
 import dk.kea.stud.fourplayers.restaurantstore.product.ProductRepository;
 import dk.kea.stud.fourplayers.restaurantstore.security.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,8 @@ public class OrderController {
   private final String ORDERS = "order/orders";
   private final String ORDER_DETAILS = "order/orderDetails";
 
-  public OrderController(ProductRepository products, UserService users, OrderRepository orders, RoleRepository roleRepository, EmailController email) {
+  public OrderController(ProductRepository products, UserService users, OrderRepository orders,
+                         RoleRepository roleRepository, EmailController email) {
     this.email = email;
     this.products = products;
     this.users = users;
@@ -38,10 +40,21 @@ public class OrderController {
     this.roleRepository = roleRepository;
   }
 
+  @InitBinder("order")
+  public void initProductFormBinder(WebDataBinder dataBinder) {
+    dataBinder.setValidator(new OrderValidator());
+  }
+
   @GetMapping("/checkout")
-  public String displayCheckout(Model model, @ModelAttribute Basket basket) {
+  public String displayCheckout(Model model, @ModelAttribute Basket basket, RedirectAttributes redir) {
     if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-      if (basket == null) {
+      for (Integer quantity: basket.getProductsInBasket().values()) {
+        if (quantity < 1) {
+          redir.addFlashAttribute("error", "All quantities must be greater than 0");
+          return "redirect:/basket";
+        }
+      }
+      if (basket == null || basket.isEmpty()) {
         return "redirect:/shop";
       }
 
@@ -55,7 +68,12 @@ public class OrderController {
   }
 
   @PostMapping("/checkout")
-  public String processOrder(@ModelAttribute Order order, @ModelAttribute Basket basket, SessionStatus session) {
+  public String processOrder(@ModelAttribute @Valid Order order, BindingResult result,
+                             @ModelAttribute Basket basket, SessionStatus session, RedirectAttributes redirectAttributes) {
+    if (result.hasErrors()) {
+      redirectAttributes.addFlashAttribute("error", result.getAllErrors().get(0).getDefaultMessage());
+      return "redirect:/checkout";
+    }
     Order finalOrder = processOrderFromBasket(basket);
     finalOrder.setRecipientName(order.getRecipientName());
     finalOrder.setPhoneNo(order.getPhoneNo());
@@ -79,7 +97,7 @@ public class OrderController {
   private Order processOrderFromBasket(Basket basket) {
     User currentUser = users.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     List<OrderItem> orderedProducts = new ArrayList<>();
-    int total = 0;
+    double total = 0;
     for (Map.Entry<Integer, Integer> basketEntry : basket.getProductsInBasket().entrySet()) {
       Product product = products.findById(basketEntry.getKey()).get();
       OrderItem item = new OrderItem(product.getId(), product.getName(),
@@ -93,7 +111,7 @@ public class OrderController {
     order.setItemList(orderedProducts);
     order.setUser(currentUser);
     order.setStatus(Order.Status.PENDING);
-    if (currentUser.getBusinessDetails() != null) {
+    if (currentUser != null && currentUser.getBusinessDetails() != null) {
       BusinessDetails details = currentUser.getBusinessDetails();
       order.setRecipientName(details.getFirstName() + " " + details.getLastName());
       order.setCompanyName(details.getCompanyName());
@@ -127,13 +145,22 @@ public class OrderController {
   @PostMapping("/admin/order/view/{orderId}")
   public String updateOrderStatus(@PathVariable("orderId") int orderId,
                                   @RequestParam("status") Order.Status status,
-                                  @RequestParam(value = "discountAmount", required = false) Integer discount) {
+                                  @RequestParam(value = "discountAmount", required = false) Integer discount,
+                                  @RequestParam(value = "discountType", required = false) int discountType) {
     Order order = orders.findById(orderId).get();
     order.setStatus(status);
     order.setProcessedTimestamp(LocalDateTime.now());
     if (discount != null) {
       if (discount > 0) {
-        order.setTotal(order.getTotal() - discount);
+        if (discountType == 0) {
+          order.setDiscount(discount);
+          order.setTotal(order.getTotal() - discount);
+        }
+        if (discountType == 1) {
+          double processedDiscount = order.getTotal() * discount / 100.0;
+          order.setDiscount(processedDiscount);
+          order.setTotal(order.getTotal() - processedDiscount);
+        }
       }
     }
 

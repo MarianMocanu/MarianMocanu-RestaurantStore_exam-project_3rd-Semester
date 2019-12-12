@@ -1,9 +1,20 @@
 package dk.kea.stud.fourplayers.restaurantstore.product;
 
+import java.util.List;
+
 public class ProductForm {
   private Product product;
   private Price newPrice;
   private ProductImage newImage;
+  private List<Price> prices;
+
+  public List<Price> getPrices() {
+    return prices;
+  }
+
+  public void setPrices(List<Price> prices) {
+    this.prices = prices;
+  }
 
   public Product getProduct() {
     return product;

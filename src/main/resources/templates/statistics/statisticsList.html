@@ -6,31 +6,37 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+<style>.card a {} </style>
 <body>
 <br style="margin-top: 10px">
 <div class="container">
     <div class="row">
-<div class="card" style="width: 11rem; border-radius: 50px">
-    <div class="card-body" style="background-color: dimgray">
-        <a href="/admin/statistics/products" class="card-link" style="font-size: x-large; font-weight: bolder; color: azure">Best selling products</a>
-        <br>
-<!--        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
-    </div>
-</div>
-
-<div class="card" style="width: 11rem">
-    <div class="card-body" style="background-color: teal">
-        <a href="/admin/statistics/categories" class="card-link" style="font-size: x-large; font-weight: bolder; color: azure">Best selling categories</a>
+        <a href="/admin/statistics/products" style="text-decoration: none;">
+<div class="card" style="width: 11rem; border-radius: 50px;  margin: 0.75em">
+    <div class="card-body" style="background-color: dimgray;">
+        <span style="font-size: x-large; font-weight: bolder; color: azure;">Best selling products</span>
         <br>
     </div>
 </div>
+        </a>
 
-        <div class="card" style="width: 11rem">
+        <a href="/admin/statistics/categories" style="text-decoration: none;" >
+<div class="card" style="width: 11rem; margin: 0.75em">
+    <div class="card-body" style="background-color: teal;">
+        <span class="card-link" style="font-size: x-large; font-weight: bolder; color: azure">Best selling categories</span>
+        <br>
+    </div>
+</div>
+        </a>
+
+        <a href="/admin/statistics/customers" style=" text-decoration: none;">
+        <div class="card" style="width: 11rem; margin: 0.75em">
             <div class="card-body" style="background-color: #0c8546">
-                <a href="/admin/statistics/customers" class="card-link" style="font-size: x-large; font-weight: bolder; color: azure">Great customers</a>
+                <span  class="card-link" style="font-size: x-large; font-weight: bolder; color: azure;">Great customers</span>
                 <br>
             </div>
         </div>
+        </a>
     </div>
 </div>
 </body>

@@ -6,7 +6,9 @@
 <section class="middle-align">
     <div class="container">
         <form th:object="${order}" method="post" action="/checkout">
-            <h3>Your order:</h3>
+            <h3 style="margin: 1em;">Your order:</h3>
+            <hr>
+            <div th:if="${error}" th:text="${error}" class="alert alert-danger" role="alert"></div>
             <div th:each="item, iterator : *{itemList}">
                 <span th:text="(${iterator.index} + 1) + '. ' + ${item.getProductName()} + ': ' +
                       ${item.getQuantity()} + ' x ' + ${item.getPrice()} + ' DKK = ' +
