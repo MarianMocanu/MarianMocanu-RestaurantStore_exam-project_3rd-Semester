@@ -34,16 +34,17 @@
                         <div class="col-2"></div>
                     </div>
                     <div class="row">
-                        <th:block th:each="price, iterator : *{product.prices}">
+                        <th:block th:each="price, iterator : *{prices}">
                             <div class="col-5">
-                                <input th:field="*{product.prices[__${iterator.index}__].quantity}"
-                                       th:id="${iterator.index}" class="form-control"
+                                <input th:field="*{prices[__${iterator.index}__].quantity}" class="form-control"
                                        style="margin: 0.2em"
-                                       th:readonly="(*{product.prices[__${iterator.index}__].quantity} == 1)"/>
+                                       th:readonly="(*{prices[__${iterator.index}__].quantity} == 1)"/>
                             </div>
                             <div class="col-5">
-                                <input th:field="*{product.prices[__${iterator.index}__].price}"
-                                       th:id="${iterator.index}" class="form-control"
+                                <input th:field="*{prices[__${iterator.index}__].price}"
+                                       class="form-control" style="margin: 0.2em"/>
+                                <input th:field="*{prices[__${iterator.index}__].id}"
+                                       class="form-control" type="hidden"
                                        style="margin: 0.2em"/>
                             </div>
                             <div class="col-2">
@@ -76,8 +77,9 @@
                         <div class="row">
                             <div class="col-10">
                                 <input class="form-control" style="margin: 0.2em"
-                                       th:field="*{product.images[__${iterator.index}__].url}"
-                                       th:id="${iterator.index}"/>
+                                       th:field="*{product.images[__${iterator.index}__].url}" />
+                                <input class="form-control" style="margin: 0.2em" type="hidden"
+                                       th:field="*{product.images[__${iterator.index}__].id}" />
                             </div>
                             <div class="col-2">
                                 <a class="btn btn-danger" style="margin: 0.2em"
@@ -90,7 +92,7 @@
                         <div class="label">Add New Image:</div>
                         <input class="form-control" th:field="*{newImage.url}"/>
                     </div>
-
+                    <input type="hidden" th:field="*{product.id}">
                     <button class="btn btn-info form-control" type="submit"
                             th:text="(*{product.isNew()} ? 'Add' : 'Update') + ' product'"></button>
                 </form>

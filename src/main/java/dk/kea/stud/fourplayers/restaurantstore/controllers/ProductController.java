@@ -6,6 +6,7 @@ import dk.kea.stud.fourplayers.restaurantstore.order.OrderItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,6 +114,7 @@ public class ProductController {
       formData.setProduct(product.get());
       formData.setNewPrice(new Price());
       formData.setNewImage(new ProductImage());
+      formData.setPrices(product.get().getPrices());
       model.addAttribute("formData", formData);
 
       return ADD_OR_UPDATE_PRODUCT;
@@ -120,7 +122,7 @@ public class ProductController {
   }
 
   @PostMapping("/admin/product/edit/{productId}")
-  public String saveEditedProduct(@PathVariable("productId") int productId, @Valid  ProductForm formData,
+  public String saveEditedProduct(@PathVariable("productId") int productId, ProductForm formData,
                                   BindingResult result, Model model) {
     if (result.hasErrors()) {
       formData.getProduct().setId(productId);
@@ -128,14 +130,17 @@ public class ProductController {
 
       return ADD_OR_UPDATE_PRODUCT;
     } else {
+      Product product = formData.getProduct();
+      product.setPrices(formData.getPrices());
       if (formData.getNewPrice().getQuantity() > 0 && formData.getNewPrice().getPrice() > 0) {
-        formData.getProduct().addPrice(formData.getNewPrice());
+        product.addPrice(formData.getNewPrice());
       }
       if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
-        formData.getProduct().addImage(formData.getNewImage());
+        product.addImage(formData.getNewImage());
       }
-      formData.getProduct().setId(productId);
-      products.save(formData.getProduct());
+      System.out.println(product);
+      //product.setId(productId);
+      products.save(product);
 
       return "redirect:/admin/product/edit/{productId}";
     }

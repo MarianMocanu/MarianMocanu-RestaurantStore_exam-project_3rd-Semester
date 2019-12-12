@@ -69,6 +69,7 @@ public class Product extends BaseEntity {
     if (images == null) {
       images = new ArrayList<>();
     }
+    images.sort(ProductImage::compareTo);
     return images;
   }
 
