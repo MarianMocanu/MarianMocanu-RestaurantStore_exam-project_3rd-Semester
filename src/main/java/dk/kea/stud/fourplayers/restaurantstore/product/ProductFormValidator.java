@@ -17,12 +17,14 @@ public class ProductFormValidator implements Validator {
       errors.rejectValue("newPrice", "invalidValue", "Price and quantity must be greater than 0");
     }
 
-    for (Price price : formData.getPrices()) {
-      if (price.getQuantity() < 0 || price.getPrice() < 0) {
-        errors.rejectValue("newPrice", "invalidValue", "Price and quantity must be greater than 0");
-      }
-      if (formData.getNewPrice().getQuantity() == price.getQuantity()) {
-        errors.rejectValue("newPrice", "notUnique", "Price already exists for quantity");
+    if (formData.getPrices() != null) {
+      for (Price price : formData.getPrices()) {
+        if (price.getQuantity() < 0 || price.getPrice() < 0) {
+          errors.rejectValue("newPrice", "invalidValue", "Price and quantity must be greater than 0");
+        }
+        if (formData.getNewPrice().getQuantity() == price.getQuantity()) {
+          errors.rejectValue("newPrice", "notUnique", "Price already exists for quantity");
+        }
       }
     }
   }
