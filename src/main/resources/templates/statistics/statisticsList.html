@@ -2,42 +2,53 @@
 <html lang="en"
       xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body},'statistics')}">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<style>.card a {} </style>
+
 <body>
-<br style="margin-top: 10px">
-<div class="container">
-    <div class="row">
-        <a href="/admin/statistics/products" style="text-decoration: none;">
-<div class="card" style="width: 11rem; border-radius: 50px;  margin: 0.75em">
-    <div class="card-body" style="background-color: dimgray;">
-        <span style="font-size: x-large; font-weight: bolder; color: azure;">Best selling products</span>
-        <br>
-    </div>
-</div>
-        </a>
+<style>
+    .stats-square {
+        background-color: #17a2b8;
+        color: white;
+        font-weight: bold;
+        padding-top: 50%;
+        padding-bottom: 50%;
+        width: 100%;
+        margin-top: 30px;
+        border-radius: 25px;
+    }
+    .stats-square:hover{
+        background-color:#1c7280;
+    }
 
-        <a href="/admin/statistics/categories" style="text-decoration: none;" >
-<div class="card" style="width: 11rem; margin: 0.75em">
-    <div class="card-body" style="background-color: teal;">
-        <span class="card-link" style="font-size: x-large; font-weight: bolder; color: azure">Best selling categories</span>
-        <br>
-    </div>
-</div>
-        </a>
-
-        <a href="/admin/statistics/customers" style=" text-decoration: none;">
-        <div class="card" style="width: 11rem; margin: 0.75em">
-            <div class="card-body" style="background-color: #0c8546">
-                <span  class="card-link" style="font-size: x-large; font-weight: bolder; color: azure;">Great customers</span>
-                <br>
+    .stats-link:hover{
+        text-decoration: none;
+    }
+</style>
+<section class="middle-align">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <a href="/admin/statistics/products" class="stats-link">
+                <div class="stats-square">
+                    Best Selling Products
+                </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/admin/statistics/products" class="stats-link">
+                <div class="stats-square">
+                    Best Categories
+                </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/admin/statistics/products" class="stats-link">
+                <div class="stats-square">
+                    Best Customers
+                </div>
+                </a>
             </div>
         </div>
-        </a>
     </div>
-</div>
+</section>
 </body>
 </html>
