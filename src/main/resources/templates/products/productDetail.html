@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'shop')}">
+      th:replace="~{fragments/layout :: layout (~{::body},'shop')}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <body>
@@ -62,6 +63,16 @@
                         </div>
                     </div>
                 </form>
+                <div sec:authorize="hasAuthority('ADMIN')" class="row">
+                    <div class="col">
+                    <a class="btn btn-info form-control" th:href="'/admin/product/edit/' + ${product.id}"
+                       data-tip="Edit Product">Edit</a>
+                    </div>
+                    <div class="col">
+                    <a class="btn btn-dark form-control" th:href="'/admin/product/delete/' + ${product.id}"
+                       data-tip="Delete Product">Delete</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

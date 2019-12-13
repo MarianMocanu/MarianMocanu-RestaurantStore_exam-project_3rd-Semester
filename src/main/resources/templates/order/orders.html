@@ -27,7 +27,9 @@
                     <tbody>
                     <tr th:each="order : ${pendingOrders}">
                         <th scope="row" th:text="${order.getId()}"></th>
-                        <td th:text="${T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(order.getDeliveryTimestamp())}"></td>
+                        <td th:with="text=(${order.getDeliveryTimestamp()} == null ? 'N/A' :
+                         ${T(dk.kea.stud.fourplayers.restaurantstore.Helper)
+                            .fmtTime(order.getDeliveryTimestamp())})" th:text="${text}"></td>
                         <td th:text="${order.getRecipientName()}"></td>
                         <td><a th:text="${order.getStatus()}" class="btn btn-info"
                                th:href="'/admin/order/view/' + ${order.getId()}"> </a></td>
@@ -48,7 +50,9 @@
                     <tbody>
                     <tr th:each="order : ${notPendingOrders}">
                         <th scope="row" th:text="${order.getId()}"></th>
-                        <td th:text="${T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(order.getDeliveryTimestamp())}"></td>
+                        <td th:with="text=(${order.getDeliveryTimestamp()} == null ? 'N/A' :
+                         ${T(dk.kea.stud.fourplayers.restaurantstore.Helper)
+                            .fmtTime(order.getDeliveryTimestamp())})" th:text="${text}"></td>
                         <td th:text="${order.getRecipientName()}"></td>
                         <td><a th:text="${order.getStatus()}" class="btn btn-info"
                                th:href="'/admin/order/view/' + ${order.getId()}"> </a></td>

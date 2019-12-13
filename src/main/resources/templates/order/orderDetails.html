@@ -30,7 +30,7 @@
                         <tr>
                             <td th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(orderTimestamp)}"></td>
                             <td th:text="*{processedTimestamp == null ? 'N/A' : T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(processedTimestamp)}"></td>
-                            <td th:text="*{T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(deliveryTimestamp)}"></td>
+                            <td th:text="*{deliveryTimestamp == null ? 'N/A' : T(dk.kea.stud.fourplayers.restaurantstore.Helper).fmtTime(deliveryTimestamp)}"></td>
                             <td th:text="*{deliveryAddress}"></td>
                             <td th:text="*{recipientName}"></td>
                         </tr>
@@ -91,7 +91,7 @@
                             </select>
                         </div>
                         <div class="col-3">
-                            <input class="form-control" type="number"
+                            <input class="form-control" type="number" step="0.01"
                                    name="discountAmount" placeholder="Input amount">
                         </div>
                     </div>
