@@ -88,17 +88,18 @@ public class ProductController {
   }
 
   @PostMapping("/admin/product/add")
-  public String saveNewProduct(@Valid ProductForm formData, BindingResult result, Model model) {
+  public String saveNewProduct(@Valid ProductForm formData, BindingResult result, RedirectAttributes redir) {
     if (result.hasErrors()) {
-      model.addAttribute("formData", formData);
-
-      return ADD_OR_UPDATE_PRODUCT;
+      redir.addFlashAttribute("error", result.getAllErrors().get(0).getDefaultMessage());
+      return "redirect:/admin/product/add";
     } else {
+      Product product = formData.getProduct();
+      product.setPrices(formData.getPrices());
       if (formData.getNewPrice().getQuantity() > 0) {
-        formData.getProduct().addPrice(formData.getNewPrice());
+        product.addPrice(formData.getNewPrice());
       }
       if (formData.getNewImage().getUrl() != null && !formData.getNewImage().getUrl().equals("")) {
-        formData.getProduct().addImage(formData.getNewImage());
+        product.addImage(formData.getNewImage());
       }
       Product newProduct = products.save(formData.getProduct());
       return "redirect:/admin/product/edit/" + newProduct.getId();
