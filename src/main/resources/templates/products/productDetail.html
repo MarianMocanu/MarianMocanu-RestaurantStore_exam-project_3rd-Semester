@@ -5,6 +5,12 @@
 
 
 <body>
+<style>
+    .carousel-control-next,
+    .carousel-control-prev {
+        filter: invert(100%);
+    }
+</style>
 <section class="middle-align">
     <div class="container">
         <div class="row">
@@ -65,12 +71,12 @@
                 </form>
                 <div sec:authorize="hasAuthority('ADMIN')" class="row">
                     <div class="col">
-                    <a class="btn btn-info form-control" th:href="'/admin/product/edit/' + ${product.id}"
-                       data-tip="Edit Product">Edit</a>
+                        <a class="btn btn-info form-control" th:href="'/admin/product/edit/' + ${product.id}"
+                           data-tip="Edit Product">Edit</a>
                     </div>
                     <div class="col">
-                    <a class="btn btn-dark form-control" th:href="'/admin/product/delete/' + ${product.id}"
-                       data-tip="Delete Product">Delete</a>
+                        <a class="btn btn-dark form-control" th:href="'/admin/product/delete/' + ${product.id}"
+                           data-tip="Delete Product">Delete</a>
                     </div>
                 </div>
             </div>
