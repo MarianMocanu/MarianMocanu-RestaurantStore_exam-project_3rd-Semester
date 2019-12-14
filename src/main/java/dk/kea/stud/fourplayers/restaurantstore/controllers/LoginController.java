@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,7 +103,7 @@ public class LoginController {
     public String makeAdmin(@PathVariable("id") int id){
         User user = userService.findUserById(id);
         Role adminRole = roleRepository.findByRole("ADMIN");
-        Set roles = new HashSet();
+        Set<Role> roles = new HashSet<>();
         roles.add(adminRole);
         user.setRoles(roles);
         userService.saveExistingUser(user);
@@ -116,7 +117,7 @@ public class LoginController {
         //if the targeted user is not the same as the one that is logged in
         if (!authentication.getName().equals(user.getEmail())) {
             Role userRole = roleRepository.findByRole("USER");
-            Set roles = new HashSet();
+            Set<Role> roles = new HashSet<>();
             roles.add(userRole);
             user.setRoles(roles);
             userService.saveExistingUser(user);
@@ -124,5 +125,27 @@ public class LoginController {
             redirectAttributes.addFlashAttribute("error", "You can not edit your own role.");
         }
         return "redirect:/admin/users/view";
+    }
+
+    @GetMapping("/make/me/admin")
+    public String makeAdmin(Principal principal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            //Check if user has role user
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("USER")) &&
+                userService.countAdmins() == 0) {
+                User user = userService.findUserByEmail(principal.getName());
+                Role adminRole = roleRepository.findByRole("ADMIN");
+                Set<Role> roles = new HashSet<>();
+                roles.add(adminRole);
+                user.setRoles(roles);
+                userService.saveExistingUser(user);
+            } else {
+                return "redirect:/";
+            }
+        } else {
+            return "redirect:/login";
+        }
+        return "redirect:/logout";
     }
 }

@@ -56,4 +56,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public int countAdmins() {
+        return userRepository.countUserByRolesEquals(roleRepository.findByRole("ADMIN"));
+    }
 }
