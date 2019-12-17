@@ -40,6 +40,6 @@ public class ProfileController {
         User user = userService.findUserByEmail(authentication.getName());
         user.setBusinessDetails(businessDetails);
         userService.saveExistingUser(user);
-        return "redirect:/profile";
+        return "redirect:/shop";
     }
 }

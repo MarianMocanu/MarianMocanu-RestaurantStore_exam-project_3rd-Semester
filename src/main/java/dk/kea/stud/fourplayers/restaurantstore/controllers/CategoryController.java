@@ -4,19 +4,23 @@ import dk.kea.stud.fourplayers.restaurantstore.product.Category;
 import dk.kea.stud.fourplayers.restaurantstore.product.CategoryForm;
 import dk.kea.stud.fourplayers.restaurantstore.product.CategoryRepository;
 import dk.kea.stud.fourplayers.restaurantstore.order.OrderItemRepository;
+import dk.kea.stud.fourplayers.restaurantstore.product.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CategoryController {
   private final CategoryRepository categoryRepo;
+  private final ProductRepository productRepo;
 
   private final String CATEGORY = "categories/category";
 
-  public CategoryController(CategoryRepository categoryRepository) {
+  public CategoryController(CategoryRepository categoryRepository, ProductRepository productRepo) {
     this.categoryRepo = categoryRepository;
+    this.productRepo = productRepo;
   }
 
   @GetMapping("/admin/category/view")
@@ -56,8 +60,12 @@ public class CategoryController {
 
 
   @GetMapping("/admin/category/delete/{categoryId}")
-  public String deleteCategory(@PathVariable("categoryId") int categoryId) {
-    categoryRepo.deleteById(categoryId);
+  public String deleteCategory(@PathVariable("categoryId") int categoryId, RedirectAttributes redir) {
+    if (productRepo.findProductsByCategoryId(categoryId).size() == 0) {
+      categoryRepo.deleteById(categoryId);
+    } else {
+      redir.addFlashAttribute("error", "Cannot delete a category that has associated products.");
+    }
 
     return "redirect:/admin/category/view";
   }
